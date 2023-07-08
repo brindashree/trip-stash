@@ -4,7 +4,6 @@ import { supabaseClient } from "./utility";
 
 const authProvider: AuthBindings = {
   login: async ({ email, password, providerName }) => {
-    // sign in with oauth
     try {
       if (providerName) {
         const { data, error } = await supabaseClient.auth.signInWithOAuth({
