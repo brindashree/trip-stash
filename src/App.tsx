@@ -1,4 +1,4 @@
-import { Refine } from "@refinedev/core";
+import { Authenticated, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import {
   notificationProvider,
@@ -8,8 +8,8 @@ import {
 } from "@refinedev/chakra-ui";
 import { ChakraProvider } from "@chakra-ui/react";
 import routerBindings, {
+  CatchAllNavigate,
   DocumentTitleHandler,
-  UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import { dataProvider, liveProvider } from "@refinedev/supabase";
 import { useTranslation } from "react-i18next";
@@ -17,8 +17,9 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
-import { StoryCreate, StoryEdit, StoryList, StoryShow} from "./pages/stories";
+import { StoryCreate, StoryEdit, StoryList, StoryShow } from "./pages/stories";
 import { supabaseClient } from "./utility";
+import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -74,17 +75,56 @@ function App() {
                   </ThemedLayoutV2>
                 }
               >
+                <Route index path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/update-password" element={<ResetPassword />} />
                 <Route path="/stories">
-                  <Route index element={<StoryList />} />
-                  <Route path="create" element={<StoryCreate />} />
-                  <Route path="edit/:id" element={<StoryEdit />} />
-                  <Route path="show/:id" element={<StoryShow />} />
+                  <Route
+                    index
+                    element={
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <StoryList />
+                      </Authenticated>
+                    }
+                  />
+                  <Route
+                    path="create"
+                    element={
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <StoryCreate />
+                      </Authenticated>
+                    }
+                  />
+                  <Route
+                    path="edit/:id"
+                    element={
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <StoryEdit />
+                      </Authenticated>
+                    }
+                  />
+                  <Route
+                    path="show/:id"
+                    element={
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <StoryShow />
+                      </Authenticated>
+                    }
+                  />
                 </Route>
               </Route>
             </Routes>
 
             <RefineKbar />
-            <UnsavedChangesNotifier />
             <DocumentTitleHandler />
           </Refine>
         </ChakraProvider>
