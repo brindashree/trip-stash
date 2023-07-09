@@ -17,7 +17,7 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
-import { StoryCreate, StoryEdit, StoryList, StoryShow } from "./pages/stories";
+import { StoryCreate, StoryEdit, Projects, StoryShow } from "./pages/projects";
 import { supabaseClient } from "./utility";
 import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
 
@@ -43,11 +43,11 @@ function App() {
             i18nProvider={i18nProvider}
             resources={[
               {
-                name: "stories",
-                list: "/stories",
-                create: "/stories/create",
-                edit: "/stories/edit/:id",
-                show: "/stories/show/:id",
+                name: "projects",
+                list: "/projects",
+                create: "/projects/create",
+                edit: "/projects/edit/:id",
+                show: "/projects/show/:id",
                 meta: {
                   canDelete: true,
                 },
@@ -79,14 +79,14 @@ function App() {
                 <Route path="register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/update-password" element={<ResetPassword />} />
-                <Route path="/stories">
+                <Route path="/projects">
                   <Route
                     index
                     element={
                       <Authenticated
                         fallback={<CatchAllNavigate to="/login" />}
                       >
-                        <StoryList />
+                        <Projects />
                       </Authenticated>
                     }
                   />
