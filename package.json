@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "homepage": ".",
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
     "@refinedev/chakra-ui": "2.20.0",
