@@ -14,6 +14,7 @@ import {
   Tag,
   TagLabel,
 } from "@chakra-ui/react";
+import { DeleteButton, ShowButton } from "@refinedev/chakra-ui";
 import {
   IconMapPin,
   IconClockHour3,
@@ -46,7 +47,7 @@ export const ProjectCard: React.FC = () => {
           </Text>
           <Spacer />
           <AvatarGroup size="md" max={2}>
-            <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
+            <Avatar name="Ryan "  />
             <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
             <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
             <Avatar
@@ -56,34 +57,46 @@ export const ProjectCard: React.FC = () => {
             <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
           </AvatarGroup>
         </Flex>
-
-        <Flex>
-          <Flex>
-            <IconMapPin size={24} color={COLORS.greyNeutral500} />
-            Bangalore
+        <Flex gap={4} flexDirection={"column"}>
+          <Flex gap={4}>
+            <Flex gap={2}>
+              <IconMapPin size={24} color={COLORS.greyNeutral500} />
+              Bangalore
+            </Flex>
+            <Flex gap={2}>
+              <IconClockHour3 size={24} color={COLORS.greyNeutral500} />
+              19th Feb - 23rd Feb'23
+            </Flex>
           </Flex>
-          <Flex>
-            <IconClockHour3 size={24} color={COLORS.greyNeutral500} />
-            19th Feb - 23rd Feb'23
+
+          <Flex gap={4}>
+            <Flex gap={2}>
+              <IconMessage2 size={24} color={COLORS.greyNeutral500} />3
+            </Flex>
+            <Flex gap={2}>
+              <IconPaperclip size={24} color={COLORS.greyNeutral500} />3
+            </Flex>
+          </Flex>
+
+          <Text py="2">
+            Caffè latte is a coffee beverage of Italian origin made with
+            espresso and steamed milk.
+          </Text>
+          <Flex justifyContent={"space-between"}>
+            <Tag
+              size="lg"
+              colorScheme="red"
+              borderRadius="full"
+              width={"fit-content"}
+            >
+              <TagLabel>Planning</TagLabel>
+            </Tag>
+            <Flex>
+              <DeleteButton mr={2} />
+              <ShowButton />
+            </Flex>
           </Flex>
         </Flex>
-
-        <Flex>
-          <Flex>
-            <IconMessage2 size={24} color={COLORS.greyNeutral500} />3
-          </Flex>
-          <Flex>
-            <IconPaperclip size={24} color={COLORS.greyNeutral500} />3
-          </Flex>
-        </Flex>
-
-        <Text py="2">
-          Caffè latte is a coffee beverage of Italian origin made with espresso
-          and steamed milk.
-        </Text>
-        <Tag size="lg" colorScheme="red" borderRadius="full">
-          <TagLabel>Planning</TagLabel>
-        </Tag>
       </CardBody>
     </Card>
   );

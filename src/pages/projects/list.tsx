@@ -5,22 +5,16 @@ import {
   Stack,
   Button,
   useDisclosure,
-  Flex,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
+  Flex
 } from "@chakra-ui/react";
 import { IconPlus } from "@tabler/icons";
 
 import { COLORS } from "../../utility/colors";
 import { ExploreIcon } from "../../assets/explore-icon";
-import { AddProject } from "../../components/forms/add-project";
 import { ProjectCard } from "../../components/project-card";
+import { CreateButton } from "@refinedev/chakra-ui";
 
 const ProjectEmptyState: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Container centerContent minHeight="80vh" justifyContent="center">
       <Text fontSize="5xl" color={COLORS.primaryColor} as="b">
@@ -38,23 +32,14 @@ const ProjectEmptyState: React.FC = () => {
           TripStash!
         </Text>
       </Stack>
-      <Button
-        leftIcon={<IconPlus />}
-        bg={COLORS.primaryColor}
-        mt={18}
-        variant="solid"
-        onClick={onOpen}
-      >
-        Create Project
-      </Button>
-      <AddProject isOpen={isOpen} onClose={onClose} />
+      <CreateButton mt={4}/>
     </Container>
   );
 };
 
 export const Projects: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const userHasProjects = true;
+  const userHasProjects = false;
   return (
     <>
       {userHasProjects ? (
@@ -76,22 +61,10 @@ export const Projects: React.FC = () => {
             >
               Create Project
             </Button>
+            <CreateButton/>
           </Flex>
-          <AddProject isOpen={isOpen} onClose={onClose} />
-          <Tabs variant="enclosed">
-            <TabList>
-              <Tab>Public</Tab>
-              <Tab>Private</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <ProjectCard />
-              </TabPanel>
-              <TabPanel>
-                <p>two!</p>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+
+          <ProjectCard />
         </div>
       ) : (
         <ProjectEmptyState />

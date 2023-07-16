@@ -1,81 +1,90 @@
+import {
+  IResourceComponentsProps,
+  useGetIdentity,
+  useNavigation,
+} from "@refinedev/core";
 import { Create } from "@refinedev/chakra-ui";
 import {
-  Heading,
   FormControl,
-  FormErrorMessage,
   FormLabel,
+  FormErrorMessage,
   Input,
-  Select,
+  Textarea,
+  Flex,
+  Heading,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
-import { createStory } from "../../api/story";
+import { useForm } from "@refinedev/react-hook-form";
 
-export const StoryCreate: React.FC = () => {
+type IUser = {
+  id: String;
+  email: String;
+};
+
+export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
+  const { data: user } = useGetIdentity<IUser>();
   const {
+    refineCore: { formLoading, onFinish },
+    saveButtonProps,
     register,
+    handleSubmit,
     formState: { errors },
   } = useForm();
-  useEffect(()=>{
-    createStory();
-  },[])
+  const { list } = useNavigation();
+
+  const handleSubmitProjectCreate = (values: any) => {
+    onFinish({
+      ...values,
+      user_id: user?.id,
+    }).then(() => list("projects"));
+  };
   return (
-    <Create title={<Heading size="lg">Create your new story!</Heading>}>
-      <FormControl mb="3" isInvalid={!!errors?.title}>
-        <FormLabel>Title</FormLabel>
+    <Create
+      isLoading={formLoading}
+      saveButtonProps={{
+        ...saveButtonProps,
+        onClick: handleSubmit(handleSubmitProjectCreate),
+      }}
+      title={<Heading size="lg">Create new project</Heading>}
+    >
+      <FormControl mb="3" isInvalid={!!(errors as any)?.title}>
+        <FormLabel>Name</FormLabel>
         <Input
-          id="title"
           type="text"
-          {...register("title", { required: "Title is required" })}
-        />
-        <FormErrorMessage>{`${errors.title?.message}`}</FormErrorMessage>
-      </FormControl>
-      <FormControl mb="3" isInvalid={!!errors?.destinations}>
-        <FormLabel>Destinations</FormLabel>
-        <Select
-          id="destinations"
-          placeholder="Select Destinations"
-          {...register("destinations", {
-            required: "Destinations is required",
+          placeholder="Name your project ex. 'John's Greek Adventure'"
+          {...register("title", {
+            required: "This field is required",
           })}
-        >
-          <option>Destination 1</option>
-          <option>Destination 2</option>
-          <option>Destination 3</option>
-        </Select>
-        <FormErrorMessage>{`${errors.status?.message}`}</FormErrorMessage>
-      </FormControl>
-      <FormControl mb="3" isInvalid={!!errors?.activities}>
-        <FormLabel>Activities</FormLabel>
-        <Select
-          id="activities"
-          placeholder="Select Activities"
-          {...register("activities", {})}
-        >
-          <option>Activity 1</option>
-          <option>Activity 2</option>
-          <option>Activity 3</option>
-        </Select>
-        <FormErrorMessage>{`${errors.status?.message}`}</FormErrorMessage>
-      </FormControl>
-      <FormControl mb="3" isInvalid={!!errors?.collaborators}>
-        <FormLabel>Collaborators</FormLabel>
-        <Input
-          id="collaborator"
-          type="text"
-          {...register("collaborator", {})}
         />
-        <FormErrorMessage>{`${errors.status?.message}`}</FormErrorMessage>
+        <FormErrorMessage>
+          {(errors as any)?.title?.message as string}
+        </FormErrorMessage>
       </FormControl>
-      <FormControl mb="3" isInvalid={!!errors?.hastags}>
-        <FormLabel>Hashtags</FormLabel>
-        <Input
-          id="hashtags"
-          type="text"
-          {...register("hashtags", {})}
-        />
-        <FormErrorMessage>{`${errors.status?.message}`}</FormErrorMessage>
+
+      <FormControl marginBottom={4} isInvalid={!!errors?.destination}>
+        <FormLabel>Destination</FormLabel>
+        <Input id="destination" type="text" {...register("destination", {})} />
+        <FormErrorMessage>{`${errors.destination?.message}`}</FormErrorMessage>
       </FormControl>
+
+      <FormControl marginBottom={4}>
+        <FormLabel>Description</FormLabel>
+        <Textarea id="description" size="sm" {...register("description", {})} />
+        <FormErrorMessage>{`${errors.description?.message}`}</FormErrorMessage>
+      </FormControl>
+
+      <Flex gap={4} marginBottom={4}>
+        <FormControl>
+          <FormLabel>Start Date</FormLabel>
+          <Input id="start_date" type="date" {...register("start_date", {})} />
+          <FormErrorMessage>{`${errors.start_date?.message}`}</FormErrorMessage>
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Return Date</FormLabel>
+          <Input id="end_date" type="date" {...register("end_date", {})} />
+          <FormErrorMessage>{`${errors.end_date?.message}`}</FormErrorMessage>
+        </FormControl>
+      </Flex>
     </Create>
   );
 };

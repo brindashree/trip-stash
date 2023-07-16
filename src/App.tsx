@@ -17,7 +17,7 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
-import { StoryCreate, StoryEdit, Projects, StoryShow } from "./pages/projects";
+import { ProjectCreate, StoryEdit, Projects, StoryShow } from "./pages/projects";
 import { supabaseClient } from "./utility";
 import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
 
@@ -96,7 +96,7 @@ function App() {
                       <Authenticated
                         fallback={<CatchAllNavigate to="/login" />}
                       >
-                        <StoryCreate />
+                        <ProjectCreate />
                       </Authenticated>
                     }
                   />
