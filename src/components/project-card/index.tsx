@@ -1,10 +1,6 @@
 import {
-  Button,
   Card,
   CardBody,
-  CardFooter,
-  Heading,
-  Stack,
   Image,
   Text,
   Flex,
@@ -15,20 +11,28 @@ import {
   TagLabel,
 } from "@chakra-ui/react";
 import { DeleteButton, ShowButton } from "@refinedev/chakra-ui";
+import dayjs from "dayjs";
 import {
   IconMapPin,
   IconClockHour3,
   IconMessage2,
   IconPaperclip,
 } from "@tabler/icons";
+import { useNavigate } from "react-router-dom";
 import { COLORS } from "../../utility/colors";
+import { getProjectStatusColor } from "../../utility";
 
-export const ProjectCard: React.FC = () => {
+export const ProjectCard: React.FC = (props) => {
+  const navigate = useNavigate();
+  const { title, start_date, end_date, destination, description, id, status } =
+    props;
+
   return (
     <Card
       direction={{ base: "column", sm: "row" }}
       overflow="hidden"
       variant="filled"
+      my={8}
     >
       <Image
         objectFit="cover"
@@ -43,11 +47,11 @@ export const ProjectCard: React.FC = () => {
       <CardBody>
         <Flex alignItems="center">
           <Text as="b" fontSize="lg">
-            John's Greek Adventure
+            {title}
           </Text>
           <Spacer />
           <AvatarGroup size="md" max={2}>
-            <Avatar name="Ryan "  />
+            <Avatar name="Ryan " />
             <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
             <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
             <Avatar
@@ -61,11 +65,12 @@ export const ProjectCard: React.FC = () => {
           <Flex gap={4}>
             <Flex gap={2}>
               <IconMapPin size={24} color={COLORS.greyNeutral500} />
-              Bangalore
+              {destination}
             </Flex>
             <Flex gap={2}>
               <IconClockHour3 size={24} color={COLORS.greyNeutral500} />
-              19th Feb - 23rd Feb'23
+              {dayjs(start_date).format("Do MMM")} -{" "}
+              {dayjs(end_date).format("Do MMM")}
             </Flex>
           </Flex>
 
@@ -78,22 +83,19 @@ export const ProjectCard: React.FC = () => {
             </Flex>
           </Flex>
 
-          <Text py="2">
-            Caffè latte is a coffee beverage of Italian origin made with
-            espresso and steamed milk.
-          </Text>
+          <Text py="2">{description}</Text>
           <Flex justifyContent={"space-between"}>
             <Tag
               size="lg"
-              colorScheme="red"
+              colorScheme={getProjectStatusColor(status)}
               borderRadius="full"
               width={"fit-content"}
             >
-              <TagLabel>Planning</TagLabel>
+              <TagLabel>{status}</TagLabel>
             </Tag>
             <Flex>
-              <DeleteButton mr={2} />
-              <ShowButton />
+              <DeleteButton mr={2} recordItemId={id} />
+              <ShowButton onClick={()=>navigate(`/${id}/itinerary/create`)} />
             </Flex>
           </Flex>
         </Flex>

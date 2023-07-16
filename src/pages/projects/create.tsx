@@ -14,11 +14,9 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useForm } from "@refinedev/react-hook-form";
+import { IUser } from "../../utility/interface";
+import { PROJECT_STATUS } from "../../utility/constants";
 
-type IUser = {
-  id: String;
-  email: String;
-};
 
 export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
   const { data: user } = useGetIdentity<IUser>();
@@ -35,6 +33,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
     onFinish({
       ...values,
       user_id: user?.id,
+      status: PROJECT_STATUS.PLANNING
     }).then(() => list("projects"));
   };
   return (

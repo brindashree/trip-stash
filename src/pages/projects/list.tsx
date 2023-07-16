@@ -1,18 +1,11 @@
-import {
-  Text,
-  Container,
-  Circle,
-  Stack,
-  Button,
-  useDisclosure,
-  Flex
-} from "@chakra-ui/react";
-import { IconPlus } from "@tabler/icons";
+import { Text, Container, Circle, Stack, Flex } from "@chakra-ui/react";
+import { CreateButton } from "@refinedev/chakra-ui";
+import { useList, HttpError, useGetIdentity } from "@refinedev/core";
 
 import { COLORS } from "../../utility/colors";
 import { ExploreIcon } from "../../assets/explore-icon";
 import { ProjectCard } from "../../components/project-card";
-import { CreateButton } from "@refinedev/chakra-ui";
+import { IUser } from "../../utility/interface";
 
 const ProjectEmptyState: React.FC = () => {
   return (
@@ -32,14 +25,25 @@ const ProjectEmptyState: React.FC = () => {
           TripStash!
         </Text>
       </Stack>
-      <CreateButton mt={4}/>
+      <CreateButton mt={4} />
     </Container>
   );
 };
 
 export const Projects: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const userHasProjects = false;
+  const { data: user } = useGetIdentity<IUser>();
+  const { data: projects } = useList<HttpError>({
+    resource: "projects",
+    filters: [
+      {
+        field: "user_id",
+        operator: "eq",
+        value: user?.id,
+      },
+    ],
+  });
+  const userHasProjects = projects?.total && projects.total > 0;
+
   return (
     <>
       {userHasProjects ? (
@@ -53,18 +57,11 @@ export const Projects: React.FC = () => {
                 View and manage all the projects created by you
               </Text>
             </div>
-            <Button
-              leftIcon={<IconPlus />}
-              bg={COLORS.primaryColor}
-              variant="solid"
-              onClick={onOpen}
-            >
-              Create Project
-            </Button>
-            <CreateButton/>
+            <CreateButton />
           </Flex>
-
-          <ProjectCard />
+          {projects.data.map((proj, i) => (
+            <ProjectCard {...proj} />
+          ))}
         </div>
       ) : (
         <ProjectEmptyState />

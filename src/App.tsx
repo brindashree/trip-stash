@@ -20,6 +20,7 @@ import { Header } from "./components/header";
 import { ProjectCreate, StoryEdit, Projects, StoryShow } from "./pages/projects";
 import { supabaseClient } from "./utility";
 import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
+import { ItineraryCreate, ItineraryEdit, ItineraryList, ItineraryShow } from "./pages/itineraries";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -41,18 +42,22 @@ function App() {
             routerProvider={routerBindings}
             notificationProvider={notificationProvider}
             i18nProvider={i18nProvider}
-            resources={[
-              {
-                name: "projects",
-                list: "/projects",
-                create: "/projects/create",
-                edit: "/projects/edit/:id",
-                show: "/projects/show/:id",
-                meta: {
-                  canDelete: true,
-                },
+            resources={[{
+              name: "projects",
+              list: "/projects",
+              create: "/projects/create",
+              edit: "/projects/edit/:id",
+              show: "/projects/show/:id",
+              meta: {
+                canDelete: true,
               },
-            ]}
+            }, {
+              name: "itineraries",
+              list: "/:projectId/itinerary",
+              create: "/:projectId/itinerary/create",
+              edit: "/itinerary/edit/:id",
+              show: "/itinerary/show/:id"
+            }]}
             options={{
               syncWithLocation: true,
               warnWhenUnsavedChanges: true,
@@ -117,6 +122,48 @@ function App() {
                         fallback={<CatchAllNavigate to="/login" />}
                       >
                         <StoryShow />
+                      </Authenticated>
+                    }
+                  />
+                </Route>
+                <Route path="/:projectId/itinerary">
+                  <Route
+                    index
+                    element={
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <ItineraryList />
+                      </Authenticated>
+                    }
+                  />
+                  <Route
+                    path="/:projectId/itinerary/create"
+                    element={
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <ItineraryCreate />
+                      </Authenticated>
+                    }
+                  />
+                  <Route
+                    path="edit/:id"
+                    element={
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <ItineraryEdit />
+                      </Authenticated>
+                    }
+                  />
+                  <Route
+                    path="show/:id"
+                    element={
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <ItineraryShow />
                       </Authenticated>
                     }
                   />
