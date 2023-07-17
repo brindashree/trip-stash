@@ -17,10 +17,20 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
-import { ProjectCreate, StoryEdit, Projects, StoryShow } from "./pages/projects";
+import {
+  ProjectCreate,
+  StoryEdit,
+  Projects,
+  StoryShow,
+} from "./pages/projects";
 import { supabaseClient } from "./utility";
 import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
-import { ItineraryCreate, ItineraryEdit, ItineraryList, ItineraryShow } from "./pages/itineraries";
+import {
+  ItineraryCreate,
+  ItineraryEdit,
+  ItineraryList,
+  ItineraryShow,
+} from "./pages/itineraries";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -42,22 +52,25 @@ function App() {
             routerProvider={routerBindings}
             notificationProvider={notificationProvider}
             i18nProvider={i18nProvider}
-            resources={[{
-              name: "projects",
-              list: "/projects",
-              create: "/projects/create",
-              edit: "/projects/edit/:id",
-              show: "/projects/show/:id",
-              meta: {
-                canDelete: true,
+            resources={[
+              {
+                name: "projects",
+                list: "/projects",
+                create: "/projects/create",
+                edit: "/projects/edit/:id",
+                show: "/projects/show/:id",
+                meta: {
+                  canDelete: true,
+                },
               },
-            }, {
-              name: "itineraries",
-              list: "/:projectId/itinerary",
-              create: "/:projectId/itinerary/create",
-              edit: "/itinerary/edit/:id",
-              show: "/itinerary/show/:id"
-            }]}
+              {
+                name: "itineraries",
+                list: "/:projectId/itinerary",
+                create: "/:projectId/itinerary/create",
+                edit: "/:projectId/itinerary/edit/:id",
+                show: "/:projectId/itinerary/show/:id",
+              },
+            ]}
             options={{
               syncWithLocation: true,
               warnWhenUnsavedChanges: true,
@@ -148,7 +161,7 @@ function App() {
                     }
                   />
                   <Route
-                    path="edit/:id"
+                    path="/:projectId/itinerary/edit/:id"
                     element={
                       <Authenticated
                         fallback={<CatchAllNavigate to="/login" />}
@@ -158,7 +171,7 @@ function App() {
                     }
                   />
                   <Route
-                    path="show/:id"
+                    path="/:projectId/itinerary/show/:id"
                     element={
                       <Authenticated
                         fallback={<CatchAllNavigate to="/login" />}
