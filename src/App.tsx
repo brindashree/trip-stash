@@ -17,6 +17,7 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
+import { Home } from "./pages/home";
 import { StoryCreate, StoryEdit, StoryList, StoryShow } from "./pages/stories";
 import { supabaseClient } from "./utility";
 import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
@@ -59,6 +60,7 @@ function App() {
             }}
           >
             <Routes>
+              <Route path="/" element={<Home />} />
               <Route
                 element={
                   <ThemedLayoutV2
@@ -77,8 +79,8 @@ function App() {
               >
                 <Route index path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/update-password" element={<ResetPassword />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route path="update-password" element={<ResetPassword />} />
                 <Route path="/stories">
                   <Route
                     index
