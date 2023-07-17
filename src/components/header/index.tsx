@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   BoxProps,
+  Button,
   HStack,
   Icon,
   IconButton,
@@ -16,6 +17,7 @@ import {
 import { useGetIdentity, useGetLocale, useSetLocale } from "@refinedev/core";
 import { IconMoon, IconSun } from "@tabler/icons";
 import React from "react";
+import { useNavigation } from "@refinedev/core";
 
 type IUser = {
   id: number;
@@ -38,6 +40,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const changeLanguage = useSetLocale();
   const locale = useGetLocale();
   const currentLocale = locale();
+  const { push } = useNavigation();
 
   let stickyProps: BoxProps = {};
   if (sticky) {
@@ -47,6 +50,14 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       zIndex: 1,
     };
   }
+
+  const handleRegisterClick = () => {
+    push("/register");
+  };
+
+  const handleLoginClick = () => {
+    push("/login");
+  };
 
   return (
     <Box
@@ -80,7 +91,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           />
         </IconButton>
 
-        {(user?.avatar || user?.name) && (
+        {user?.avatar || user?.name ? (
           <HStack>
             {user?.name && (
               <Text size="sm" fontWeight="bold">
@@ -88,6 +99,15 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
               </Text>
             )}
             <Avatar size="sm" name={user?.name} src={user?.avatar} />
+          </HStack>
+        ) : (
+          <HStack>
+            <Button variant="ghost" size="sm" onClick={handleLoginClick}>
+              Login
+            </Button>
+            <Button variant="solid" size="sm" onClick={handleRegisterClick}>
+              Register
+            </Button>
           </HStack>
         )}
       </HStack>
