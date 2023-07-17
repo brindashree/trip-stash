@@ -1,5 +1,10 @@
 import { AuthPage } from "@refinedev/chakra-ui";
+import AuthTemplate from "../../components/auth-template/auth-template";
 
 export function ResetPassword() {
-  return <AuthPage type="updatePassword" />;
+  return (
+    <AuthTemplate>
+      <AuthPage type="updatePassword" />;
+    </AuthTemplate>
+  );
 }

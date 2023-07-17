@@ -1,6 +1,10 @@
-import { IconBrandGoogle } from "@tabler/icons";
 import { AuthPage } from "@refinedev/chakra-ui";
+import AuthTemplate from "../../components/auth-template/auth-template";
 
 export function Register() {
-  return <AuthPage type="register" />;
+  return (
+    <AuthTemplate>
+      <AuthPage type="register" />;
+    </AuthTemplate>
+  );
 }

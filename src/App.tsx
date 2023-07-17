@@ -79,6 +79,10 @@ function App() {
           >
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route index path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/update-password" element={<ResetPassword />} />
               <Route
                 element={
                   <ThemedLayoutV2
@@ -95,10 +99,6 @@ function App() {
                   </ThemedLayoutV2>
                 }
               >
-                <Route index path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/update-password" element={<ResetPassword />} />
                 <Route path="/projects">
                   <Route
                     index
