@@ -15,7 +15,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useForm } from "@refinedev/react-hook-form";
-import { ACTIVITIES } from "../../utility/constants";
+import { ACTIVITIES, ITINERARY_STATUS } from "../../utility/constants";
 import { useNavigate } from "react-router-dom";
 
 export const ItineraryCreate: React.FC<IResourceComponentsProps> = () => {
@@ -33,6 +33,7 @@ export const ItineraryCreate: React.FC<IResourceComponentsProps> = () => {
     onFinish({
       ...values,
       project_id: params?.projectId,
+      status: ITINERARY_STATUS.VOTING
     }).then(() => navigate(`/${params?.projectId}/itinerary`));
   };
 

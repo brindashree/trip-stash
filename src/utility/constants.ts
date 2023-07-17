@@ -2,6 +2,11 @@ export const PROJECT_STATUS = {
     PLANNING: "Planning",
     COMPLETED: "Completed"
 }
+export const ITINERARY_STATUS = {
+    VOTING: "Voting",
+    CONFIRMED: "Confirmed",
+    CANCELED: "Canceled"
+}
 
 export const ACTIVITIES = [
     { value: "SIGHTSEEING", label: "Sightseeing" },

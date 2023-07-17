@@ -41,7 +41,7 @@ const authProvider: AuthBindings = {
       if (data?.user) {
         return {
           success: true,
-          redirectTo: "/",
+          redirectTo: "/projects",
         };
       }
     } catch (error: any) {
