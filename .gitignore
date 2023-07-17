@@ -6,7 +6,7 @@
 .pnp.js
 
 yarn.lock
-
+/dist
 # testing
 /coverage
 

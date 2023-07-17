@@ -6,10 +6,6 @@ import {
   HStack,
   Icon,
   IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Text,
   useColorMode,
   useColorModeValue,
@@ -19,8 +15,7 @@ import {
   RefineThemedLayoutV2HeaderProps,
 } from "@refinedev/chakra-ui";
 import { useGetIdentity, useGetLocale, useSetLocale } from "@refinedev/core";
-import { IconLanguage, IconMoon, IconSun } from "@tabler/icons";
-import i18n from "i18next";
+import { IconMoon, IconSun } from "@tabler/icons";
 import React from "react";
 import { useNavigation } from "@refinedev/core";
 
@@ -82,31 +77,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       <HamburgerMenu />
 
       <HStack>
-        <Menu>
-          <MenuButton
-            as={IconButton}
-            aria-label="Options"
-            icon={<IconLanguage />}
-            variant="ghost"
-          />
-          <MenuList>
-            {[...(i18n.languages ?? [])].sort().map((lang: string) => (
-              <MenuItem
-                key={lang}
-                onClick={() => {
-                  changeLanguage(lang);
-                }}
-                value={lang}
-                color={lang === currentLocale ? "green" : undefined}
-                icon={
-                  <Avatar src={`/images/flags/${lang}.svg`} h={18} w={18} />
-                }
-              >
-                {lang === "en" ? "English" : "German"}
-              </MenuItem>
-            ))}
-          </MenuList>
-        </Menu>
+      
 
         <IconButton
           variant="ghost"
