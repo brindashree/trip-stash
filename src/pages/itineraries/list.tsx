@@ -25,6 +25,7 @@ import {
 } from "@chakra-ui/react";
 import { ITINERARY_STATUS } from "../../utility/constants";
 import { COLORS } from "../../utility/colors";
+import { IItinerary } from "../../utility/interface";
 
 export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   const { params } = useParsed();
@@ -109,7 +110,7 @@ const ItineraryTabPanel = ({ list }: { list: any }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {list.map((row) => (
+            {list.map((row: IItinerary) => (
               <Tr key={row.id}>
                 <Td>
                   <DateField value={row.date} format="DD-MMM-YYYY" />

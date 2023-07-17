@@ -21,8 +21,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import { COLORS } from "../../utility/colors";
 import { getProjectStatusColor } from "../../utility";
+import { IProject } from "../../utility/interface";
 
-export const ProjectCard: React.FC = (props) => {
+export const ProjectCard: React.FC<IProject> = (props) => {
   const navigate = useNavigate();
   const { title, start_date, end_date, destination, description, id, status } =
     props;

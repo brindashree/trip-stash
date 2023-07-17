@@ -5,7 +5,7 @@ import { useList, HttpError, useGetIdentity } from "@refinedev/core";
 import { COLORS } from "../../utility/colors";
 import { ExploreIcon } from "../../assets/explore-icon";
 import { ProjectCard } from "../../components/project-card";
-import { IUser } from "../../utility/interface";
+import { IProject, IUser } from "../../utility/interface";
 
 const ProjectEmptyState: React.FC = () => {
   return (
@@ -59,8 +59,17 @@ export const Projects: React.FC = () => {
             </div>
             <CreateButton />
           </Flex>
-          {projects.data.map((proj, i) => (
-            <ProjectCard {...proj} />
+          {projects.data.map((proj) => (
+            <ProjectCard
+              title={proj.title}
+              start_date={proj.start_date}
+              end_date={proj.end_date}
+              destination={proj.destination}
+              description={proj.description}
+              id={proj.id}
+              status={proj.status}
+              {...proj}
+            />
           ))}
         </div>
       ) : (
