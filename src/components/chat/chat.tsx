@@ -15,6 +15,7 @@ import {
 import { useGetIdentity } from "@refinedev/core";
 import { IUser } from "../../utility/interface";
 import { supabaseClient } from "../../utility";
+import { COLORS } from "../../utility/colors";
 
 function Chat({
   isOpen,
@@ -105,26 +106,26 @@ function Chat({
                     }
                   >
                     <Flex
-                      borderRadius={4}
-                      bg={"blue.500"}
+                      borderTopStartRadius={user?.email === row?.user ? 12 : 4}
+                      borderBottomStartRadius={
+                        user?.email === row?.user ? 16 : 4
+                      }
+                      borderTopEndRadius={user?.email === row?.user ? 4 : 16}
+                      borderBottomEndRadius={user?.email === row?.user ? 4 : 16}
+                      bg={COLORS.primaryColor}
                       width={"70%"}
                       direction={"column"}
+                      padding={2}
                     >
-                      <Text
-                        fontSize={"sm"}
-                        color={"white"}
-                        borderRadius={4}
-                        padding={2}
-                      >
+                      <Text fontSize={"md"} color={"white"} borderRadius={4}>
                         {row?.message}
                       </Text>
                       <Text
                         fontSize={"sm"}
                         color={"white"}
-                        bg={"blue.500"}
                         borderRadius={4}
-                        padding={2}
                         alignSelf={"flex-end"}
+                        fontStyle={"italic"}
                       >
                         {row?.user}
                       </Text>
@@ -144,7 +145,8 @@ function Chat({
             />
             <Button
               type="submit"
-              colorScheme="blue"
+              background={"black"}
+              color={"white"}
               mr={3}
               onClick={onChatSend}
             >
