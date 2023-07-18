@@ -84,7 +84,6 @@ export function Home() {
         <Heading as="h4" size="xs" mb="4" color={COLORS.greyNeutral500}>
           View and manage all the projects you are a part of here
         </Heading>
-        <Spacer height={12} />
 
         {personalStash.map((proj: any) => (
           <ProjectCard
