@@ -7,14 +7,41 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
-import { useGetIdentity, useNavigation } from "@refinedev/core";
 import { IUser } from "../../utility/interface";
 import { IconPlus } from "@tabler/icons";
 import { COLORS } from "../../utility/colors";
+import { useEffect, useState } from "react";
+import {
+  useList,
+  HttpError,
+  useGetIdentity,
+  useNavigation,
+} from "@refinedev/core";
+import { ProjectCard } from "../../components/project-card";
 
 export function Home() {
   const { push } = useNavigation();
   const { data: user } = useGetIdentity<IUser>();
+  const [personalStash, setPersonalStash] = useState<any[]>([]);
+  const [publicStash, setPublicStash] = useState<any[]>([]);
+
+  const { data: projects } = useList<HttpError>({
+    resource: "projects",
+  });
+
+  useEffect(() => {
+    if (projects) {
+      const _personalStash = projects?.data?.filter(
+        (project: any) => project?.user_id === user?.id
+      );
+      const _publicStash = projects?.data?.filter(
+        (project: any) => project?.user_id !== user?.id && !project.private
+      );
+      setPersonalStash(_personalStash);
+      setPublicStash(_publicStash);
+    }
+  }, [projects, user?.id]);
+
   return (
     <div>
       <div>
@@ -28,7 +55,7 @@ export function Home() {
             </CardHeader>
             <CardBody>
               <Heading as="h1" size="2xl">
-                1
+                {personalStash?.length || 0}
               </Heading>
             </CardBody>
           </Card>
@@ -57,6 +84,24 @@ export function Home() {
         <Heading as="h4" size="xs" mb="4" color={COLORS.greyNeutral500}>
           View and manage all the projects you are a part of here
         </Heading>
+        <Spacer height={12} />
+
+        {personalStash.map((proj: any) => (
+          <ProjectCard
+            key={proj.id}
+            title={proj.title}
+            start_date={proj.start_date}
+            end_date={proj.end_date}
+            destination={proj.destination}
+            description={proj.description}
+            id={proj.id}
+            status={proj.status}
+            user_id={proj.user_id}
+            is_private={proj.private}
+            collaborators={proj.collaborators}
+            {...proj}
+          />
+        ))}
       </div>
     </div>
   );
