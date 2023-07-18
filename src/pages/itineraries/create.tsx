@@ -1,6 +1,5 @@
 import {
   IResourceComponentsProps,
-  useNavigation,
   useParsed,
 } from "@refinedev/core";
 import { Create } from "@refinedev/chakra-ui";

@@ -25,7 +25,7 @@ import {
   ItineraryEdit,
   ItineraryList,
 } from "./pages/itineraries";
-import { Home } from "./pages/home";
+import { LandingScreen } from "./pages/landing";
 import { Invite } from "./pages/projects/invite";
 
 function App() {
@@ -72,7 +72,7 @@ function App() {
             }}
           >
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<LandingScreen />} />
               <Route index path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
