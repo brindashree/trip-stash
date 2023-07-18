@@ -12,6 +12,7 @@ import {
   TagLabel,
   Button,
   CardHeader,
+  Heading,
 } from "@chakra-ui/react";
 import { DeleteButton, ShowButton, EditButton } from "@refinedev/chakra-ui";
 import dayjs from "dayjs";
@@ -107,10 +108,13 @@ export const ProjectCard: React.FC<IProject> = (props) => {
               <IconMapPin size={24} color={COLORS.greyNeutral500} />
               {destination}
             </Flex>
-            <Flex gap={2}>
+            <Flex gap={2} alignItems={"center"}>
               <IconClockHour3 size={24} color={COLORS.greyNeutral500} />
-              {dayjs(start_date).format("Do MMM")} -{" "}
-              {dayjs(end_date).format("Do MMM")}
+              {dayjs(start_date).format("DD MMMM YYYY")}{" "}
+              <Heading as="span" size="sm">
+                -{"  "}
+              </Heading>
+              {dayjs(end_date).format("DD MMMM YYYY")}
             </Flex>
           </Flex>
 
