@@ -11,6 +11,7 @@ import {
   Tag,
   TagLabel,
   Button,
+  CardHeader,
 } from "@chakra-ui/react";
 import { DeleteButton, ShowButton, EditButton } from "@refinedev/chakra-ui";
 import dayjs from "dayjs";
@@ -41,6 +42,7 @@ export const ProjectCard: React.FC<IProject> = (props) => {
     id,
     status,
     user_id,
+    is_private,
   } = props;
 
   const getInviteUrl = () => {
@@ -53,7 +55,17 @@ export const ProjectCard: React.FC<IProject> = (props) => {
       overflow="hidden"
       variant="filled"
       my={8}
+      position={"relative"}
     >
+      <Tag
+        background={is_private ? COLORS.warning500 : COLORS.primaryColor}
+        color={"white"}
+        position={"absolute"}
+        top={"50%"}
+        right={4}
+      >
+        <TagLabel>{is_private ? "Private" : "Public"}</TagLabel>
+      </Tag>
       <Image
         objectFit="cover"
         // maxW={{ base: "100%", sm: "200px" }}
