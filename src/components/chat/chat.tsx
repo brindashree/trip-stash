@@ -43,6 +43,10 @@ function Chat({
   };
 
   useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+
     chatsWatcher.current = supabaseClient
       .channel("custom-update-channel")
       .on(
@@ -59,7 +63,7 @@ function Chat({
     () => {
       chatsWatcher.current.unsubscribe();
     };
-  }, []);
+  }, [bottomRef.current]);
 
   const onChatSend = (e) => {
     e.preventDefault();
