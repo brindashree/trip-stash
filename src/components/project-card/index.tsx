@@ -11,7 +11,6 @@ import {
   Tag,
   TagLabel,
   Button,
-  CardHeader,
   Heading,
 } from "@chakra-ui/react";
 import { DeleteButton, ShowButton, EditButton } from "@refinedev/chakra-ui";
@@ -65,7 +64,13 @@ export const ProjectCard: React.FC<IProject> = (props) => {
         top={"50%"}
         right={4}
       >
-        <TagLabel>{is_private ? "Private" : "Public"}</TagLabel>
+        <TagLabel
+          textTransform={"uppercase"}
+          fontSize={"xs"}
+          fontWeight={"bold"}
+        >
+          {is_private ? "Private" : "Public"}
+        </TagLabel>
       </Tag>
       <Image
         objectFit="cover"
@@ -132,7 +137,6 @@ export const ProjectCard: React.FC<IProject> = (props) => {
             <Tag
               size="lg"
               colorScheme={getProjectStatusColor(status)}
-              borderRadius="full"
               width={"fit-content"}
             >
               <TagLabel>{status}</TagLabel>
