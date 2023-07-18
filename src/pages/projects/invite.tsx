@@ -52,16 +52,36 @@ export function Invite() {
     ],
   });
 
-  const onProjectJoin = async () => {
+  const checkIfUserIsCollaborator = () => {
+    let exists = false;
     const _collaborators = projectDetails?.collaborators || [];
-    if (user?.id && !_collaborators.includes(user?.id)) {
-      _collaborators.push(user?.id);
+    _collaborators.forEach((_user: any) => {
+      if (_user.id === user?.id) {
+        exists = true;
+      }
+    });
+
+    return exists;
+  };
+
+  const onProjectJoin = async () => {
+    const exists = checkIfUserIsCollaborator();
+    if (exists) {
       push("/projects");
     }
-    await supabaseClient
-      .from("projects")
-      .update({ collaborators: _collaborators })
-      .eq("id", params?.projectId);
+
+    const _collaborators = projectDetails?.collaborators || [];
+    if (user?.id && !exists) {
+      _collaborators.push({
+        id: user?.id,
+        email: user?.email,
+      });
+
+      await supabaseClient
+        .from("projects")
+        .update({ collaborators: _collaborators })
+        .eq("id", params?.projectId);
+    }
 
     push("/projects");
   };
@@ -94,7 +114,7 @@ export function Invite() {
             {projectDetails?.description}
           </Heading>
           <Button mt={4} colorScheme="blue" onClick={onProjectJoin}>
-            Join
+            {checkIfUserIsCollaborator() ? "Joined !!, Go to projects" : "Join"}
           </Button>
         </CardHeader>
       </Card>
