@@ -143,7 +143,7 @@ export const ProjectCard: React.FC<IProject> = (props) => {
             </Tag>
             <Flex>
               <Button
-                background={"blue"}
+                background={COLORS.primaryColor}
                 color={"white"}
                 onClick={() => setChatOpen(true)}
                 mr={2}
