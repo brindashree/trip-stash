@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   CardBody,
@@ -9,6 +10,7 @@ import {
   Spacer,
   Tag,
   TagLabel,
+  Button,
 } from "@chakra-ui/react";
 import { DeleteButton, ShowButton, EditButton } from "@refinedev/chakra-ui";
 import dayjs from "dayjs";
@@ -22,11 +24,28 @@ import { useNavigate } from "react-router-dom";
 import { COLORS } from "../../utility/colors";
 import { getProjectStatusColor } from "../../utility";
 import { IProject } from "../../utility/interface";
+import Chat from "../chat/chat";
+import InviteModal from "../invite-modal";
 
 export const ProjectCard: React.FC<IProject> = (props) => {
+  const [chatOpen, setChatOpen] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
+
   const navigate = useNavigate();
-  const { title, start_date, end_date, destination, description, id, status } =
-    props;
+  const {
+    title,
+    start_date,
+    end_date,
+    destination,
+    description,
+    id,
+    status,
+    user_id,
+  } = props;
+
+  const getInviteUrl = () => {
+    return document.URL + "/invite/" + user_id + "/" + id;
+  };
 
   return (
     <Card
@@ -52,6 +71,13 @@ export const ProjectCard: React.FC<IProject> = (props) => {
             {title}
           </Text>
           <Spacer />
+          <Button
+            onClick={() => {
+              setInviteOpen(true);
+            }}
+          >
+            Invite
+          </Button>
           <AvatarGroup size="md" max={2}>
             <Avatar name="Ryan " />
             <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
@@ -96,6 +122,14 @@ export const ProjectCard: React.FC<IProject> = (props) => {
               <TagLabel>{status}</TagLabel>
             </Tag>
             <Flex>
+              <Button
+                background={"blue"}
+                color={"white"}
+                onClick={() => setChatOpen(true)}
+                mr={2}
+              >
+                Chat
+              </Button>
               <EditButton
                 resourceNameOrRouteName="projects"
                 recordItemId={id}
@@ -107,6 +141,16 @@ export const ProjectCard: React.FC<IProject> = (props) => {
           </Flex>
         </Flex>
       </CardBody>
+      <Chat
+        isOpen={chatOpen}
+        onClose={() => setChatOpen(false)}
+        projectId={id}
+      />
+      <InviteModal
+        isOpen={inviteOpen}
+        onClose={() => setInviteOpen(false)}
+        url={getInviteUrl()}
+      />
     </Card>
   );
 };

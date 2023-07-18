@@ -17,11 +17,10 @@ import { useForm } from "@refinedev/react-hook-form";
 import { IUser } from "../../utility/interface";
 import { PROJECT_STATUS } from "../../utility/constants";
 
-
 export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
   const { data: user } = useGetIdentity<IUser>();
   const {
-    refineCore: { formLoading, onFinish },
+    refineCore: { formLoading, onFinish, mutationResult },
     saveButtonProps,
     register,
     handleSubmit,
@@ -33,8 +32,10 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
     onFinish({
       ...values,
       user_id: user?.id,
-      status: PROJECT_STATUS.PLANNING
-    }).then(() => list("projects"));
+      status: PROJECT_STATUS.PLANNING,
+    })
+      .then(() => console.log(mutationResult, "mutatationResult"))
+      .then(() => list("projects"));
   };
   return (
     <Create

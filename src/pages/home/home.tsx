@@ -4,10 +4,18 @@ import RightImage from "../../assets/right.png";
 import LeftImage from "../../assets/left.png";
 import { Image, Text, Flex, Spacer, Heading, Button } from "@chakra-ui/react";
 import { useNavigation } from "@refinedev/core";
+import { useIsAuthenticated } from "@refinedev/core";
 
 export function Home() {
   const { push } = useNavigation();
+  const { data } = useIsAuthenticated();
+
   const handleRouteToLogin = () => {
+    if (data?.authenticated) {
+      push("/projects");
+      return;
+    }
+
     push("/login");
   };
 
@@ -30,7 +38,7 @@ export function Home() {
           size="md"
           onClick={handleRouteToLogin}
         >
-          Join us now
+          {data?.authenticated ? "Go to projects" : "Join us now"}
         </Button>
         <Image
           src={HeroImage}

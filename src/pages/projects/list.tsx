@@ -5,7 +5,7 @@ import { useList, HttpError, useGetIdentity } from "@refinedev/core";
 import { COLORS } from "../../utility/colors";
 import { ExploreIcon } from "../../assets/explore-icon";
 import { ProjectCard } from "../../components/project-card";
-import { IProject, IUser } from "../../utility/interface";
+import { IUser } from "../../utility/interface";
 
 const ProjectEmptyState: React.FC = () => {
   return (
@@ -32,6 +32,7 @@ const ProjectEmptyState: React.FC = () => {
 
 export const Projects: React.FC = () => {
   const { data: user } = useGetIdentity<IUser>();
+
   const { data: projects } = useList<HttpError>({
     resource: "projects",
     filters: [
@@ -68,6 +69,7 @@ export const Projects: React.FC = () => {
               description={proj.description}
               id={proj.id}
               status={proj.status}
+              user_id={proj.user_id}
               {...proj}
             />
           ))}

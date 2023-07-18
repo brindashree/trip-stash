@@ -13,6 +13,7 @@ export interface IProject {
   description: String;
   id: BaseKey | number | string | undefined;
   status: String;
+  user_id: String;
 }
 export interface IItinerary {
   date: string | number | Date | null;
