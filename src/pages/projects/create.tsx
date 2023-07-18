@@ -4,6 +4,7 @@ import {
   useNavigation,
 } from "@refinedev/core";
 import { Create } from "@refinedev/chakra-ui";
+import { useJwt } from "react-jwt";
 import {
   FormControl,
   FormLabel,
@@ -16,7 +17,6 @@ import {
 import { useForm } from "@refinedev/react-hook-form";
 import { IUser } from "../../utility/interface";
 import { PROJECT_STATUS } from "../../utility/constants";
-
 
 export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
   const { data: user } = useGetIdentity<IUser>();
@@ -33,7 +33,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
     onFinish({
       ...values,
       user_id: user?.id,
-      status: PROJECT_STATUS.PLANNING
+      status: PROJECT_STATUS.PLANNING,
     }).then(() => list("projects"));
   };
   return (

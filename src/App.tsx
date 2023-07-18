@@ -23,6 +23,7 @@ import {
   StoryEdit,
   Projects,
   StoryShow,
+  Invite,
 } from "./pages/projects";
 import { supabaseClient } from "./utility";
 import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
@@ -137,6 +138,16 @@ function App() {
                         fallback={<CatchAllNavigate to="/login" />}
                       >
                         <StoryShow />
+                      </Authenticated>
+                    }
+                  />
+                  <Route
+                    path="invite/:id"
+                    element={
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <Invite />
                       </Authenticated>
                     }
                   />

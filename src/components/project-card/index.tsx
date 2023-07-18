@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   CardBody,
@@ -9,6 +10,7 @@ import {
   Spacer,
   Tag,
   TagLabel,
+  Button,
 } from "@chakra-ui/react";
 import { DeleteButton, ShowButton } from "@refinedev/chakra-ui";
 import dayjs from "dayjs";
@@ -22,8 +24,10 @@ import { useNavigate } from "react-router-dom";
 import { COLORS } from "../../utility/colors";
 import { getProjectStatusColor } from "../../utility";
 import { IProject } from "../../utility/interface";
+import Chat from "../chat/chat";
 
 export const ProjectCard: React.FC<IProject> = (props) => {
+  const [chatOpen, setChatOpen] = useState(false);
   const navigate = useNavigate();
   const { title, start_date, end_date, destination, description, id, status } =
     props;
@@ -96,12 +100,26 @@ export const ProjectCard: React.FC<IProject> = (props) => {
               <TagLabel>{status}</TagLabel>
             </Tag>
             <Flex>
+              <Button
+                mr={2}
+                background={"#3182ce"}
+                color={"white"}
+                variant="solid"
+                onClick={() => setChatOpen(true)}
+              >
+                Chat{" "}
+              </Button>
               <DeleteButton mr={2} recordItemId={id} />
-              <ShowButton onClick={()=>navigate(`/${id}/itinerary/create`)} />
+              <ShowButton onClick={() => navigate(`/${id}/itinerary/create`)} />
             </Flex>
           </Flex>
         </Flex>
       </CardBody>
+      <Chat
+        isOpen={chatOpen}
+        onClose={() => setChatOpen(false)}
+        projectId={id}
+      />
     </Card>
   );
 };
