@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Card,
   CardBody,
@@ -31,6 +31,7 @@ import InviteModal from "../invite-modal";
 export const ProjectCard: React.FC<IProject> = (props) => {
   const [chatOpen, setChatOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
+  const [chats, setChats] = useState<any>([]);
 
   const navigate = useNavigate();
   const {
@@ -120,7 +121,8 @@ export const ProjectCard: React.FC<IProject> = (props) => {
 
           <Flex gap={4}>
             <Flex gap={2}>
-              <IconMessage2 size={24} color={COLORS.greyNeutral500} />3
+              <IconMessage2 size={24} color={COLORS.greyNeutral500} />{" "}
+              {chats?.length}
             </Flex>
             <Flex gap={2}>
               <IconPaperclip size={24} color={COLORS.greyNeutral500} />3
@@ -160,6 +162,8 @@ export const ProjectCard: React.FC<IProject> = (props) => {
         isOpen={chatOpen}
         onClose={() => setChatOpen(false)}
         projectId={id}
+        chats={chats}
+        setChats={setChats}
       />
       <InviteModal
         isOpen={inviteOpen}
