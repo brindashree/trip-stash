@@ -5,6 +5,7 @@
   "type": "module",
   "homepage": ".",
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.5.1",
     "@refinedev/chakra-ui": "2.20.0",
     "@refinedev/cli": "2.7.2",
