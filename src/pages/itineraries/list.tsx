@@ -4,6 +4,8 @@ import {
   useParsed,
   HttpError,
   useTable,
+  useUpdate,
+  useGetIdentity,
 } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import {
@@ -31,11 +33,14 @@ import {
 } from "@chakra-ui/react";
 import { ITINERARY_STATUS } from "../../utility/constants";
 import { COLORS } from "../../utility/colors";
-import { IItinerary } from "../../utility/interface";
+import { IItinerary, IUser } from "../../utility/interface";
+import { IconHeart } from "@tabler/icons";
 
 export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
+  const { mutate } = useUpdate<HttpError>();
   const { params } = useParsed();
   const navigate = useNavigate();
+  const { data: user } = useGetIdentity<IUser>();
   const { tableQueryResult, setFilters } = useTable<HttpError>({
     filters: {
       permanent: [
@@ -49,6 +54,26 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
     },
   });
   const projectItineraries = tableQueryResult?.data?.data ?? [];
+
+  const handleLikes = (data: any) => {
+    const votes = data.votes;
+    if (votes?.includes(user?.id)) {
+      const index = votes.indexOf(user?.id);
+      if (index > -1) {
+        votes.splice(index, 1);
+      }
+    } else {
+      votes.push(user?.id);
+    }
+
+    mutate({
+      resource: "itineraries",
+      values: {
+        votes: votes,
+      },
+      id: data.id,
+    });
+  };
 
   return (
     <List>
@@ -91,16 +116,36 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
         </TabList>
 
         <TabPanels>
-          <ItineraryTabPanel list={projectItineraries} />
-          <ItineraryTabPanel list={projectItineraries} />
-          <ItineraryTabPanel list={projectItineraries} />
+          <ItineraryTabPanel
+            list={projectItineraries}
+            handleLikes={handleLikes}
+            userId={user?.id}
+          />
+          <ItineraryTabPanel
+            list={projectItineraries}
+            handleLikes={handleLikes}
+            userId={user?.id}
+          />
+          <ItineraryTabPanel
+            list={projectItineraries}
+            handleLikes={handleLikes}
+            userId={user?.id}
+          />
         </TabPanels>
       </Tabs>
     </List>
   );
 };
 
-const ItineraryTabPanel = ({ list }: { list: any }) => {
+const ItineraryTabPanel = ({
+  list,
+  handleLikes,
+  userId,
+}: {
+  list: any;
+  handleLikes: (data: any) => void;
+  userId?: any;
+}) => {
   return (
     <TabPanel>
       <TableContainer whiteSpace="pre-line">
@@ -132,7 +177,16 @@ const ItineraryTabPanel = ({ list }: { list: any }) => {
                   <Text>{row.type_of_activity}</Text>
                 </Td>
                 <Td>
-                  <Text>{row.votes}</Text>
+                  <Flex
+                    cursor={"pointer"}
+                    onClick={() => handleLikes(row)}
+                    gap={2}
+                  >
+                    <IconHeart
+                      color={row?.votes?.includes(userId) ? "red" : "black"}
+                    />
+                    <Text>{row.votes.length}</Text>
+                  </Flex>
                 </Td>
                 <Td>
                   <Select placeholder="Select option" defaultValue={row.status}>
@@ -149,8 +203,8 @@ const ItineraryTabPanel = ({ list }: { list: any }) => {
                 </Td>
                 <Td>
                   <Flex gap={2}>
-                  <EditButton recordItemId={row.id} hideText />
-                  <DeleteButton recordItemId={row.id} hideText />
+                    <EditButton recordItemId={row.id} hideText />
+                    <DeleteButton recordItemId={row.id} hideText />
                   </Flex>
                 </Td>
               </Tr>

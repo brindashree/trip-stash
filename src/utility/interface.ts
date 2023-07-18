@@ -20,7 +20,7 @@ export interface IItinerary {
   title: string;
   location: string;
   type_of_activity: String;
-  votes: number;
+  votes: string[];
   status: string;
   id: BaseKey | number | string | undefined;
 }
