@@ -17,7 +17,17 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
+<<<<<<< HEAD
 import { ProjectCreate, ProjectEdit, Projects } from "./pages/projects";
+=======
+import { Home } from "./pages/home";
+import {
+  ProjectCreate,
+  StoryEdit,
+  Projects,
+  StoryShow,
+} from "./pages/projects";
+>>>>>>> master
 import { supabaseClient } from "./utility";
 import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
 import {
@@ -70,6 +80,7 @@ function App() {
             }}
           >
             <Routes>
+              <Route path="/" element={<Home />} />
               <Route
                 element={
                   <ThemedLayoutV2
