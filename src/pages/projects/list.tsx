@@ -70,6 +70,8 @@ export const Projects: React.FC = () => {
               id={proj.id}
               status={proj.status}
               user_id={proj.user_id}
+              is_private={proj.private}
+              collaborators={proj.collaborators}
               {...proj}
             />
           ))}

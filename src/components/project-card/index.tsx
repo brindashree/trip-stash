@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -11,6 +11,7 @@ import {
   Tag,
   TagLabel,
   Button,
+  Heading,
 } from "@chakra-ui/react";
 import { DeleteButton, ShowButton, EditButton } from "@refinedev/chakra-ui";
 import dayjs from "dayjs";
@@ -41,6 +42,8 @@ export const ProjectCard: React.FC<IProject> = (props) => {
     id,
     status,
     user_id,
+    is_private,
+    collaborators,
   } = props;
 
   const getInviteUrl = () => {
@@ -53,7 +56,23 @@ export const ProjectCard: React.FC<IProject> = (props) => {
       overflow="hidden"
       variant="filled"
       my={8}
+      position={"relative"}
     >
+      <Tag
+        background={is_private ? COLORS.warning500 : COLORS.primaryColor}
+        color={"white"}
+        position={"absolute"}
+        top={"50%"}
+        right={4}
+      >
+        <TagLabel
+          textTransform={"uppercase"}
+          fontSize={"xs"}
+          fontWeight={"bold"}
+        >
+          {is_private ? "Private" : "Public"}
+        </TagLabel>
+      </Tag>
       <Image
         objectFit="cover"
         // maxW={{ base: "100%", sm: "200px" }}
@@ -95,10 +114,13 @@ export const ProjectCard: React.FC<IProject> = (props) => {
               <IconMapPin size={24} color={COLORS.greyNeutral500} />
               {destination}
             </Flex>
-            <Flex gap={2}>
+            <Flex gap={2} alignItems={"center"}>
               <IconClockHour3 size={24} color={COLORS.greyNeutral500} />
-              {dayjs(start_date).format("Do MMM")} -{" "}
-              {dayjs(end_date).format("Do MMM")}
+              {dayjs(start_date).format("DD MMMM YYYY")}{" "}
+              <Heading as="span" size="sm">
+                -{"  "}
+              </Heading>
+              {dayjs(end_date).format("DD MMMM YYYY")}
             </Flex>
           </Flex>
 
@@ -116,14 +138,13 @@ export const ProjectCard: React.FC<IProject> = (props) => {
             <Tag
               size="lg"
               colorScheme={getProjectStatusColor(status)}
-              borderRadius="full"
               width={"fit-content"}
             >
               <TagLabel>{status}</TagLabel>
             </Tag>
             <Flex>
               <Button
-                background={"blue"}
+                background={COLORS.primaryColor}
                 color={"white"}
                 onClick={() => setChatOpen(true)}
                 mr={2}
