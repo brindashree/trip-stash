@@ -12,7 +12,7 @@ import {
   TagLabel,
   Button,
 } from "@chakra-ui/react";
-import { DeleteButton, ShowButton } from "@refinedev/chakra-ui";
+import { DeleteButton, ShowButton, EditButton } from "@refinedev/chakra-ui";
 import dayjs from "dayjs";
 import {
   IconMapPin,
@@ -101,16 +101,20 @@ export const ProjectCard: React.FC<IProject> = (props) => {
             </Tag>
             <Flex>
               <Button
-                mr={2}
-                background={"#3182ce"}
+                background={"blue"}
                 color={"white"}
-                variant="solid"
                 onClick={() => setChatOpen(true)}
+                mr={2}
               >
-                Chat{" "}
+                Chat
               </Button>
+              <EditButton
+                resourceNameOrRouteName="projects"
+                recordItemId={id}
+                mr={2}
+              />
               <DeleteButton mr={2} recordItemId={id} />
-              <ShowButton onClick={() => navigate(`/${id}/itinerary/create`)} />
+              <ShowButton onClick={() => navigate(`/${id}/itinerary`)} />
             </Flex>
           </Flex>
         </Flex>

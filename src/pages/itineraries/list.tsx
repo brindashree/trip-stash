@@ -6,7 +6,12 @@ import {
   useTable,
 } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
-import { List, DateField } from "@refinedev/chakra-ui";
+import {
+  List,
+  DateField,
+  EditButton,
+  DeleteButton,
+} from "@refinedev/chakra-ui";
 import {
   TableContainer,
   Table,
@@ -22,6 +27,7 @@ import {
   TabPanels,
   TabList,
   TabPanel,
+  Flex,
 } from "@chakra-ui/react";
 import { ITINERARY_STATUS } from "../../utility/constants";
 import { COLORS } from "../../utility/colors";
@@ -107,6 +113,7 @@ const ItineraryTabPanel = ({ list }: { list: any }) => {
               <Th>Type</Th>
               <Th>Votes</Th>
               <Th>Status</Th>
+              <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -139,6 +146,12 @@ const ItineraryTabPanel = ({ list }: { list: any }) => {
                       {ITINERARY_STATUS.CANCELED}
                     </option>
                   </Select>
+                </Td>
+                <Td>
+                  <Flex gap={2}>
+                  <EditButton recordItemId={row.id} hideText />
+                  <DeleteButton recordItemId={row.id} hideText />
+                  </Flex>
                 </Td>
               </Tr>
             ))}
