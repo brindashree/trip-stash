@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -43,6 +43,7 @@ export const ProjectCard: React.FC<IProject> = (props) => {
     status,
     user_id,
     is_private,
+    collaborators,
   } = props;
 
   const getInviteUrl = () => {
