@@ -13,11 +13,7 @@ export interface IProject {
   description: String;
   id: BaseKey | number | string | undefined;
   status: String;
-  chat?: {
-    user_id: String;
-    message: String;
-    timestamp: string | number | Date | null;
-  }
+  user_id: String;
 }
 export interface IItinerary {
   date: string | number | Date | null;

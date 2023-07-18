@@ -65,7 +65,7 @@ function Chat({
     };
   }, [bottomRef.current]);
 
-  const onChatSend = (e) => {
+  const onChatSend = (e: any) => {
     e.preventDefault();
     if (text?.trim()) {
       const payload = {

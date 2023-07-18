@@ -125,7 +125,7 @@ function App() {
                     }
                   />
                   <Route
-                    path="invite/:id"
+                    path="invite/:userId/:projectId"
                     element={
                       <Authenticated
                         fallback={<CatchAllNavigate to="/login" />}
