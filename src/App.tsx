@@ -17,21 +17,15 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
-import { Home } from "./pages/home";
-import {
-  ProjectCreate,
-  StoryEdit,
-  Projects,
-  StoryShow,
-} from "./pages/projects";
+import { ProjectCreate, ProjectEdit, Projects } from "./pages/projects";
 import { supabaseClient } from "./utility";
 import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
 import {
   ItineraryCreate,
   ItineraryEdit,
   ItineraryList,
-  ItineraryShow,
 } from "./pages/itineraries";
+import { Home } from "./pages/home";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -59,7 +53,6 @@ function App() {
                 list: "/projects",
                 create: "/projects/create",
                 edit: "/projects/edit/:id",
-                show: "/projects/show/:id",
                 meta: {
                   canDelete: true,
                 },
@@ -126,17 +119,7 @@ function App() {
                       <Authenticated
                         fallback={<CatchAllNavigate to="/login" />}
                       >
-                        <StoryEdit />
-                      </Authenticated>
-                    }
-                  />
-                  <Route
-                    path="show/:id"
-                    element={
-                      <Authenticated
-                        fallback={<CatchAllNavigate to="/login" />}
-                      >
-                        <StoryShow />
+                        <ProjectEdit />
                       </Authenticated>
                     }
                   />
@@ -153,7 +136,7 @@ function App() {
                     }
                   />
                   <Route
-                    path="/:projectId/itinerary/create"
+                    path="create"
                     element={
                       <Authenticated
                         fallback={<CatchAllNavigate to="/login" />}
@@ -163,22 +146,12 @@ function App() {
                     }
                   />
                   <Route
-                    path="/:projectId/itinerary/edit/:id"
+                    path="edit/:id"
                     element={
                       <Authenticated
                         fallback={<CatchAllNavigate to="/login" />}
                       >
                         <ItineraryEdit />
-                      </Authenticated>
-                    }
-                  />
-                  <Route
-                    path="/:projectId/itinerary/show/:id"
-                    element={
-                      <Authenticated
-                        fallback={<CatchAllNavigate to="/login" />}
-                      >
-                        <ItineraryShow />
                       </Authenticated>
                     }
                   />
