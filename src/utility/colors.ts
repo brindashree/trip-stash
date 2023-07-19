@@ -10,6 +10,7 @@ export const COLORS = {
   success500: "#1DD75BFF",
   neutral600: "#565D6DFF",
   white: "#FFFFFF",
-  greyNeutral100: "#d3d3d3"
+  greyNeutral100: "#d3d3d3",
+  lightGrey: "#f8fafc"
 };
 

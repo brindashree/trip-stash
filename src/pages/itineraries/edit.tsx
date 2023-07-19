@@ -76,21 +76,19 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
     const userVoteFound = votes?.some(
       (vote: { id: String | undefined }) => vote.id === user?.id
     );
-    if (userVoteFound) {
-      votes = votes.filter((vote: { id: any }) => vote.id !== user?.id);
-    } else {
+    if (!userVoteFound) {
       votes.push({
         id: user?.id,
         email: user?.email,
       });
+      mutate({
+        resource: "itineraries",
+        values: {
+          votes: votes,
+        },
+        id: data.id,
+      });
     }
-    mutate({
-      resource: "itineraries",
-      values: {
-        votes: votes,
-      },
-      id: data.id,
-    });
   };
   const handleAddLinks = (data: any, url: string) => {
     if (url !== "") {
@@ -110,7 +108,13 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
   };
   return (
     <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
-      <Grid templateColumns="1fr 3fr" gap={4} alignItems={"center"} py={4} px={8}>
+      <Grid
+        templateColumns="1fr 3fr"
+        gap={4}
+        alignItems={"center"}
+        py={4}
+        px={8}
+      >
         <GridItem>
           <Flex gap={2}>
             <IconBrandAmigo />
@@ -192,6 +196,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
                   ))}
                 </AvatarGroup>
                 <Button
+                  cursor={"pointer"}
                   variant={"outline"}
                   color={COLORS.primaryColor}
                   leftIcon={<IconThumbUp />}
@@ -202,6 +207,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
               </Flex>
             ) : (
               <Button
+                cursor={"pointer"}
                 variant={"outline"}
                 color={COLORS.primaryColor}
                 leftIcon={<IconThumbUp />}
@@ -278,7 +284,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
               <Flex alignItems={"center"}>
                 <IconPaperclip size={16} />
                 <Link color="teal.500" href={url} target="_blank" mx={2}>
-                  {url}
+                  {url.substring(0,30)}
                 </Link>
               </Flex>
             ))}
@@ -313,7 +319,6 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
             {(errors as any)?.notes?.message as string}
           </FormErrorMessage>
         </FormControl>
-  
       </Box>
       <Divider my={4} />
     </Edit>
