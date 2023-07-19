@@ -30,6 +30,7 @@ import { Invite } from "./pages/projects/invite";
 import { Home } from "./pages/home";
 import { CustomSidebar } from "./components/custom-sidebar/custom-sidebar";
 import { ErrorPage } from "./pages/error-404/error";
+import { FinalPlan } from "./pages/final-plan/final-plan";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -91,7 +92,7 @@ function App() {
                         icon={<AppIcon />}
                       />
                     )}
-                    Sider={()=><CustomSidebar/>}
+                    Sider={() => <CustomSidebar />}
                   >
                     <Outlet />
                   </ThemedLayoutV2>
@@ -182,6 +183,7 @@ function App() {
                     }
                   />
                 </Route>
+                <Route path="/final-plan/:projectId" element={<FinalPlan />} />
                 <Route path="*" element={<ErrorPage />} />
               </Route>
             </Routes>
