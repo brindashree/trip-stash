@@ -54,7 +54,10 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   const { params } = useParsed();
   const navigate = useNavigate();
   const { data: user } = useGetIdentity<IUser>();
-  const { tableQueryResult, setFilters, filters } = useTable<HttpError>({
+  const { tableQueryResult, setFilters, filters } = useTable<
+    IItinerary,
+    HttpError
+  >({
     filters: {
       permanent: [
         {
@@ -80,6 +83,14 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   }, [filters]);
 
   const projectItineraries = tableQueryResult?.data?.data ?? [];
+
+  const sortedProjectItineraries = projectItineraries?.sort(
+    (a: IItinerary, b: IItinerary) => {
+      const date1 = new Date(a.date);
+      const date2 = new Date(b.date);
+      return date1.getTime() - date2.getTime();
+    }
+  );
 
   const handleLikes = (data: any) => {
     let votes = data.votes || [];
@@ -188,19 +199,19 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
 
         <TabPanels>
           <ItineraryTabPanel
-            list={projectItineraries}
+            list={sortedProjectItineraries}
             handleLikes={handleLikes}
             handleStatusChange={handleStatusChange}
             userId={user?.id}
           />
           <ItineraryTabPanel
-            list={projectItineraries}
+            list={sortedProjectItineraries}
             handleLikes={handleLikes}
             handleStatusChange={handleStatusChange}
             userId={user?.id}
           />
           <ItineraryTabPanel
-            list={projectItineraries}
+            list={sortedProjectItineraries}
             handleLikes={handleLikes}
             handleStatusChange={handleStatusChange}
             userId={user?.id}
