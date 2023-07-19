@@ -53,7 +53,7 @@ function InviteModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size={"lg"}>
       <ModalOverlay />
       <ModalContent mx="4">
         <ModalHeader>Invite link</ModalHeader>
@@ -68,7 +68,7 @@ function InviteModal({
             rows={4}
             borderRadius={"md"}
           />
-          <Button onClick={onCopy} colorScheme="blue">
+          <Button onClick={onCopy} colorScheme="blue" size={"lg"}>
             {copied ? "Copied" : "Copy"}
           </Button>
         </ModalBody>

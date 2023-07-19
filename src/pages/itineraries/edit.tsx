@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   IResourceComponentsProps,
   useTranslate,
   useSelect,
+  useUpdate,
+  useGetIdentity,
+  HttpError,
 } from "@refinedev/core";
 import { Edit, TagField } from "@refinedev/chakra-ui";
 import {
@@ -23,23 +26,27 @@ import {
   Link,
   Button,
   Textarea,
-  Heading,
 } from "@chakra-ui/react";
 import { useForm } from "@refinedev/react-hook-form";
 import {
+  IconAccessible,
+  IconBrandAmigo,
   IconBulb,
   IconCalendarEvent,
+  IconMapPin,
   IconPaperclip,
   IconPlus,
   IconTags,
+  IconThumbDown,
+  IconThumbUp,
   IconTrendingUp,
   IconUser,
 } from "@tabler/icons";
 import dayjs from "dayjs";
-import { ITINERARY_STATUS } from "../../utility/constants";
+import { ACTIVITIES, ITINERARY_STATUS } from "../../utility/constants";
+import { IUser } from "../../utility/interface";
 
 export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
-  const translate = useTranslate();
   const {
     refineCore: { formLoading, queryResult },
     saveButtonProps,
@@ -47,7 +54,10 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
     setValue,
     formState: { errors },
   } = useForm();
+  const { mutate } = useUpdate<HttpError>();
+  const [mediaLink, setMediaLink] = useState("");
 
+  const { data: user } = useGetIdentity<IUser>();
   const itinerariesData = queryResult?.data?.data;
 
   const { options: projectOptions } = useSelect({
@@ -59,9 +69,111 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
     setValue("project_id", itinerariesData?.project_id?.id);
   }, [projectOptions]);
 
+  const handleLikes = (data: any) => {
+    let votes = data.votes || [];
+    const userVoteFound = votes?.some(
+      (vote: { id: String | undefined }) => vote.id === user?.id
+    );
+    if (userVoteFound) {
+      votes = votes.filter((vote: { id: any }) => vote.id !== user?.id);
+    } else {
+      votes.push({
+        id: user?.id,
+        email: user?.email,
+      });
+    }
+    mutate({
+      resource: "itineraries",
+      values: {
+        votes: votes,
+      },
+      id: data.id,
+    });
+  };
+  const handleAddLinks = (data: any, url: string) => {
+    if (url !== "") {
+      let mediaUrls = data.media_url || [];
+
+      mediaUrls.push(url);
+
+      mutate({
+        resource: "itineraries",
+        values: {
+          media_url: mediaUrls,
+        },
+        id: data.id,
+      });
+    }
+    setMediaLink("");
+  };
   return (
     <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
-      <Grid templateColumns="1fr 3fr" gap={4}>
+      <Grid templateColumns="1fr 3fr" gap={4} alignItems={"center"}>
+        <GridItem>
+          <Flex gap={2}>
+            <IconBrandAmigo />
+            <Text>Title</Text>
+          </Flex>
+        </GridItem>
+        <GridItem>
+          <FormControl mb="2" isInvalid={!!(errors as any)?.title}>
+            <Input
+              type="text"
+              {...register("title", {
+                required: "This field is required",
+              })}
+            />
+            <FormErrorMessage>
+              {(errors as any)?.title?.message as string}
+            </FormErrorMessage>
+          </FormControl>
+        </GridItem>
+        <GridItem>
+          <Flex gap={2}>
+            <IconMapPin />
+            <Text>Location</Text>
+          </Flex>
+        </GridItem>
+        <GridItem>
+          <FormControl mb="2" isInvalid={!!(errors as any)?.location}>
+            <Input
+              type="text"
+              {...register("location", {
+                required: "This field is required",
+              })}
+            />
+            <FormErrorMessage>
+              {(errors as any)?.location?.message as string}
+            </FormErrorMessage>
+          </FormControl>
+        </GridItem>
+        <GridItem>
+          <Flex gap={2}>
+            <IconAccessible />
+            <Text>Activity Type</Text>
+          </Flex>
+        </GridItem>
+        <GridItem>
+          <FormControl mb="2" isInvalid={!!(errors as any)?.type_of_activity}>
+            <Select
+              id="type_of_activity"
+              placeholder="Select activity"
+              {...register("type_of_activity", {
+                required: "This field is required",
+              })}
+            >
+              {ACTIVITIES?.map((option) => (
+                <option value={option.label} key={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </Select>
+            <FormErrorMessage>
+              {(errors as any)?.type_of_activity?.message as string}
+            </FormErrorMessage>
+          </FormControl>
+        </GridItem>
+
         <GridItem>
           <Flex gap={2}>
             <IconTrendingUp />
@@ -69,18 +181,43 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
           </Flex>
         </GridItem>
         <GridItem>
-          <AvatarGroup size="sm" max={2}>
-            <Avatar name="Ryan " />
-            <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
-            <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
-            <Avatar
-              name="Prosper Otemuyiwa"
-              src="https://bit.ly/prosper-baba"
-            />
-            <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
-          </AvatarGroup>
+          <>
+            {itinerariesData?.votes?.length > 0 ? (
+              <Flex alignItems={"center"}>
+                <AvatarGroup size="sm" max={3} mr={2}>
+                  {itinerariesData?.votes.map((vote: any) => (
+                    <Avatar name={vote.email} />
+                  ))}
+                </AvatarGroup>
+                {itinerariesData?.votes.some(
+                  (vote: any) => vote?.id === user?.id
+                ) ? (
+                  <IconThumbDown onClick={() => handleLikes(itinerariesData)} />
+                ) : (
+                  <Button
+                    variant={"outline"}
+                    colorScheme={"teal"}
+                    leftIcon={<IconThumbUp />}
+                    onClick={() => handleLikes(itinerariesData)}
+                  >
+                    Vote
+                  </Button>
+                )}
+              </Flex>
+            ) : (
+              <Button
+                variant={"outline"}
+                colorScheme={"teal"}
+                leftIcon={<IconThumbUp />}
+                onClick={() => handleLikes(itinerariesData)}
+              >
+                Vote
+              </Button>
+            )}
+          </>
         </GridItem>
-        <GridItem>
+
+        {/* <GridItem>
           <Flex gap={2}>
             <IconTags />
             <Text>Tags</Text>
@@ -91,7 +228,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
             <TagField value={"Food"} mr={4} />
             <TagField value={"Activity"} />
           </Flex>
-        </GridItem>
+        </GridItem> */}
         <GridItem>
           <Flex gap={2}>
             <IconUser />
@@ -101,13 +238,12 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
         <GridItem>
           <Tag size="lg" borderRadius="full">
             <Avatar
-              src="https://bit.ly/sage-adebayo"
               size="xs"
-              name="Segun Adebayo"
+              name={itinerariesData?.added_by?.email}
               ml={-1}
               mr={2}
             />
-            <TagLabel>Segun</TagLabel>
+            <TagLabel>{itinerariesData?.added_by?.email}</TagLabel>
           </Tag>
         </GridItem>
         <GridItem>
@@ -117,7 +253,28 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
           </Flex>
         </GridItem>
         <GridItem>
-          <Text>Voting</Text>
+          <FormControl mb="2" isInvalid={!!(errors as any)?.status}>
+            <Select
+              placeholder="Select option"
+              defaultValue={itinerariesData?.status}
+              {...register("status", {
+                required: "This field is required",
+              })}
+            >
+              <option value={ITINERARY_STATUS.VOTING}>
+                {ITINERARY_STATUS.VOTING}
+              </option>
+              <option value={ITINERARY_STATUS.CONFIRMED}>
+                {ITINERARY_STATUS.CONFIRMED}
+              </option>
+              <option value={ITINERARY_STATUS.CANCELED}>
+                {ITINERARY_STATUS.CANCELED}
+              </option>
+            </Select>
+            <FormErrorMessage>
+              {(errors as any)?.status?.message as string}
+            </FormErrorMessage>
+          </FormControl>
         </GridItem>
         <GridItem>
           <Flex gap={2}>
@@ -132,20 +289,33 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
       <Divider my={4} />
 
       <Text as="b">Media Links</Text>
-      <Flex alignItems={"center"} gap={5} mt={2}>
-        <IconPaperclip size={16} />
-        <Flex>
-          <Link color="teal.500" href="#" mx={2}>
-            Document link
-          </Link>
-          <Link color="teal.500" href="#" mx={2}>
-            Document link
-          </Link>
-        </Flex>
+      <Flex alignItems={"center"} gap={5} my={4}>
+        {itinerariesData?.media_url?.length > 0 &&
+          itinerariesData?.media_url.map((url: string) => (
+            <Flex alignItems={"center"}>
+              <IconPaperclip size={16} />
+              <Link color="teal.500" href={url} target="_blank" mx={2}>
+                {url}
+              </Link>
+            </Flex>
+          ))}
       </Flex>
       <Flex alignItems={"center"} gap={2} mt={2}>
-        <IconPlus size={20} />
-        <Button colorScheme="teal" variant="ghost">
+        <FormControl isInvalid={!!(errors as any)?.location}>
+          <Input
+            type="text"
+            value={mediaLink}
+            onChange={(e) => setMediaLink(e.target.value)}
+          />
+        </FormControl>
+
+        <Button
+          colorScheme="teal"
+          variant="ghost"
+          isActive={true}
+          leftIcon={<IconPlus size={20} />}
+          onClick={() => handleAddLinks(itinerariesData, mediaLink)}
+        >
           Add attachments
         </Button>
       </Flex>
@@ -155,96 +325,12 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
       <FormControl mb="3" isInvalid={!!(errors as any)?.notes}>
         <FormLabel>Description</FormLabel>
 
-        <Textarea
-          size="sm"
-          {...register("notes", {
-            required: "This field is required",
-          })}
-        />
+        <Textarea size="sm" {...register("notes", {})} />
         <FormErrorMessage>
           {(errors as any)?.notes?.message as string}
         </FormErrorMessage>
       </FormControl>
-
       <Divider my={4} />
-
-      <FormControl mb="3" isInvalid={!!(errors as any)?.title}>
-        <FormLabel>Title</FormLabel>
-        <Input
-          type="text"
-          {...register("title", {
-            required: "This field is required",
-          })}
-        />
-        <FormErrorMessage>
-          {(errors as any)?.title?.message as string}
-        </FormErrorMessage>
-      </FormControl>
-
-      <FormControl mb="3" isInvalid={!!(errors as any)?.location}>
-        <FormLabel>Location</FormLabel>
-        <Input
-          type="text"
-          {...register("location", {
-            required: "This field is required",
-          })}
-        />
-        <FormErrorMessage>
-          {(errors as any)?.location?.message as string}
-        </FormErrorMessage>
-      </FormControl>
-
-      <FormControl mb="3" isInvalid={!!(errors as any)?.type_of_activity}>
-        <FormLabel>
-          Activity Type
-        </FormLabel>
-        <Input
-          type="text"
-          {...register("type_of_activity", {
-            required: "This field is required",
-          })}
-        />
-        <FormErrorMessage>
-          {(errors as any)?.type_of_activity?.message as string}
-        </FormErrorMessage>
-      </FormControl>
-
-      <FormControl mb="3" isInvalid={!!(errors as any)?.votes}>
-        <FormLabel>Votes</FormLabel>
-        <Input
-          type="number"
-          {...register("votes", {
-            required: "This field is required",
-            valueAsNumber: true,
-          })}
-        />
-        <FormErrorMessage>
-          {(errors as any)?.votes?.message as string}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl mb="3" isInvalid={!!(errors as any)?.status}>
-        <FormLabel>Status</FormLabel>
-        <Select
-          placeholder="Select option"
-          defaultValue={itinerariesData?.status}
-          {...register("status", {
-            required: "This field is required",
-          })}
-        >
-          <option value={ITINERARY_STATUS.VOTING}>
-            {ITINERARY_STATUS.VOTING}
-          </option>
-          <option value={ITINERARY_STATUS.CONFIRMED}>
-            {ITINERARY_STATUS.CONFIRMED}
-          </option>
-          <option value={ITINERARY_STATUS.CANCELED}>
-            {ITINERARY_STATUS.CANCELED}
-          </option>
-        </Select>
-        <FormErrorMessage>
-          {(errors as any)?.status?.message as string}
-        </FormErrorMessage>
-      </FormControl>
     </Edit>
   );
 };

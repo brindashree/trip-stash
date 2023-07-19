@@ -13,6 +13,7 @@ import {
   DateField,
   EditButton,
   DeleteButton,
+  ShowButton,
 } from "@refinedev/chakra-ui";
 import {
   TableContainer,
@@ -30,11 +31,13 @@ import {
   TabList,
   TabPanel,
   Flex,
+  Tag,
 } from "@chakra-ui/react";
 import { ITINERARY_STATUS } from "../../utility/constants";
 import { COLORS } from "../../utility/colors";
 import { IItinerary, IUser } from "../../utility/interface";
 import { IconHeart } from "@tabler/icons";
+import { getRandomTagColor } from "../../utility";
 
 export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   const { mutate } = useUpdate<HttpError>();
@@ -56,16 +59,18 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   const projectItineraries = tableQueryResult?.data?.data ?? [];
 
   const handleLikes = (data: any) => {
-    const votes = data.votes;
-    if (votes?.includes(user?.id)) {
-      const index = votes.indexOf(user?.id);
-      if (index > -1) {
-        votes.splice(index, 1);
-      }
+    let votes = data.votes || [];
+    const userVoteFound = votes?.some(
+      (vote: { id: String | undefined }) => vote.id === user?.id
+    );
+    if (userVoteFound) {
+      votes = votes.filter((vote: { id: any }) => vote.id !== user?.id);
     } else {
-      votes.push(user?.id);
+      votes.push({
+        id: user?.id,
+        email: user?.email,
+      });
     }
-
     mutate({
       resource: "itineraries",
       values: {
@@ -73,6 +78,17 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
       },
       id: data.id,
     });
+  };
+  const handleStatusChange = (data: any, updatedStatus: string) => {
+    if (updatedStatus) {
+      mutate({
+        resource: "itineraries",
+        values: {
+          status: updatedStatus,
+        },
+        id: data.id,
+      });
+    }
   };
 
   return (
@@ -119,16 +135,19 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
           <ItineraryTabPanel
             list={projectItineraries}
             handleLikes={handleLikes}
+            handleStatusChange={handleStatusChange}
             userId={user?.id}
           />
           <ItineraryTabPanel
             list={projectItineraries}
             handleLikes={handleLikes}
+            handleStatusChange={handleStatusChange}
             userId={user?.id}
           />
           <ItineraryTabPanel
             list={projectItineraries}
             handleLikes={handleLikes}
+            handleStatusChange={handleStatusChange}
             userId={user?.id}
           />
         </TabPanels>
@@ -140,10 +159,12 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
 const ItineraryTabPanel = ({
   list,
   handleLikes,
+  handleStatusChange,
   userId,
 }: {
   list: any;
   handleLikes: (data: any) => void;
+  handleStatusChange: (data: any, status: string) => void;
   userId?: any;
 }) => {
   return (
@@ -174,7 +195,9 @@ const ItineraryTabPanel = ({
                   <Text color={COLORS.greyNeutral500}>{row.location}</Text>
                 </Td>
                 <Td>
-                  <Text>{row.type_of_activity}</Text>
+                  <Tag colorScheme={getRandomTagColor()} borderRadius={"full"}>
+                    {row.type_of_activity}
+                  </Tag>
                 </Td>
                 <Td>
                   <Flex
@@ -183,13 +206,22 @@ const ItineraryTabPanel = ({
                     gap={2}
                   >
                     <IconHeart
-                      color={row?.votes?.includes(userId) ? "red" : "black"}
+                      color={
+                        row?.votes?.some((vote: any) => vote?.id === userId)
+                          ? "red"
+                          : "black"
+                      }
                     />
-                    <Text>{row.votes.length}</Text>
+                    <Text>{row.votes?.length}</Text>
                   </Flex>
                 </Td>
                 <Td>
-                  <Select placeholder="Select option" defaultValue={row.status}>
+                  <Select
+                    placeholder="Select option"
+                    defaultValue={row.status}
+                    disabled={userId !== row.added_by.id}
+                    onChange={(e) => handleStatusChange(row, e.target.value)}
+                  >
                     <option value={ITINERARY_STATUS.VOTING}>
                       {ITINERARY_STATUS.VOTING}
                     </option>
@@ -201,12 +233,19 @@ const ItineraryTabPanel = ({
                     </option>
                   </Select>
                 </Td>
-                <Td>
-                  <Flex gap={2}>
-                    <EditButton recordItemId={row.id} hideText />
-                    <DeleteButton recordItemId={row.id} hideText />
-                  </Flex>
-                </Td>
+                {userId === row.added_by.id ? (
+                  <Td>
+                    <Flex gap={2}>
+                      <EditButton recordItemId={row.id} hideText />
+                      <DeleteButton recordItemId={row.id} hideText />
+                    </Flex>
+                  </Td>
+                ) : (
+                  <Td>
+                    {" "}
+                    <ShowButton recordItemId={row.id} hideText />
+                  </Td>
+                )}
               </Tr>
             ))}
           </Tbody>

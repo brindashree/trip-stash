@@ -12,14 +12,17 @@ import {
   TagLabel,
   Button,
   Heading,
+  Box,
+  IconButton,
 } from "@chakra-ui/react";
-import { DeleteButton, ShowButton, EditButton } from "@refinedev/chakra-ui";
+import { DeleteButton, EditButton } from "@refinedev/chakra-ui";
 import dayjs from "dayjs";
 import {
   IconMapPin,
   IconClockHour3,
   IconMessage2,
   IconPaperclip,
+  IconPlus,
 } from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
 import { COLORS } from "../../utility/colors";
@@ -45,6 +48,7 @@ export const ProjectCard: React.FC<IProject> = (props) => {
     user_id,
     is_private,
     collaborators,
+    image_link
   } = props;
   const getInviteUrl = () => {
     return document.URL + "/invite/" + user_id + "/" + id;
@@ -52,31 +56,15 @@ export const ProjectCard: React.FC<IProject> = (props) => {
 
   return (
     <Card
-      mx="4"
       direction={{ base: "column", lg: "row" }}
       overflow="hidden"
       variant="filled"
-      my={8}
       position={"relative"}
+      backgroundColor={COLORS.white}
     >
-      <Tag
-        background={is_private ? COLORS.warning500 : COLORS.primaryColor}
-        color={"white"}
-        position={"absolute"}
-        top={{ base: 8, lg: "50%" }}
-        right={4}
-      >
-        <TagLabel
-          textTransform={"uppercase"}
-          fontSize={"xs"}
-          fontWeight={"bold"}
-        >
-          {is_private ? "Private" : "Public"}
-        </TagLabel>
-      </Tag>
       <Image
         objectFit="cover"
-        src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+        src={image_link || "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fG5hdHVyZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"}
         alt="Caffe Latte"
         pt={4}
         pb={4}
@@ -85,18 +73,46 @@ export const ProjectCard: React.FC<IProject> = (props) => {
         borderRadius="3xl"
       />
       <CardBody>
+        <Tag
+          background={is_private ? COLORS.warning500 : COLORS.primaryColor}
+          color={"white"}
+        >
+          <TagLabel
+            textTransform={"uppercase"}
+            fontSize={"xs"}
+            fontWeight={"bold"}
+          >
+            {is_private ? "Private" : "Public"}
+          </TagLabel>
+        </Tag>
         <Flex alignItems="center">
           <Text as="b" fontSize="lg">
             {title}
           </Text>
           <Spacer />
-          <Button
-            onClick={() => {
-              setInviteOpen(true);
-            }}
-          >
-            Invite
-          </Button>
+          {collaborators.length ? (
+            <IconButton
+              aria-label={""}
+              icon={<IconPlus />}
+              colorScheme="teal"
+              mr={2}
+              onClick={() => {
+                setInviteOpen(true);
+              }}
+            />
+          ) : (
+            <Button
+              variant={"outline"}
+              colorScheme="teal"
+              leftIcon={<IconPlus />}
+              onClick={() => {
+                setInviteOpen(true);
+              }}
+            >
+              Invite
+            </Button>
+          )}
+
           <AvatarGroup size="md" max={2}>
             {collaborators?.map((user: any) => {
               return <Avatar key={user?.id} name={user?.email} />;
@@ -111,11 +127,11 @@ export const ProjectCard: React.FC<IProject> = (props) => {
             </Flex>
             <Flex gap={2} alignItems={"center"}>
               <IconClockHour3 size={24} color={COLORS.greyNeutral500} />
-              {dayjs(start_date).format("DD MMMM YYYY")}{" "}
+              {dayjs(start_date).format("DD MMM'YY")}{" "}
               <Heading as="span" size="sm">
                 -{"  "}
               </Heading>
-              {dayjs(end_date).format("DD MMMM YYYY")}
+              {dayjs(end_date).format("DD MMM'YY")}
             </Flex>
           </Flex>
 
@@ -136,6 +152,7 @@ export const ProjectCard: React.FC<IProject> = (props) => {
               colorScheme={getProjectStatusColor(status)}
               width={"fit-content"}
               mr={2}
+              borderRadius={"full"}
             >
               <TagLabel>{status}</TagLabel>
             </Tag>
@@ -152,9 +169,12 @@ export const ProjectCard: React.FC<IProject> = (props) => {
                 resourceNameOrRouteName="projects"
                 recordItemId={id}
                 mr={2}
+                hideText
               />
-              <DeleteButton mr={2} recordItemId={id} />
-              <ShowButton onClick={() => navigate(`/${id}/itinerary`)} />
+              <DeleteButton mr={2} hideText recordItemId={id} />
+              <Button onClick={() => navigate(`/${id}/itinerary`)} colorScheme="teal" >
+                View project
+                </Button>
             </Flex>
           </Flex>
         </Flex>
