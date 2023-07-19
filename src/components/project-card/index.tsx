@@ -156,7 +156,6 @@ export const ProjectCard: React.FC<IProject> = (props) => {
               <DeleteButton mr={2} hideText recordItemId={id} />
               <Button
                 onClick={() => navigate(`/${id}/itinerary`)}
-                colorScheme="teal"
               >
                 View project
               </Button>

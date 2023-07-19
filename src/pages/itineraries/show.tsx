@@ -49,9 +49,7 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
     const userVoteFound = votes?.some(
       (vote: { id: String | undefined }) => vote.id === user?.id
     );
-    if (userVoteFound) {
-      votes = votes.filter((vote: { id: any }) => vote.id !== user?.id);
-    } else {
+    if (!userVoteFound) {
       votes.push({
         id: user?.id,
         email: user?.email,
@@ -120,21 +118,16 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
                     <Avatar name={vote.email} />
                   ))}
                 </AvatarGroup>
-                {record?.votes.some((vote: any) => vote?.id === user?.id) ? (
-                  <Box cursor={"pointer"}>
-                    <IconThumbDown onClick={() => handleLikes(record)} />
-                  </Box>
-                ) : (
-                  <Button
-                    variant={"outline"}
-                    colorScheme={"teal"}
-                    cursor={"pointer"}
-                    leftIcon={<IconThumbUp />}
-                    onClick={() => handleLikes(record)}
-                  >
-                    Vote
-                  </Button>
-                )}
+
+                <Button
+                  variant={"outline"}
+                  colorScheme={"teal"}
+                  cursor={"pointer"}
+                  leftIcon={<IconThumbUp />}
+                  onClick={() => handleLikes(record)}
+                >
+                  Vote
+                </Button>
               </Flex>
             ) : (
               <Button
