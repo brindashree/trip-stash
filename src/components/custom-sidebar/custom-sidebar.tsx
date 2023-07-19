@@ -61,7 +61,7 @@ export const CustomSidebar: React.FC = () => {
         }}
         isActive={location.pathname === "/projects"}
       >
-        <Text width={"90%"}>Project</Text>
+        <Text width={"90%"}>Projects</Text>
       </Button>
       <Button
         variant={"ghost"}
