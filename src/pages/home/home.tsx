@@ -47,9 +47,9 @@ export function Home() {
   }, [projects, user?.id]);
 
   return (
-    <div>
+    <Box bg={COLORS.white} padding={4}>
       <div>
-        <Heading as="h4" size="md" py={8}>
+        <Heading as="h4" size="md" py={6}>
           Welcome back, {user?.email}
         </Heading>
         <Flex gap="4">
@@ -140,6 +140,6 @@ export function Home() {
           projectId={projectViewId}
         />
       ) : null}
-    </div>
+    </Box>
   );
 }

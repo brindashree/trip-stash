@@ -98,7 +98,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           </FormErrorMessage>
         </FormControl>
         <FormControl mb="3" isInvalid={!!(errors as any)?.private}>
-          <FormLabel>Private</FormLabel>
+          <FormLabel>Make it public</FormLabel>
           <Switch
             id="private"
             {...register("private", {})}
