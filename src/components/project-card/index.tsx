@@ -22,7 +22,7 @@ import { IconMapPin, IconClockHour3, IconPlus } from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
 import { COLORS } from "../../utility/colors";
 import { getProjectStatusColor } from "../../utility";
-import { IProjectCard } from "../../utility/interface";
+import { IProjectCard, IUser } from "../../utility/interface";
 import { useGetIdentity } from "@refinedev/core";
 import InviteModal from "../invite-modal";
 import PlaceHolder from "../../assets/placeholder.png";
