@@ -115,7 +115,11 @@ function Chat({
                       }
                       borderTopEndRadius={user?.email === row?.user ? 4 : 16}
                       borderBottomEndRadius={user?.email === row?.user ? 4 : 16}
-                      bg={COLORS.primaryColor}
+                      bg={
+                        user?.email === row?.user
+                          ? COLORS.primaryColor
+                          : COLORS.neutral600
+                      }
                       width={"70%"}
                       direction={"column"}
                       padding={2}

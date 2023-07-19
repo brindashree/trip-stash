@@ -85,7 +85,8 @@ export const ProjectCard: React.FC<IProject> = (props) => {
             <IconButton
               aria-label={""}
               icon={<IconPlus />}
-              colorScheme="teal"
+              bg={COLORS.primaryColor}
+              color={COLORS.white}
               mr={2}
               onClick={() => {
                 setInviteOpen(true);
@@ -94,7 +95,8 @@ export const ProjectCard: React.FC<IProject> = (props) => {
           ) : (
             <Button
               variant={"outline"}
-              colorScheme="teal"
+              bg={COLORS.primaryColor}
+              color={COLORS.white}
               leftIcon={<IconPlus />}
               onClick={() => {
                 setInviteOpen(true);
@@ -147,7 +149,8 @@ export const ProjectCard: React.FC<IProject> = (props) => {
               <DeleteButton mr={2} hideText recordItemId={id} />
               <Button
                 onClick={() => navigate(`/${id}/itinerary`)}
-                colorScheme="teal"
+                bg={COLORS.primaryColor}
+                color={COLORS.white}
               >
                 View project
               </Button>
