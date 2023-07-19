@@ -1,6 +1,9 @@
 import {
+  HttpError,
   IResourceComponentsProps,
+  useMany,
   useParsed,
+  useSelect,
 } from "@refinedev/core";
 import { Create } from "@refinedev/chakra-ui";
 import {
@@ -16,6 +19,9 @@ import {
 import { useForm } from "@refinedev/react-hook-form";
 import { ACTIVITIES, ITINERARY_STATUS } from "../../utility/constants";
 import { useNavigate } from "react-router-dom";
+import { IProject } from "../../utility/interface";
+import { useState } from "react";
+import dayjs from "dayjs";
 
 export const ItineraryCreate: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -27,18 +33,25 @@ export const ItineraryCreate: React.FC<IResourceComponentsProps> = () => {
   } = useForm();
   const navigate = useNavigate();
   const { params } = useParsed();
+  const [ids] = useState([params?.projectId]);
+  const { data, isLoading, isError } = useMany<IProject, HttpError>({
+    resource: "projects",
+    ids,
+  });
+  const itineraryMinStartDate = dayjs(data?.data?.[0]?.start_date).format('YYYY-MM-DD');
+  const itineraryMaxStartDate = dayjs(data?.data?.[0]?.end_date).format('YYYY-MM-DD')
 
   const handleSubmitItineraryCreate = (values: any) => {
     onFinish({
       ...values,
       project_id: params?.projectId,
-      status: ITINERARY_STATUS.VOTING
+      status: ITINERARY_STATUS.VOTING,
     }).then(() => navigate(`/${params?.projectId}/itinerary`));
   };
 
   return (
     <Create
-      isLoading={formLoading}
+      isLoading={isLoading || formLoading}
       saveButtonProps={{
         ...saveButtonProps,
         onClick: handleSubmit(handleSubmitItineraryCreate),
@@ -65,6 +78,8 @@ export const ItineraryCreate: React.FC<IResourceComponentsProps> = () => {
           <Input
             id="date"
             type="date"
+            min={itineraryMinStartDate}
+            max={itineraryMaxStartDate}
             {...register("date", {
               required: "This field is required",
             })}

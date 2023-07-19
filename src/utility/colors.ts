@@ -3,5 +3,7 @@ export const COLORS = {
     greyNeutral: "#F3F4F6FF",
     greyNeutral500: "#9095A0FF",
     warning500: "#EF9834FF",
-    success500: "#1DD75BFF"
+    success500: "#1DD75BFF",
+    neutral600: "#565D6DFF",
+    white:"#FFFFFF"
 }

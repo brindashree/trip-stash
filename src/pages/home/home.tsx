@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardBody,
   CardHeader,
@@ -45,18 +46,20 @@ export function Home() {
   return (
     <div>
       <div>
-        <Heading as="h2" size="xl" mb="4">
+        <Heading as="h4" size="md" py={8}>
           Welcome back, {user?.email}
         </Heading>
         <Flex gap="4">
           <Card>
             <CardHeader>
-              <Text>Your active projects</Text>
+              <Text fontSize={"lg"} color={COLORS.greyNeutral500} as="b">
+                Your active projects
+              </Text>
             </CardHeader>
             <CardBody>
-              <Heading as="h1" size="2xl">
+              <Text fontSize={"4xl"} as="b">
                 {personalStash?.length || 0}
-              </Heading>
+              </Text>
             </CardBody>
           </Card>
 
@@ -69,6 +72,7 @@ export function Home() {
             flexWrap={"nowrap"}
             flexDirection={"row"}
             cursor={"pointer"}
+            fontSize={"lg"}
             onClick={() => push("/projects/create")}
           >
             <IconPlus />
@@ -76,15 +80,17 @@ export function Home() {
           </Card>
         </Flex>
       </div>
-      <Spacer height={100} />
+      <Spacer height={14} />
       <div>
-        <Heading as="h2" size="xl" mb="4">
-          Your Stash
-        </Heading>
-        <Heading as="h4" size="xs" mb="4" color={COLORS.greyNeutral500}>
-          View and manage all the projects you are a part of here
-        </Heading>
-
+        <Flex flexDirection={"column"}>
+          <Text fontSize="2xl" mb="4" as="b">
+            Your Stash
+          </Text>
+          <Text fontSize="sm" mb="4" as="b" color={COLORS.greyNeutral500}>
+            View and manage all the projects you are a part of here
+          </Text>
+        </Flex>
+        <Flex gap={8} flexDirection={"column"}>
         {personalStash.map((proj: any) => (
           <ProjectCard
             key={proj.id}
@@ -101,6 +107,7 @@ export function Home() {
             {...proj}
           />
         ))}
+        </Flex>
       </div>
     </div>
   );

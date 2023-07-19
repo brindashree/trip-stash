@@ -17,6 +17,7 @@ import {
 import { useForm } from "@refinedev/react-hook-form";
 import { IUser } from "../../utility/interface";
 import { PROJECT_STATUS } from "../../utility/constants";
+import dayjs from "dayjs";
 
 export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
   const { data: user } = useGetIdentity<IUser>();
@@ -38,6 +39,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
       .then(() => console.log(mutationResult, "mutatationResult"))
       .then(() => list("projects"));
   };
+  const todaysDate = dayjs(new Date()).format("YYYY-MM-DD");
   return (
     <Create
       isLoading={formLoading}
@@ -82,13 +84,23 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
       <Flex gap={4} marginBottom={4}>
         <FormControl>
           <FormLabel>Start Date</FormLabel>
-          <Input id="start_date" type="date" {...register("start_date", {})} />
+          <Input
+            id="start_date"
+            type="date"
+            {...register("start_date", {})}
+            min={todaysDate}
+          />
           <FormErrorMessage>{`${errors.start_date?.message}`}</FormErrorMessage>
         </FormControl>
 
         <FormControl>
           <FormLabel>Return Date</FormLabel>
-          <Input id="end_date" type="date" {...register("end_date", {})} />
+          <Input
+            id="end_date"
+            type="date"
+            {...register("end_date", {})}
+            min={todaysDate}
+          />
           <FormErrorMessage>{`${errors.end_date?.message}`}</FormErrorMessage>
         </FormControl>
       </Flex>

@@ -28,6 +28,7 @@ import {
 import { Landing } from "./pages/landing";
 import { Invite } from "./pages/projects/invite";
 import { Home } from "./pages/home";
+import { CustomSidebar } from "./components/custom-sidebar/custom-sidebar";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -81,7 +82,7 @@ function App() {
               <Route
                 element={
                   <ThemedLayoutV2
-                    Header={() => <Header sticky />}
+                    Header={() => <></>}
                     Title={({ collapsed }) => (
                       <ThemedTitleV2
                         collapsed={collapsed}
@@ -89,6 +90,7 @@ function App() {
                         icon={<AppIcon />}
                       />
                     )}
+                    Sider={()=><CustomSidebar/>}
                   >
                     <Outlet />
                   </ThemedLayoutV2>
