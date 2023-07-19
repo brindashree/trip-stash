@@ -1,5 +1,6 @@
 import React from "react";
 import { useIsAuthenticated, useNavigation } from "@refinedev/core";
+import { Flex } from "@chakra-ui/react";
 
 function AuthTemplate({ children }: { children: React.ReactNode }) {
   const { data } = useIsAuthenticated();
@@ -11,13 +12,18 @@ function AuthTemplate({ children }: { children: React.ReactNode }) {
     <div
       style={{
         background:
-          "url(https://images.pexels.com/photos/2245436/pexels-photo-2245436.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)",
+          "url(https://images.unsplash.com/photo-1496275068113-fff8c90750d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80)",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div>{children}</div>
+      <Flex
+        margin={{ base: 0, lg: 12 }}
+        direction={{ base: "row", lg: "row-reverse" }}
+      >
+        {children}
+      </Flex>
     </div>
   );
 }
