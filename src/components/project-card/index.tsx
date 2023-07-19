@@ -22,13 +22,14 @@ import { IconMapPin, IconClockHour3, IconPlus } from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
 import { COLORS } from "../../utility/colors";
 import { getProjectStatusColor } from "../../utility";
-import { IProject } from "../../utility/interface";
+import { IProjectCard } from "../../utility/interface";
+import { useGetIdentity } from "@refinedev/core";
 import InviteModal from "../invite-modal";
 import PlaceHolder from "../../assets/placeholder.png";
 
-export const ProjectCard: React.FC<IProject> = (props) => {
+export const ProjectCard: React.FC<IProjectCard> = (props) => {
   const [inviteOpen, setInviteOpen] = useState(false);
-
+  const { data: user } = useGetIdentity<IUser>();
   const navigate = useNavigate();
   const {
     title,
@@ -153,13 +154,19 @@ export const ProjectCard: React.FC<IProject> = (props) => {
               <TagLabel>{status}</TagLabel>
             </Tag>
             <Flex>
-              <EditButton
-                resourceNameOrRouteName="projects"
-                recordItemId={id}
-                mr={2}
-                hideText
-              />
-              <DeleteButton mr={2} hideText recordItemId={id} />
+              {!collaborators?.some(
+                (collaborator: any) => collaborator?.id === user?.id
+              ) && (
+                <>
+                  <EditButton
+                    resourceNameOrRouteName="projects"
+                    recordItemId={id}
+                    mr={2}
+                    hideText
+                  />
+                  <DeleteButton mr={2} hideText recordItemId={id} />
+                </>
+              )}
               <Button
                 onClick={() => navigate(`/${id}/itinerary`)}
                 bg={COLORS.primaryColor}

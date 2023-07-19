@@ -154,6 +154,8 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
           {activeConfirmedTab.length > 0 && (
             <Button
               leftIcon={<IconLocation />}
+              colorScheme="pink"
+              variant={"outline"}
               onClick={() => navigate(`/final-plan/${params?.projectId}`)}
             >
               View Final Plan
@@ -287,7 +289,7 @@ const ItineraryTabPanel = ({
             {list.map((row: IItinerary) => (
               <Tr key={row.id}>
                 <Td>
-                  <Text>{dayjs(row.date).format("DD-MMM-YYYY")} </Text>
+                  <Text fontSize={"sm"}>{dayjs(row.date).format("DD-MMM-YYYY")} </Text>
                 </Td>
                 <Td>
                   <Text as="b">{row.title}</Text>
