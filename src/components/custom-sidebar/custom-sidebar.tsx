@@ -16,7 +16,7 @@ export const CustomSidebar: React.FC = () => {
 
   return (
     <Container width={"25vh"} py={8} bg={COLORS.white}>
-      <Box mb={4}>
+      <Box cursor={"pointer"} onClick={() => navigate("/")} mb={4}>
         <Flex alignItems={"center"}>
           <Logo />
           <div>
