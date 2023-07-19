@@ -30,6 +30,7 @@ import { Invite } from "./pages/projects/invite";
 import { Home } from "./pages/home";
 import { CustomSidebar } from "./components/custom-sidebar/custom-sidebar";
 import { ErrorPage } from "./pages/error-404/error";
+import { Logo } from "./assets/logo";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -88,10 +89,10 @@ function App() {
                       <ThemedTitleV2
                         collapsed={collapsed}
                         text="TripStash"
-                        icon={<AppIcon />}
+                        icon={<Logo />}
                       />
                     )}
-                    Sider={()=><CustomSidebar/>}
+                    Sider={() => <CustomSidebar />}
                   >
                     <Outlet />
                   </ThemedLayoutV2>

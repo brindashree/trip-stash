@@ -20,12 +20,14 @@ import {
 } from "@refinedev/core";
 import { ProjectCard } from "../../components/project-card";
 import PublicCard from "../../components/public-card";
+import PublicProjectModal from "../../components/public-project-modal";
 
 export function Home() {
   const { push } = useNavigation();
   const { data: user } = useGetIdentity<IUser>();
   const [personalStash, setPersonalStash] = useState<any[]>([]);
   const [publicStash, setPublicStash] = useState<any[]>([]);
+  const [projectViewId, setProjectViewId] = useState<string>("");
 
   const { data: projects } = useList<HttpError>({
     resource: "projects",
@@ -92,39 +94,50 @@ export function Home() {
           </Text>
         </Flex>
         <Flex gap={8} flexDirection={"column"}>
-        {personalStash.map((proj: any) => (
-          <ProjectCard
-            key={proj.id}
-            title={proj.title}
-            start_date={proj.start_date}
-            end_date={proj.end_date}
-            destination={proj.destination}
-            description={proj.description}
-            id={proj.id}
-            status={proj.status}
-            user_id={proj.user_id}
-            is_private={proj.private}
-            collaborators={proj.collaborators}
-            {...proj}
-          />
-        ))}
+          {personalStash.map((proj: any) => (
+            <ProjectCard
+              key={proj.id}
+              title={proj.title}
+              start_date={proj.start_date}
+              end_date={proj.end_date}
+              destination={proj.destination}
+              description={proj.description}
+              id={proj.id}
+              status={proj.status}
+              user_id={proj.user_id}
+              is_private={proj.private}
+              collaborators={proj.collaborators}
+              {...proj}
+            />
+          ))}
         </Flex>
       </div>
 
       <div>
-        <Heading as="h2" size="xl" mb="4">
-          Public Stash
-        </Heading>
-        <Heading as="h4" size="xs" mb="4" color={COLORS.greyNeutral500}>
-          See what other people are working on
-        </Heading>
-
+        <Flex mt={12} flexDirection={"column"}>
+          <Text fontSize="2xl" mb="4" as="b">
+            Public Stash
+          </Text>
+          <Text fontSize="sm" as="b" color={COLORS.greyNeutral500}>
+            See what other people are working on
+          </Text>
+        </Flex>
         <Flex gap={4} alignItems={"center"} flexWrap={"wrap"}>
           {publicStash.map((proj: any) => (
-            <PublicCard key={proj.id} title={proj.title} />
+            <PublicCard
+              key={proj.id}
+              title={proj.title}
+              status={proj?.status}
+              onClick={() => setProjectViewId(proj.id)}
+            />
           ))}
         </Flex>
       </div>
+      <PublicProjectModal
+        isOpen={Boolean(projectViewId)}
+        onClose={() => setProjectViewId("")}
+        projectId={projectViewId}
+      />
     </div>
   );
 }

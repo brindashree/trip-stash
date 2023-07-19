@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   IResourceComponentsProps,
   useParsed,
@@ -32,14 +32,19 @@ import {
   TabPanel,
   Flex,
   Tag,
+  TagLabel,
 } from "@chakra-ui/react";
 import { ITINERARY_STATUS } from "../../utility/constants";
 import { COLORS } from "../../utility/colors";
 import { IItinerary, IUser } from "../../utility/interface";
-import { IconHeart } from "@tabler/icons";
+import { IconMessage2, IconHeart } from "@tabler/icons";
 import { getRandomTagColor } from "../../utility";
+import Chat from "../../components/chat/chat";
 
 export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chats, setChats] = useState<any>([]);
+
   const { mutate } = useUpdate<HttpError>();
   const { params } = useParsed();
   const navigate = useNavigate();
@@ -61,7 +66,7 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   const handleLikes = (data: any) => {
     let votes = data.votes || [];
     const userVoteFound = votes?.some(
-      (vote: { id: String | undefined }) => vote.id === user?.id
+      (vote: { id: string | undefined }) => vote.id === user?.id
     );
     if (userVoteFound) {
       votes = votes.filter((vote: { id: any }) => vote.id !== user?.id);
@@ -152,6 +157,30 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
           />
         </TabPanels>
       </Tabs>
+
+      <Chat
+        isOpen={chatOpen}
+        onClose={() => setChatOpen(false)}
+        projectId={params?.projectId}
+        chats={chats}
+        setChats={setChats}
+      />
+
+      <Tag
+        color={COLORS.white}
+        background={COLORS.primaryColor}
+        position={"fixed"}
+        bottom={8}
+        right={8}
+        cursor={"pointer"}
+        fontSize={"lg"}
+        borderRadius={"xl"}
+        onClick={() => setChatOpen(true)}
+        padding={4}
+      >
+        <IconMessage2 />
+        <TagLabel ml={2}>Chat {chats?.length ? chats?.length : null}</TagLabel>
+      </Tag>
     </List>
   );
 };

@@ -1,9 +1,20 @@
-import { Flex, Image, CardBody, Heading } from "@chakra-ui/react";
+import { Flex, Image, Heading, Tag, TagLabel } from "@chakra-ui/react";
 import React from "react";
+import { COLORS } from "../../utility/colors";
 
-function PublicCard({ title }: { title: string }) {
+function PublicCard({
+  title,
+  status,
+  onClick,
+}: {
+  title: string;
+  status: string;
+  onClick: () => void;
+}) {
   return (
     <Flex
+      onClick={onClick}
+      cursor={"pointer"}
       direction={"column"}
       justifyContent={"center"}
       my={8}
@@ -17,9 +28,17 @@ function PublicCard({ title }: { title: string }) {
         height={{ base: "300px" }}
         borderRadius={"md"}
       />
-      <Heading pl={2} mt={2} as="h4" size="md" textTransform={"capitalize"}>
+      <Heading mt={2} as="h4" size="md" textTransform={"capitalize"}>
         {title}
       </Heading>
+      <Tag
+        color={COLORS.white}
+        background={COLORS.primaryColor}
+        mt={2}
+        width={"fit-content"}
+      >
+        <TagLabel> {status}</TagLabel>
+      </Tag>
     </Flex>
   );
 }

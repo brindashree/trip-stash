@@ -1,5 +1,6 @@
 import { AuthPage, ThemedTitleV2 } from "@refinedev/chakra-ui";
 import AuthTemplate from "../../components/auth-template/auth-template";
+import { Logo } from "../../assets/logo";
 
 export function Login() {
   return (
@@ -7,11 +8,7 @@ export function Login() {
       <AuthPage
         type="login"
         title={
-          <ThemedTitleV2
-            text="Trip Stash"
-           // icon={<img src="https://refine.dev/img/logo.png" />}
-            collapsed={false}
-          />
+          <ThemedTitleV2 text="Trip Stash" icon={<Logo />} collapsed={false} />
         }
       />
     </AuthTemplate>
