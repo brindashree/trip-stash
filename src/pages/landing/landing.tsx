@@ -5,6 +5,7 @@ import LeftImage from "../../assets/left.png";
 import { Image, Text, Flex, Spacer, Heading, Button } from "@chakra-ui/react";
 import { useNavigation } from "@refinedev/core";
 import { useIsAuthenticated } from "@refinedev/core";
+import { COLORS } from "../../utility/colors";
 
 export function Landing() {
   const { push } = useNavigation();
@@ -33,7 +34,7 @@ export function Landing() {
         <Button
           margin={"auto"}
           mt="8"
-          colorScheme="blue"
+          colorScheme={COLORS.primaryColor}
           variant="solid"
           size="md"
           onClick={handleRouteToLogin}
