@@ -1,105 +1,107 @@
-import React from "react";
-import HeroImage from "../../assets/hero.png";
-import RightImage from "../../assets/right.png";
-import LeftImage from "../../assets/left.png";
-import { Image, Text, Flex, Spacer, Heading, Button } from "@chakra-ui/react";
-import { useNavigation } from "@refinedev/core";
-import { useIsAuthenticated } from "@refinedev/core";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  Heading,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
+import { IUser } from "../../utility/interface";
+import { IconPlus } from "@tabler/icons";
+import { COLORS } from "../../utility/colors";
+import { useEffect, useState } from "react";
+import {
+  useList,
+  HttpError,
+  useGetIdentity,
+  useNavigation,
+} from "@refinedev/core";
+import { ProjectCard } from "../../components/project-card";
 
 export function Home() {
   const { push } = useNavigation();
-  const { data } = useIsAuthenticated();
+  const { data: user } = useGetIdentity<IUser>();
+  const [personalStash, setPersonalStash] = useState<any[]>([]);
+  const [publicStash, setPublicStash] = useState<any[]>([]);
 
-  const handleRouteToLogin = () => {
-    if (data?.authenticated) {
-      push("/projects");
-      return;
+  const { data: projects } = useList<HttpError>({
+    resource: "projects",
+  });
+
+  useEffect(() => {
+    if (projects) {
+      const _personalStash = projects?.data?.filter(
+        (project: any) => project?.user_id === user?.id
+      );
+      const _publicStash = projects?.data?.filter(
+        (project: any) => project?.user_id !== user?.id && !project.private
+      );
+      setPersonalStash(_personalStash);
+      setPublicStash(_publicStash);
     }
-
-    push("/login");
-  };
+  }, [projects, user?.id]);
 
   return (
-    <div style={{ padding: " 8px", width: "80%", margin: "0 auto" }}>
-      <Spacer h="48px" />
-      <Flex direction="column" alignItems={"center"}>
-        <Heading textAlign={"center"} as="h1" size="xl" mb="4">
-          Collaborative Travel Made Easy
+    <div>
+      <div>
+        <Heading as="h2" size="xl" mb="4">
+          Welcome back, {user?.email}
         </Heading>
-        <Text textAlign={"center"}>
-          Turn your collective travel inspirations into unforgettable journey
-          with TripStash. Plan Together, Experience Together.
-        </Text>
-        <Button
-          margin={"auto"}
-          mt="8"
-          colorScheme="blue"
-          variant="solid"
-          size="md"
-          onClick={handleRouteToLogin}
-        >
-          {data?.authenticated ? "Go to projects" : "Join us now"}
-        </Button>
-        <Image
-          src={HeroImage}
-          alt="Hero Image"
-          width="100%"
-          height="auto"
-          mt="8"
-        />
-      </Flex>
+        <Flex gap="4">
+          <Card>
+            <CardHeader>
+              <Text>Your active projects</Text>
+            </CardHeader>
+            <CardBody>
+              <Heading as="h1" size="2xl">
+                {personalStash?.length || 0}
+              </Heading>
+            </CardBody>
+          </Card>
 
-      <Flex
-        direction={[
-          "column-reverse",
-          "column-reverse",
-          "column-reverse",
-          "row",
-        ]}
-        alignItems={"center"}
-        mt={16}
-        gap={"16%"}
-      >
-        <div>
-          <Heading as="h3" size="xl" mb="4" mt="12">
-            Collaborative Itinerary
-          </Heading>
-          <Text>
-            Make group travel planning a breeze. Create projects and invite
-            friends or family to collaboratively add, vote on, and finalize
-            itinerary items. Share ideas, keep track of bookings, and create
-            your perfect journey together with TripStash.
-          </Text>
-        </div>
-        <Image
-          src={RightImage}
-          alt="Hero Image"
-          width="100%"
-          height="auto"
-          mt="8"
-        />
-      </Flex>
+          <Card
+            backgroundColor={COLORS.primaryColor}
+            color={"white"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            padding={4}
+            flexWrap={"nowrap"}
+            flexDirection={"row"}
+            cursor={"pointer"}
+            onClick={() => push("/projects/create")}
+          >
+            <IconPlus />
+            Create a new project
+          </Card>
+        </Flex>
+      </div>
+      <Spacer height={100} />
+      <div>
+        <Heading as="h2" size="xl" mb="4">
+          Your Stash
+        </Heading>
+        <Heading as="h4" size="xs" mb="4" color={COLORS.greyNeutral500}>
+          View and manage all the projects you are a part of here
+        </Heading>
 
-      <Flex
-        direction={["column", "column", "column", "row"]}
-        alignItems={"center"}
-        mt={16}
-        gap={"16%"}
-      >
-        <Image src={LeftImage} alt="Hero Image" width="100%" height="auto" />
-        <div>
-          <Heading as="h3" size="xl" mb="4" mt="12">
-            Multimedia Inspiration
-          </Heading>
-          <Text>
-            Travel planning starts with inspiration. With TripStash, you can
-            collect and organize all the images, videos, and articles that
-            inspire your wanderlust. Share your sources of inspiration within
-            your group and use them as a starting point for your itinerary. Turn
-            the dream into reality with a click.
-          </Text>
-        </div>
-      </Flex>
+        {personalStash.map((proj: any) => (
+          <ProjectCard
+            key={proj.id}
+            title={proj.title}
+            start_date={proj.start_date}
+            end_date={proj.end_date}
+            destination={proj.destination}
+            description={proj.description}
+            id={proj.id}
+            status={proj.status}
+            user_id={proj.user_id}
+            is_private={proj.private}
+            collaborators={proj.collaborators}
+            {...proj}
+          />
+        ))}
+      </div>
     </div>
   );
 }

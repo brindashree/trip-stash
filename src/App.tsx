@@ -25,8 +25,9 @@ import {
   ItineraryEdit,
   ItineraryList,
 } from "./pages/itineraries";
-import { Home } from "./pages/home";
+import { Landing } from "./pages/landing";
 import { Invite } from "./pages/projects/invite";
+import { Home } from "./pages/home";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -72,7 +73,7 @@ function App() {
             }}
           >
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Landing />} />
               <Route index path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -93,6 +94,7 @@ function App() {
                   </ThemedLayoutV2>
                 }
               >
+                <Route path="/home" element={<Home />} />
                 <Route path="/projects">
                   <Route
                     index

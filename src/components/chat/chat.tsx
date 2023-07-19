@@ -21,14 +21,17 @@ function Chat({
   isOpen,
   onClose,
   projectId,
+  chats,
+  setChats,
 }: {
   isOpen: boolean;
   onClose: () => void;
   projectId?: any;
+  chats: any;
+  setChats: any;
 }) {
   const { data: user } = useGetIdentity<IUser>();
   const [text, setText] = useState<string>("");
-  const [chats, setChats] = useState<any>([]);
   const chatsWatcher = useRef<any>(null);
   const bottomRef = useRef<any>(null);
 
