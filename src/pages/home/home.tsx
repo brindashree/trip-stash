@@ -21,13 +21,14 @@ import {
 import { ProjectCard } from "../../components/project-card";
 import PublicCard from "../../components/public-card";
 import PublicProjectModal from "../../components/public-project-modal";
+import { useNavigate } from "react-router-dom";
 
 export function Home() {
   const { push } = useNavigation();
   const { data: user } = useGetIdentity<IUser>();
   const [personalStash, setPersonalStash] = useState<any[]>([]);
   const [publicStash, setPublicStash] = useState<any[]>([]);
-  const [projectViewId, setProjectViewId] = useState<string>("");
+  const navigate = useNavigate();
 
   const { data: projects, error: projectError } = useList<HttpError>({
     resource: "projects",
@@ -47,9 +48,9 @@ export function Home() {
   }, [projects, user?.id]);
 
   return (
-    <div>
+    <Box bg={COLORS.white} padding={4}>
       <div>
-        <Heading as="h4" size="md" py={8}>
+        <Heading as="h4" size="md" py={6}>
           Welcome back, {user?.email}
         </Heading>
         <Flex gap="4">
@@ -128,18 +129,11 @@ export function Home() {
               key={proj.id}
               title={proj.title}
               status={proj?.status}
-              onClick={() => setProjectViewId(proj.id)}
+              onClick={() => navigate(`/final-plan/${proj.id}`)}
             />
           ))}
         </Flex>
       </div>
-      {projectViewId ? (
-        <PublicProjectModal
-          isOpen={Boolean(projectViewId)}
-          onClose={() => setProjectViewId("")}
-          projectId={projectViewId}
-        />
-      ) : null}
-    </div>
+    </Box>
   );
 }

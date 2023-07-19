@@ -26,6 +26,7 @@ import {
   Link,
   Button,
   Textarea,
+  Box,
 } from "@chakra-ui/react";
 import { useForm } from "@refinedev/react-hook-form";
 import {
@@ -75,21 +76,19 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
     const userVoteFound = votes?.some(
       (vote: { id: String | undefined }) => vote.id === user?.id
     );
-    if (userVoteFound) {
-      votes = votes.filter((vote: { id: any }) => vote.id !== user?.id);
-    } else {
+    if (!userVoteFound) {
       votes.push({
         id: user?.id,
         email: user?.email,
       });
+      mutate({
+        resource: "itineraries",
+        values: {
+          votes: votes,
+        },
+        id: data.id,
+      });
     }
-    mutate({
-      resource: "itineraries",
-      values: {
-        votes: votes,
-      },
-      id: data.id,
-    });
   };
   const handleAddLinks = (data: any, url: string) => {
     if (url !== "") {
@@ -109,7 +108,13 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
   };
   return (
     <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
-      <Grid templateColumns="1fr 3fr" gap={4} alignItems={"center"}>
+      <Grid
+        templateColumns="1fr 3fr"
+        gap={4}
+        alignItems={"center"}
+        py={4}
+        px={8}
+      >
         <GridItem>
           <Flex gap={2}>
             <IconBrandAmigo />
@@ -190,25 +195,21 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
                     <Avatar name={vote.email} />
                   ))}
                 </AvatarGroup>
-                {itinerariesData?.votes.some(
-                  (vote: any) => vote?.id === user?.id
-                ) ? (
-                  <IconThumbDown onClick={() => handleLikes(itinerariesData)} />
-                ) : (
-                  <Button
-                    variant={"outline"}
-                    bg={COLORS.primaryColor}
-                    leftIcon={<IconThumbUp />}
-                    onClick={() => handleLikes(itinerariesData)}
-                  >
-                    Vote
-                  </Button>
-                )}
+                <Button
+                  cursor={"pointer"}
+                  variant={"outline"}
+                  color={COLORS.primaryColor}
+                  leftIcon={<IconThumbUp />}
+                  onClick={() => handleLikes(itinerariesData)}
+                >
+                  Vote
+                </Button>
               </Flex>
             ) : (
               <Button
+                cursor={"pointer"}
                 variant={"outline"}
-                bg={COLORS.primaryColor}
+                color={COLORS.primaryColor}
                 leftIcon={<IconThumbUp />}
                 onClick={() => handleLikes(itinerariesData)}
               >
@@ -217,19 +218,6 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
             )}
           </>
         </GridItem>
-
-        {/* <GridItem>
-          <Flex gap={2}>
-            <IconTags />
-            <Text>Tags</Text>
-          </Flex>
-        </GridItem>
-        <GridItem>
-          <Flex>
-            <TagField value={"Food"} mr={4} />
-            <TagField value={"Activity"} />
-          </Flex>
-        </GridItem> */}
         <GridItem>
           <Flex gap={2}>
             <IconUser />
@@ -288,49 +276,50 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
       </Grid>
       <Divider my={4} />
+      <Box p={8}>
+        <Text as="b">Media Links</Text>
+        <Flex alignItems={"center"} gap={5} my={4}>
+          {itinerariesData?.media_url?.length > 0 &&
+            itinerariesData?.media_url.map((url: string) => (
+              <Flex alignItems={"center"}>
+                <IconPaperclip size={16} />
+                <Link color="teal.500" href={url} target="_blank" mx={2}>
+                  {url.substring(0,30)}
+                </Link>
+              </Flex>
+            ))}
+        </Flex>
+        <Flex alignItems={"center"} gap={4} mt={2}>
+          <FormControl isInvalid={!!(errors as any)?.location}>
+            <Input
+              type="text"
+              value={mediaLink}
+              onChange={(e) => setMediaLink(e.target.value)}
+            />
+          </FormControl>
 
-      <Text as="b">Media Links</Text>
-      <Flex alignItems={"center"} gap={5} my={4}>
-        {itinerariesData?.media_url?.length > 0 &&
-          itinerariesData?.media_url.map((url: string) => (
-            <Flex alignItems={"center"}>
-              <IconPaperclip size={16} />
-              <Link color="teal.500" href={url} target="_blank" mx={2}>
-                {url}
-              </Link>
-            </Flex>
-          ))}
-      </Flex>
-      <Flex alignItems={"center"} gap={2} mt={2}>
-        <FormControl isInvalid={!!(errors as any)?.location}>
-          <Input
-            type="text"
-            value={mediaLink}
-            onChange={(e) => setMediaLink(e.target.value)}
-          />
+          <Button
+            bg={COLORS.primaryColor}
+            variant="ghost"
+            color={COLORS.white}
+            leftIcon={<IconPlus size={20} />}
+            onClick={() => handleAddLinks(itinerariesData, mediaLink)}
+          >
+            Add attachments
+          </Button>
+        </Flex>
+
+        <Divider my={4} />
+
+        <FormControl mb="3" isInvalid={!!(errors as any)?.notes}>
+          <FormLabel>Description</FormLabel>
+
+          <Textarea size="sm" {...register("notes", {})} />
+          <FormErrorMessage>
+            {(errors as any)?.notes?.message as string}
+          </FormErrorMessage>
         </FormControl>
-
-        <Button
-          bg={COLORS.primaryColor}
-          variant="ghost"
-          isActive={true}
-          leftIcon={<IconPlus size={20} />}
-          onClick={() => handleAddLinks(itinerariesData, mediaLink)}
-        >
-          Add attachments
-        </Button>
-      </Flex>
-
-      <Divider my={4} />
-
-      <FormControl mb="3" isInvalid={!!(errors as any)?.notes}>
-        <FormLabel>Description</FormLabel>
-
-        <Textarea size="sm" {...register("notes", {})} />
-        <FormErrorMessage>
-          {(errors as any)?.notes?.message as string}
-        </FormErrorMessage>
-      </FormControl>
+      </Box>
       <Divider my={4} />
     </Edit>
   );

@@ -50,21 +50,20 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
     const userVoteFound = votes?.some(
       (vote: { id: String | undefined }) => vote.id === user?.id
     );
-    if (userVoteFound) {
-      votes = votes.filter((vote: { id: any }) => vote.id !== user?.id);
-    } else {
+    if (!userVoteFound) {
       votes.push({
         id: user?.id,
         email: user?.email,
       });
+      mutate({
+        resource: "itineraries",
+        values: {
+          votes: votes,
+        },
+        id: data.id,
+      });
     }
-    mutate({
-      resource: "itineraries",
-      values: {
-        votes: votes,
-      },
-      id: data.id,
-    });
+   
   };
   return (
     <Show
@@ -77,7 +76,13 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
         </Heading>
       }
     >
-      <Grid templateColumns="1fr 3fr" gap={4} alignItems={"center"} mt={8}>
+      <Grid
+        templateColumns="1fr 3fr"
+        gap={4}
+        alignItems={"center"}
+        py={4}
+        px={8}
+      >
         <GridItem>
           <Flex gap={2}>
             <IconBrandAmigo />
@@ -121,31 +126,27 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
                     <Avatar name={vote.email} />
                   ))}
                 </AvatarGroup>
-                {record?.votes.some((vote: any) => vote?.id === user?.id) ? (
-                  <Box cursor={"pointer"}>
-                    <IconThumbDown onClick={() => handleLikes(record)} />
-                  </Box>
-                ) : (
-                  <Button
-                    variant={"outline"}
-                    bg={COLORS.primaryColor}
-                    cursor={"pointer"}
-                    leftIcon={<IconThumbUp />}
-                    onClick={() => handleLikes(record)}
-                  >
-                    Vote
-                  </Button>
-                )}
-              </Flex>
-            ) : (
-              <Button
+
+                <Button
+                cursor={"pointer"}
                 variant={"outline"}
-                bg={COLORS.primaryColor}
+                color={COLORS.primaryColor}
                 leftIcon={<IconThumbUp />}
                 onClick={() => handleLikes(record)}
               >
                 Vote
               </Button>
+              </Flex>
+            ) : (
+              <Button
+              cursor={"pointer"}
+              variant={"outline"}
+              color={COLORS.primaryColor}
+              leftIcon={<IconThumbUp />}
+              onClick={() => handleLikes(record)}
+            >
+              Vote
+            </Button>
             )}
           </>
         </GridItem>
@@ -181,7 +182,7 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
       </Grid>
       <Divider my={4} />
-
+      <Box px={8}>
       <Text as="b">Media Links</Text>
       <Flex alignItems={"center"} gap={5} my={4}>
         {record?.media_url?.length > 0 &&
@@ -198,6 +199,7 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
       <Divider my={4} />
       <Text as="b">Description</Text>
       <Text my={4}>{record?.notes}</Text>
+      </Box>
       <Divider my={4} />
     </Show>
   );

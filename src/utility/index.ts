@@ -35,20 +35,20 @@ export const getRandomTagColor = () => {
   return colorsArray[Math.floor(Math.random() * colorsArray.length)];
 };
 
-
-export const groupByDate = (itinerariesData: IItinerary[] | undefined): IItinerary[][] => {
-  if (!itinerariesData) return [];
-  const groupedData: { [date: string]: IItinerary[] } = {};
-  itinerariesData.forEach((itinerary: IItinerary) => {
-    const { date } = itinerary;
-    const modifiedDate = dayjs(date).format('DD-MM-YYYY')
-    if (groupedData[modifiedDate]) {
-      groupedData[modifiedDate].push(itinerary);
-    } else {
-      groupedData[modifiedDate] = [itinerary];
-    }
-  });
-  const result: IItinerary[][] = Object.values(groupedData);
-
-  return result;
+function formatDateWithoutTime(dateStr: string): string {
+  return dateStr.split("T")[0];
 }
+
+export const groupByDate = (arr: IItinerary[]): IItinerary[][] => {
+  const groupedByDate: { [date: string]: IItinerary[] } = {};
+
+  arr.forEach((obj: IItinerary) => {
+    const date = formatDateWithoutTime(obj.date);
+    if (!groupedByDate[date]) {
+      groupedByDate[date] = [];
+    }
+    groupedByDate[date].push(obj);
+  });
+
+  return Object.values(groupedByDate);
+};

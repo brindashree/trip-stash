@@ -44,6 +44,7 @@ import { getRandomTagColor } from "../../utility";
 import InviteModal from "../../components/invite-modal";
 import { ITINERARY_STATUS } from "../../utility/constants";
 import Chat from "../../components/chat/chat";
+import dayjs from "dayjs";
 
 export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -54,7 +55,10 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   const { params } = useParsed();
   const navigate = useNavigate();
   const { data: user } = useGetIdentity<IUser>();
-  const { tableQueryResult, setFilters, filters } = useTable<HttpError>({
+  const { tableQueryResult, setFilters, filters } = useTable<
+    IItinerary,
+    HttpError
+  >({
     filters: {
       permanent: [
         {
@@ -80,6 +84,14 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   }, [filters]);
 
   const projectItineraries = tableQueryResult?.data?.data ?? [];
+
+  const sortedProjectItineraries = projectItineraries?.sort(
+    (a: IItinerary, b: IItinerary) => {
+      const date1 = new Date(a.date);
+      const date2 = new Date(b.date);
+      return date1.getTime() - date2.getTime();
+    }
+  );
 
   const handleLikes = (data: any) => {
     let votes = data.votes || [];
@@ -123,6 +135,7 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
       headerButtons={() => (
         <>
           <Button
+            colorScheme="pink"
             leftIcon={<IconPlus />}
             variant={"outline"}
             onClick={() => {
@@ -132,6 +145,7 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
             Invite
           </Button>
           <Button
+            bg={COLORS.primaryColor}
             leftIcon={<IconPlus />}
             onClick={() => navigate(`/${params?.projectId}/itinerary/create`)}
           >
@@ -140,6 +154,8 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
           {activeConfirmedTab.length > 0 && (
             <Button
               leftIcon={<IconLocation />}
+              colorScheme="pink"
+              variant={"outline"}
               onClick={() => navigate(`/final-plan/${params?.projectId}`)}
             >
               View Final Plan
@@ -148,9 +164,10 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
         </>
       )}
     >
-      <Tabs variant="soft-rounded" mt={8}>
+      <Tabs variant="soft-rounded" mt={8} colorScheme="pink" minHeight={"80vh"}>
         <TabList>
           <Tab
+            color={COLORS.primaryColor}
             onClick={() => {
               setFilters([]);
               navigate(`/${params?.projectId}/itinerary`);
@@ -159,6 +176,7 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
             All Items
           </Tab>
           <Tab
+            color={COLORS.primaryColor}
             onClick={() =>
               setFilters([
                 {
@@ -172,6 +190,7 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
             Confirmed
           </Tab>
           <Tab
+            color={COLORS.primaryColor}
             onClick={() =>
               setFilters([
                 {
@@ -188,19 +207,19 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
 
         <TabPanels>
           <ItineraryTabPanel
-            list={projectItineraries}
+            list={sortedProjectItineraries}
             handleLikes={handleLikes}
             handleStatusChange={handleStatusChange}
             userId={user?.id}
           />
           <ItineraryTabPanel
-            list={projectItineraries}
+            list={sortedProjectItineraries}
             handleLikes={handleLikes}
             handleStatusChange={handleStatusChange}
             userId={user?.id}
           />
           <ItineraryTabPanel
-            list={projectItineraries}
+            list={sortedProjectItineraries}
             handleLikes={handleLikes}
             handleStatusChange={handleStatusChange}
             userId={user?.id}
@@ -252,10 +271,10 @@ const ItineraryTabPanel = ({
   userId?: any;
 }) => {
   return (
-    <TabPanel>
+    <TabPanel padding={"unset"} pt={4}>
       <TableContainer whiteSpace="pre-line">
         <Table variant="simple">
-          <Thead>
+          <Thead bg={COLORS.lightGrey}>
             <Tr>
               <Th>Date</Th>
               <Th>Name</Th>
@@ -270,7 +289,7 @@ const ItineraryTabPanel = ({
             {list.map((row: IItinerary) => (
               <Tr key={row.id}>
                 <Td>
-                  <DateField value={row.date} format="DD-MMM-YYYY" />
+                  <Text fontSize={"sm"}>{dayjs(row.date).format("DD-MMM-YYYY")} </Text>
                 </Td>
                 <Td>
                   <Text as="b">{row.title}</Text>

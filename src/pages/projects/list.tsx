@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, Container, Circle, Stack, Flex } from "@chakra-ui/react";
+import { Text, Container, Circle, Stack, Flex, Box } from "@chakra-ui/react";
 import { CreateButton } from "@refinedev/chakra-ui";
 import { useList, HttpError, useGetIdentity } from "@refinedev/core";
 
@@ -67,7 +67,7 @@ export const Projects: React.FC = () => {
     personalStash?.length > 0 || collaboratorStash?.length > 0;
 
   return (
-    <>
+    <Box bg={COLORS.white} padding={4}>
       {userHasProjects ? (
         <div>
           <Flex justifyContent="space-between" alignItems="center" mb={8}>
@@ -139,6 +139,6 @@ export const Projects: React.FC = () => {
       ) : (
         <ProjectEmptyState />
       )}
-    </>
+    </Box>
   );
 };

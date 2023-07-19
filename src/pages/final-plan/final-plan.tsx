@@ -21,7 +21,7 @@ export const FinalPlan: React.FC = () => {
     resource: "projects",
     ids,
   });
-  const { tableQueryResult } = useTable<IItinerary,HttpError>({
+  const { tableQueryResult } = useTable<IItinerary, HttpError>({
     resource: "itineraries",
     filters: {
       permanent: [
@@ -43,16 +43,17 @@ export const FinalPlan: React.FC = () => {
     const date2 = new Date(b.date);
     return date1.getTime() - date2.getTime();
   });
-
+console.log({projectData})
+  const groupedData = groupByDate(sortedData || []);
   return (
-    <Box bg={COLORS.white} minHeight={"100vh"}>
+    <Box bg={COLORS.white} minHeight={"100vh"} p={6}>
       <Text
         as="b"
         fontSize={"2xl"}
       >{`Your viewing ${projectData?.title}`}</Text>
       <Flex
         justifyContent={"center"}
-        mt={12}
+        my={12}
         flexDir={"column"}
         alignItems={"center"}
       >
@@ -124,7 +125,7 @@ export const FinalPlan: React.FC = () => {
               <Text>{projectData?.destination}</Text>
             </Flex>
           </Flex>
-          <Flex alignItems={"center"} gap={4}>
+          {projectData?.private &&  <Flex alignItems={"center"} gap={4}>
             <Flex
               bg={COLORS.primary100}
               height={"80px"}
@@ -144,44 +145,47 @@ export const FinalPlan: React.FC = () => {
                   projectData?.collaborators?.length + 1}
               </Text>
             </Flex>
-          </Flex>
+          </Flex>}
         </Flex>
       </Flex>
-      <Box p={4} mt={16}>
-        <Flex gap={3}>
-          <Text fontSize={"2xl"} as="b">
-            Day 1(3)
-          </Text>
-          <Text fontSize={"2xl"} as="b" color={COLORS.primary500}>
-            Total: 12
-          </Text>
-        </Flex>
-        {sortedData?.map((itinerary) => (
-          <Grid
-            templateColumns={"1fr 1fr 1fr 1fr"}
-            bg={COLORS.neutral200}
-            p={8}
-            my={8}
-          >
-            <GridItem>
-              <Text color={COLORS.neutral550}>Activity date</Text>
-              <Text>{dayjs(itinerary.date).format("DD MMM YYYY")}</Text>
-            </GridItem>
-            <GridItem>
-              <Text color={COLORS.neutral550}>Activity name</Text>
-              <Text>{itinerary.title}</Text>
-            </GridItem>
-            <GridItem>
-              <Text color={COLORS.neutral550}>Type</Text>
-              <Text>{itinerary.type_of_activity}</Text>
-            </GridItem>
-            <GridItem>
-              <Text color={COLORS.neutral550}>Location</Text>
-              <Text>{itinerary.location}</Text>
-            </GridItem>
-          </Grid>
-        ))}
-      </Box>
+      {groupedData?.map((dayItinerary) => (
+        <Box px={4} mt={4}>
+          <Flex gap={3}>
+            <Text fontSize={"2xl"} as="b">
+              Day 1 ({dayItinerary.length})
+            </Text>
+            <Text fontSize={"2xl"} as="b" color={COLORS.primary500}>
+              Total: {sortedData?.length}
+            </Text>
+          </Flex>
+          {dayItinerary?.map((itinerary) => (
+            <Grid
+              templateColumns={"1fr 1fr 1fr 1fr"}
+              bg={COLORS.neutral200}
+              p={8}
+              my={8}
+              borderRadius={"lg"}
+            >
+              <GridItem>
+                <Text color={COLORS.neutral550}>Activity date</Text>
+                <Text>{dayjs(itinerary.date).format("DD MMM YYYY")}</Text>
+              </GridItem>
+              <GridItem>
+                <Text color={COLORS.neutral550}>Activity name</Text>
+                <Text>{itinerary.title}</Text>
+              </GridItem>
+              <GridItem>
+                <Text color={COLORS.neutral550}>Type</Text>
+                <Text>{itinerary.type_of_activity}</Text>
+              </GridItem>
+              <GridItem>
+                <Text color={COLORS.neutral550}>Location</Text>
+                <Text>{itinerary.location}</Text>
+              </GridItem>
+            </Grid>
+          ))}
+        </Box>
+      ))}
     </Box>
   );
 };

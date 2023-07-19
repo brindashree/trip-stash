@@ -29,9 +29,6 @@ export const CustomSidebar: React.FC = () => {
             <Text fontSize="lg" ml={4} as="b">
               TripStash
             </Text>
-            <Text fontSize="xs" ml={4} color={COLORS.neutral600}>
-              Explore. Plan. Stash. Repeat
-            </Text>
           </div>
         </Flex>
       </Box>
@@ -44,6 +41,7 @@ export const CustomSidebar: React.FC = () => {
         onClick={() => {
           navigate("/home");
         }}
+        mt={2}
         fontSize={"sm"}
         isActive={location.pathname === "/home"}
       >
@@ -57,12 +55,13 @@ export const CustomSidebar: React.FC = () => {
         iconSpacing={"3"}
         size={"lg"}
         fontSize={"sm"}
+        my={2}
         onClick={() => {
           navigate("/projects");
         }}
         isActive={location.pathname === "/projects"}
       >
-        <Text width={"90%"}>Project</Text>
+        <Text width={"90%"}>Projects</Text>
       </Button>
       <Button
         variant={"ghost"}
