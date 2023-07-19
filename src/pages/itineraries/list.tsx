@@ -56,16 +56,18 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   const projectItineraries = tableQueryResult?.data?.data ?? [];
 
   const handleLikes = (data: any) => {
-    const votes = data.votes;
-    if (votes?.includes(user?.id)) {
-      const index = votes.indexOf(user?.id);
-      if (index > -1) {
-        votes.splice(index, 1);
-      }
+    let votes = data.votes || [];
+    const userVoteFound = votes?.some(
+      (vote: { id: String | undefined }) => vote.id === user?.id
+    );
+    if (userVoteFound) {
+      votes = votes.filter((vote: { id: any }) => vote.id !== user?.id);
     } else {
-      votes.push(user?.id);
+      votes.push({
+        id: user?.id,
+        email: user?.email,
+      });
     }
-
     mutate({
       resource: "itineraries",
       values: {
@@ -183,9 +185,13 @@ const ItineraryTabPanel = ({
                     gap={2}
                   >
                     <IconHeart
-                      color={row?.votes?.includes(userId) ? "red" : "black"}
+                      color={
+                        row?.votes?.some((vote: any) => vote?.id === userId)
+                          ? "red"
+                          : "black"
+                      }
                     />
-                    <Text>{row.votes.length}</Text>
+                    <Text>{row.votes?.length}</Text>
                   </Flex>
                 </Td>
                 <Td>

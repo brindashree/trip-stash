@@ -1,9 +1,9 @@
 import {
   HttpError,
   IResourceComponentsProps,
+  useGetIdentity,
   useMany,
   useParsed,
-  useSelect,
 } from "@refinedev/core";
 import { Create } from "@refinedev/chakra-ui";
 import {
@@ -15,6 +15,7 @@ import {
   Heading,
   Flex,
   Textarea,
+  Text,
 } from "@chakra-ui/react";
 import { useForm } from "@refinedev/react-hook-form";
 import { ACTIVITIES, ITINERARY_STATUS } from "../../utility/constants";
@@ -22,6 +23,8 @@ import { useNavigate } from "react-router-dom";
 import { IProject } from "../../utility/interface";
 import { useState } from "react";
 import dayjs from "dayjs";
+import { IUser } from "../../utility/interface";
+import { COLORS } from "../../utility/colors";
 
 export const ItineraryCreate: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -32,20 +35,30 @@ export const ItineraryCreate: React.FC<IResourceComponentsProps> = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const { data: user } = useGetIdentity<IUser>();
   const { params } = useParsed();
   const [ids] = useState([params?.projectId]);
   const { data, isLoading, isError } = useMany<IProject, HttpError>({
     resource: "projects",
     ids,
   });
-  const itineraryMinStartDate = dayjs(data?.data?.[0]?.start_date).format('YYYY-MM-DD');
-  const itineraryMaxStartDate = dayjs(data?.data?.[0]?.end_date).format('YYYY-MM-DD')
+  const itineraryMinStartDate = dayjs(data?.data?.[0]?.start_date).format(
+    "YYYY-MM-DD"
+  );
+  const itineraryMaxStartDate = dayjs(data?.data?.[0]?.end_date).format(
+    "YYYY-MM-DD"
+  );
 
   const handleSubmitItineraryCreate = (values: any) => {
     onFinish({
       ...values,
       project_id: params?.projectId,
       status: ITINERARY_STATUS.VOTING,
+      media_url: [values?.media_url],
+      added_by: {
+        id: user?.id,
+        email: user?.email
+      }
     }).then(() => navigate(`/${params?.projectId}/itinerary`));
   };
 
@@ -56,9 +69,13 @@ export const ItineraryCreate: React.FC<IResourceComponentsProps> = () => {
         ...saveButtonProps,
         onClick: handleSubmit(handleSubmitItineraryCreate),
       }}
-      title={<Heading size="lg"> Add itinerary</Heading>}
+      title={
+        <Heading size="lg">
+          {`Add itinerary item for ${data?.data?.[0]?.title}`}
+        </Heading>
+      }
     >
-      <Flex gap={4}>
+      <Flex gap={4} mt={8}>
         <FormControl mb="3" isInvalid={!!(errors as any)?.title}>
           <FormLabel>Title</FormLabel>
           <Input
@@ -104,6 +121,13 @@ export const ItineraryCreate: React.FC<IResourceComponentsProps> = () => {
         </FormErrorMessage>
       </FormControl>
 
+      <FormControl mb="3" isInvalid={!!(errors as any)?.media_url}>
+        <FormLabel>Media URL</FormLabel>
+        <Input id="media_url" type="text" {...register("media_url", {})} />
+        <FormErrorMessage>
+          {(errors as any)?.media_url?.message as string}
+        </FormErrorMessage>
+      </FormControl>
       <FormControl mb="3" isInvalid={!!(errors as any)?.type_of_activity}>
         <FormLabel>Type of Activity</FormLabel>
         <Select

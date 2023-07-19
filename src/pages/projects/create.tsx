@@ -13,7 +13,6 @@ import {
   Flex,
   Heading,
   Switch,
-  Container,
 } from "@chakra-ui/react";
 import { useForm } from "@refinedev/react-hook-form";
 import { IUser } from "../../utility/interface";
@@ -23,7 +22,7 @@ import dayjs from "dayjs";
 export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
   const { data: user } = useGetIdentity<IUser>();
   const {
-    refineCore: { formLoading, onFinish, mutationResult },
+    refineCore: { formLoading, onFinish },
     saveButtonProps,
     register,
     handleSubmit,
@@ -36,9 +35,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
       ...values,
       user_id: user?.id,
       status: PROJECT_STATUS.PLANNING,
-    })
-      .then(() => console.log(mutationResult, "mutatationResult"))
-      .then(() => list("projects"));
+    }).then(() => list("projects"));
   };
   const todaysDate = dayjs(new Date()).format("YYYY-MM-DD");
   return (
@@ -48,9 +45,12 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         ...saveButtonProps,
         onClick: handleSubmit(handleSubmitProjectCreate),
       }}
-      title={<Heading size="lg" textAlign={"center"}>Create new project</Heading>}
+      title={
+        <Heading size="lg" textAlign={"center"}>
+          Create new project
+        </Heading>
+      }
     >
-
       <FormControl mb="3" mt={"4"} isInvalid={!!(errors as any)?.title}>
         <FormLabel>Name</FormLabel>
         <Input
@@ -80,7 +80,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         <Input
           id="destination"
           type="text"
-          {...register("destination",  {
+          {...register("destination", {
             required: "This field is required",
           })}
           placeholder="Ex: Italy"
@@ -92,7 +92,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         <Textarea
           id="description"
           size="sm"
-          {...register("description",  {
+          {...register("description", {
             required: "This field is required",
           })}
           placeholder="Unveil your exciting adventure in vibrant words!"
@@ -106,7 +106,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           <Input
             id="start_date"
             type="date"
-            {...register("start_date",  {
+            {...register("start_date", {
               required: "This field is required",
             })}
             min={todaysDate}
@@ -119,7 +119,7 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
           <Input
             id="end_date"
             type="date"
-            {...register("end_date",  {
+            {...register("end_date", {
               required: "This field is required",
             })}
             min={todaysDate}
