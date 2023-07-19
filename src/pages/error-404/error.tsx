@@ -3,6 +3,7 @@ import { ErrorImg } from "../../assets/error-404";
 import { Button, Container, Flex, Text } from "@chakra-ui/react";
 import { IconHome } from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
+import { COLORS } from "../../utility/colors";
 
 export const ErrorPage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,10 +20,10 @@ export const ErrorPage: React.FC = () => {
         <Text>Looks like this page doesn't exist or was removed</Text>
         <Button
           leftIcon={<IconHome />}
-          colorScheme="teal"
+          bg={COLORS.primaryColor}
           width={"fit-content"}
           alignSelf={"center"}
-          onClick={()=>navigate('/home')}
+          onClick={() => navigate("/home")}
         >
           Back to Home
         </Button>

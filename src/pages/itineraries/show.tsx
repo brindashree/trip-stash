@@ -36,6 +36,7 @@ import {
 } from "@tabler/icons";
 import dayjs from "dayjs";
 import { IUser } from "../../utility/interface";
+import { COLORS } from "../../utility/colors";
 
 export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
   const { queryResult } = useShow();
@@ -127,7 +128,7 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
                 ) : (
                   <Button
                     variant={"outline"}
-                    colorScheme={"teal"}
+                    bg={COLORS.primaryColor}
                     cursor={"pointer"}
                     leftIcon={<IconThumbUp />}
                     onClick={() => handleLikes(record)}
@@ -139,7 +140,7 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
             ) : (
               <Button
                 variant={"outline"}
-                colorScheme={"teal"}
+                bg={COLORS.primaryColor}
                 leftIcon={<IconThumbUp />}
                 onClick={() => handleLikes(record)}
               >

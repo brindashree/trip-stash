@@ -36,7 +36,7 @@ export const getRandomTagColor = () => {
 };
 
 
-export const groupByDate = (itinerariesData: IItinerary[] | undefined): IItinerary[][] =>{
+export const groupByDate = (itinerariesData: IItinerary[] | undefined): IItinerary[][] => {
   if (!itinerariesData) return [];
   const groupedData: { [date: string]: IItinerary[] } = {};
   itinerariesData.forEach((itinerary: IItinerary) => {
