@@ -94,7 +94,14 @@ function App() {
                   </ThemedLayoutV2>
                 }
               >
-                <Route path="/home" element={<Home />} />
+                <Route
+                  path="/home"
+                  element={
+                    <Authenticated fallback={<CatchAllNavigate to="/login" />}>
+                      <Home />
+                    </Authenticated>
+                  }
+                />
                 <Route path="/projects">
                   <Route
                     index

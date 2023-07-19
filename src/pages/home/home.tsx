@@ -18,6 +18,7 @@ import {
   useNavigation,
 } from "@refinedev/core";
 import { ProjectCard } from "../../components/project-card";
+import PublicCard from "../../components/public-card";
 
 export function Home() {
   const { push } = useNavigation();
@@ -101,6 +102,21 @@ export function Home() {
             {...proj}
           />
         ))}
+      </div>
+
+      <div>
+        <Heading as="h2" size="xl" mb="4">
+          Public Stash
+        </Heading>
+        <Heading as="h4" size="xs" mb="4" color={COLORS.greyNeutral500}>
+          See what other people are working on
+        </Heading>
+
+        <Flex gap={4} alignItems={"center"} flexWrap={"wrap"}>
+          {publicStash.map((proj: any) => (
+            <PublicCard key={proj.id} title={proj.title} />
+          ))}
+        </Flex>
       </div>
     </div>
   );

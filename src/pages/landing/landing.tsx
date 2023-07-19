@@ -12,7 +12,7 @@ export function Landing() {
 
   const handleRouteToLogin = () => {
     if (data?.authenticated) {
-      push("/projects");
+      push("/home");
       return;
     }
 
@@ -38,7 +38,7 @@ export function Landing() {
           size="md"
           onClick={handleRouteToLogin}
         >
-          {data?.authenticated ? "Go to projects" : "Join us now"}
+          {data?.authenticated ? "Go to home" : "Join us now"}
         </Button>
         <Image
           src={HeroImage}
