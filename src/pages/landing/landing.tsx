@@ -34,7 +34,8 @@ export function Landing() {
         <Button
           margin={"auto"}
           mt="8"
-          colorScheme={COLORS.primaryColor}
+          bg={COLORS.primaryColor}
+          color={COLORS.white}
           variant="solid"
           size="md"
           onClick={handleRouteToLogin}
