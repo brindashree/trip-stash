@@ -1,4 +1,6 @@
+import dayjs from "dayjs";
 import { PROJECT_STATUS } from "./constants";
+import { IItinerary } from "./interface";
 
 export * from "./supabaseClient";
 
@@ -32,3 +34,21 @@ const colorsArray = [
 export const getRandomTagColor = () => {
   return colorsArray[Math.floor(Math.random() * colorsArray.length)];
 };
+
+
+export const groupByDate = (itinerariesData: IItinerary[] | undefined): IItinerary[][] =>{
+  if (!itinerariesData) return [];
+  const groupedData: { [date: string]: IItinerary[] } = {};
+  itinerariesData.forEach((itinerary: IItinerary) => {
+    const { date } = itinerary;
+    const modifiedDate = dayjs(date).format('DD-MM-YYYY')
+    if (groupedData[modifiedDate]) {
+      groupedData[modifiedDate].push(itinerary);
+    } else {
+      groupedData[modifiedDate] = [itinerary];
+    }
+  });
+  const result: IItinerary[][] = Object.values(groupedData);
+
+  return result;
+}
