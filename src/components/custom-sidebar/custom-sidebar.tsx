@@ -1,5 +1,11 @@
 import { Container, Box, Flex, Text, Button } from "@chakra-ui/react";
-import { IconBriefcase, IconHome, IconLogout } from "@tabler/icons";
+import {
+  IconBriefcase,
+  IconHome,
+  IconHome2,
+  IconSmartHome,
+  IconLogout,
+} from "@tabler/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabaseClient } from "../../utility";
 import { Logo } from "../../assets/logo";
@@ -9,9 +15,14 @@ export const CustomSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const onLogout = async () => {
+    await supabaseClient.auth.signOut();
+    navigate("/");
+  };
+
   return (
     <Container width={"25vh"} py={8} bg={COLORS.white}>
-      <Box mb={4}>
+      <Box cursor={"pointer"} onClick={() => navigate("/")} mb={4}>
         <Flex alignItems={"center"}>
           <Logo />
           <div>
@@ -26,7 +37,7 @@ export const CustomSidebar: React.FC = () => {
       </Box>
       <Button
         variant={"ghost"}
-        leftIcon={<IconHome />}
+        leftIcon={<IconSmartHome />}
         width={"full"}
         iconSpacing={"3"}
         size={"lg"}
@@ -34,10 +45,11 @@ export const CustomSidebar: React.FC = () => {
           navigate("/home");
         }}
         fontSize={"sm"}
-        isActive={location.pathname === '/home'}
+        isActive={location.pathname === "/home"}
       >
-        Home
+        <Text width={"90%"}>Home</Text>
       </Button>
+
       <Button
         variant={"ghost"}
         leftIcon={<IconBriefcase />}
@@ -48,9 +60,9 @@ export const CustomSidebar: React.FC = () => {
         onClick={() => {
           navigate("/projects");
         }}
-        isActive={location.pathname === '/projects'}
+        isActive={location.pathname === "/projects"}
       >
-        Projects
+        <Text width={"90%"}>Project</Text>
       </Button>
       <Button
         variant={"ghost"}
@@ -59,9 +71,9 @@ export const CustomSidebar: React.FC = () => {
         iconSpacing={"3"}
         size={"lg"}
         fontSize={"sm"}
-        onClick={async () => await supabaseClient.auth.signOut()}
+        onClick={onLogout}
       >
-        Logout
+        <Text width={"90%"}>Logout</Text>
       </Button>
     </Container>
   );

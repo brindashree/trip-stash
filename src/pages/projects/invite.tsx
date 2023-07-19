@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useList,
   HttpError,
@@ -14,7 +14,6 @@ import {
   Flex,
   Heading,
   Image,
-  Toast,
 } from "@chakra-ui/react";
 import { supabaseClient } from "../../utility";
 import { IUser } from "../../utility/interface";
@@ -52,9 +51,15 @@ export function Invite() {
     ],
   });
 
-  const checkIfUserIsCollaborator = () => {
+  const checkIfUserIsCollaboratorOrOwner = () => {
     let exists = false;
+
+    if (projectDetails?.user_id === user?.id) {
+      return true;
+    }
+
     const _collaborators = projectDetails?.collaborators || [];
+
     _collaborators.forEach((_user: any) => {
       if (_user.id === user?.id) {
         exists = true;
@@ -65,7 +70,7 @@ export function Invite() {
   };
 
   const onProjectJoin = async () => {
-    const exists = checkIfUserIsCollaborator();
+    const exists = checkIfUserIsCollaboratorOrOwner();
     if (exists) {
       push("/projects");
     }
@@ -114,7 +119,7 @@ export function Invite() {
             {projectDetails?.description}
           </Heading>
           <Button mt={4} colorScheme="blue" onClick={onProjectJoin}>
-            {checkIfUserIsCollaborator() ? "Joined !!, Go to projects" : "Join"}
+            {checkIfUserIsCollaboratorOrOwner() ? "Go to projects" : "Join"}
           </Button>
         </CardHeader>
       </Card>

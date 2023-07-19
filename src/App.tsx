@@ -31,6 +31,7 @@ import { Home } from "./pages/home";
 import { CustomSidebar } from "./components/custom-sidebar/custom-sidebar";
 import { ErrorPage } from "./pages/error-404/error";
 import { FinalPlan } from "./pages/final-plan/final-plan";
+import { Logo } from "./assets/logo";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -89,7 +90,7 @@ function App() {
                       <ThemedTitleV2
                         collapsed={collapsed}
                         text="TripStash"
-                        icon={<AppIcon />}
+                        icon={<Logo />}
                       />
                     )}
                     Sider={() => <CustomSidebar />}
@@ -98,7 +99,14 @@ function App() {
                   </ThemedLayoutV2>
                 }
               >
-                <Route path="/home" element={<Home />} />
+                <Route
+                  path="/home"
+                  element={
+                    <Authenticated fallback={<CatchAllNavigate to="/login" />}>
+                      <Home />
+                    </Authenticated>
+                  }
+                />
                 <Route path="/projects">
                   <Route
                     index

@@ -28,13 +28,11 @@ import { useNavigate } from "react-router-dom";
 import { COLORS } from "../../utility/colors";
 import { getProjectStatusColor } from "../../utility";
 import { IProject } from "../../utility/interface";
-import Chat from "../chat/chat";
 import InviteModal from "../invite-modal";
+import PlaceHolder from "../../assets/placeholder.png";
 
 export const ProjectCard: React.FC<IProject> = (props) => {
-  const [chatOpen, setChatOpen] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
-  const [chats, setChats] = useState<any>([]);
 
   const navigate = useNavigate();
   const {
@@ -48,7 +46,7 @@ export const ProjectCard: React.FC<IProject> = (props) => {
     user_id,
     is_private,
     collaborators,
-    image_link
+    image_link,
   } = props;
   const getInviteUrl = () => {
     return document.URL + "/invite/" + user_id + "/" + id;
@@ -61,16 +59,18 @@ export const ProjectCard: React.FC<IProject> = (props) => {
       variant="filled"
       position={"relative"}
       backgroundColor={COLORS.white}
+      padding={2}
     >
       <Image
         objectFit="cover"
-        src={image_link || "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fG5hdHVyZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"}
+        src={image_link || PlaceHolder}
         alt="Caffe Latte"
         pt={4}
         pb={4}
         pl={4}
         width={{ base: "100%", lg: "30%" }}
         borderRadius="3xl"
+        border={`1px solid ${COLORS.greyNeutral100}`}
       />
       <CardBody>
         <Tag
@@ -135,16 +135,6 @@ export const ProjectCard: React.FC<IProject> = (props) => {
             </Flex>
           </Flex>
 
-          <Flex gap={4}>
-            <Flex gap={2}>
-              <IconMessage2 size={24} color={COLORS.greyNeutral500} />{" "}
-              {chats?.length}
-            </Flex>
-            <Flex gap={2}>
-              <IconPaperclip size={24} color={COLORS.greyNeutral500} />3
-            </Flex>
-          </Flex>
-
           <Text py="2">{description}</Text>
           <Flex justifyContent={"space-between"}>
             <Tag
@@ -157,14 +147,6 @@ export const ProjectCard: React.FC<IProject> = (props) => {
               <TagLabel>{status}</TagLabel>
             </Tag>
             <Flex>
-              <Button
-                background={COLORS.primaryColor}
-                color={"white"}
-                onClick={() => setChatOpen(true)}
-                mr={2}
-              >
-                Chat
-              </Button>
               <EditButton
                 resourceNameOrRouteName="projects"
                 recordItemId={id}
@@ -172,20 +154,17 @@ export const ProjectCard: React.FC<IProject> = (props) => {
                 hideText
               />
               <DeleteButton mr={2} hideText recordItemId={id} />
-              <Button onClick={() => navigate(`/${id}/itinerary`)} colorScheme="teal" >
+              <Button
+                onClick={() => navigate(`/${id}/itinerary`)}
+                colorScheme="teal"
+              >
                 View project
-                </Button>
+              </Button>
             </Flex>
           </Flex>
         </Flex>
       </CardBody>
-      <Chat
-        isOpen={chatOpen}
-        onClose={() => setChatOpen(false)}
-        projectId={id}
-        chats={chats}
-        setChats={setChats}
-      />
+
       <InviteModal
         isOpen={inviteOpen}
         onClose={() => setInviteOpen(false)}
