@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   IResourceComponentsProps,
   useParsed,
@@ -6,6 +6,7 @@ import {
   useTable,
   useUpdate,
   useGetIdentity,
+  useMany,
 } from "@refinedev/core";
 import { useNavigate } from "react-router-dom";
 import {
@@ -32,16 +33,20 @@ import {
   TabPanel,
   Flex,
   Tag,
+  Heading,
+  Button,
   TagLabel,
 } from "@chakra-ui/react";
-import { ITINERARY_STATUS } from "../../utility/constants";
 import { COLORS } from "../../utility/colors";
-import { IItinerary, IUser } from "../../utility/interface";
-import { IconMessage2, IconHeart } from "@tabler/icons";
+import { IItinerary, IProject, IUser } from "../../utility/interface";
+import { IconHeart, IconLocation, IconMessage2, IconPlus } from "@tabler/icons";
 import { getRandomTagColor } from "../../utility";
+import InviteModal from "../../components/invite-modal";
+import { ITINERARY_STATUS } from "../../utility/constants";
 import Chat from "../../components/chat/chat";
 
 export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
+  const [inviteOpen, setInviteOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [chats, setChats] = useState<any>([]);
 
@@ -49,7 +54,7 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   const { params } = useParsed();
   const navigate = useNavigate();
   const { data: user } = useGetIdentity<IUser>();
-  const { tableQueryResult, setFilters } = useTable<HttpError>({
+  const { tableQueryResult, setFilters, filters } = useTable<HttpError>({
     filters: {
       permanent: [
         {
@@ -61,6 +66,19 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
       defaultBehavior: "replace",
     },
   });
+  const [ids] = useState([params?.projectId]);
+
+  const { data: projectData } = useMany<IProject, HttpError>({
+    resource: "projects",
+    ids,
+  });
+
+  const activeConfirmedTab = useMemo(() => {
+    return filters
+      .filter((filter: any) => filter.field === "status")
+      .filter((fil: any) => fil.value === ITINERARY_STATUS.CONFIRMED);
+  }, [filters]);
+
   const projectItineraries = tableQueryResult?.data?.data ?? [];
 
   const handleLikes = (data: any) => {
@@ -95,10 +113,42 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
       });
     }
   };
-
+  const getInviteUrl = () => {
+    return document.URL + "/invite/" + user?.id + "/" + params?.projectId;
+  };
   return (
-    <List>
-      <Tabs variant="soft-rounded">
+    <List
+      title={<Heading size="lg">{projectData?.data?.[0]?.title}</Heading>}
+      canCreate={false}
+      headerButtons={() => (
+        <>
+          <Button
+            leftIcon={<IconPlus />}
+            variant={"outline"}
+            onClick={() => {
+              setInviteOpen(true);
+            }}
+          >
+            Invite
+          </Button>
+          <Button
+            leftIcon={<IconPlus />}
+            onClick={() => navigate(`/${params?.projectId}/itinerary/create`)}
+          >
+            Add itinerary item
+          </Button>
+          {activeConfirmedTab.length > 0 && (
+            <Button
+              leftIcon={<IconLocation />}
+              onClick={() => navigate(`/final-plan/${params?.projectId}`)}
+            >
+              View Final Plan
+            </Button>
+          )}
+        </>
+      )}
+    >
+      <Tabs variant="soft-rounded" mt={8}>
         <TabList>
           <Tab
             onClick={() => {
@@ -157,6 +207,11 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
           />
         </TabPanels>
       </Tabs>
+      <InviteModal
+        isOpen={inviteOpen}
+        onClose={() => setInviteOpen(false)}
+        url={getInviteUrl()}
+      />
 
       <Chat
         isOpen={chatOpen}
@@ -271,7 +326,6 @@ const ItineraryTabPanel = ({
                   </Td>
                 ) : (
                   <Td>
-                    {" "}
                     <ShowButton recordItemId={row.id} hideText />
                   </Td>
                 )}

@@ -19,7 +19,7 @@ export interface IProject {
   image_link: string | null
 }
 export interface IItinerary {
-  date: string | number | Date | null;
+  date: string | number | Date;
   title: string;
   location: string;
   type_of_activity: String;
