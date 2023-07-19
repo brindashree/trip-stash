@@ -29,6 +29,7 @@ import { COLORS } from "../../utility/colors";
 import { getProjectStatusColor } from "../../utility";
 import { IProject } from "../../utility/interface";
 import InviteModal from "../invite-modal";
+import PlaceHolder from "../../assets/placeholder.png";
 
 export const ProjectCard: React.FC<IProject> = (props) => {
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -58,19 +59,18 @@ export const ProjectCard: React.FC<IProject> = (props) => {
       variant="filled"
       position={"relative"}
       backgroundColor={COLORS.white}
+      padding={2}
     >
       <Image
         objectFit="cover"
-        src={
-          image_link ||
-          "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fG5hdHVyZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
-        }
+        src={image_link || PlaceHolder}
         alt="Caffe Latte"
         pt={4}
         pb={4}
         pl={4}
         width={{ base: "100%", lg: "30%" }}
         borderRadius="3xl"
+        border={`1px solid ${COLORS.greyNeutral100}`}
       />
       <CardBody>
         <Tag
