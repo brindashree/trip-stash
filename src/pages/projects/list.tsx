@@ -34,6 +34,7 @@ const ProjectEmptyState: React.FC = () => {
 export const Projects: React.FC = () => {
   const { data: user } = useGetIdentity<IUser>();
   const [personalStash, setPersonalStash] = useState<any[]>([]);
+  const [collaboratorStash, setCollaboratorStash] = useState<any[]>([]);
 
   const { data: projects } = useList<HttpError>({
     resource: "projects",
@@ -42,8 +43,13 @@ export const Projects: React.FC = () => {
   useEffect(() => {
     if (projects) {
       const _personalStash = projects?.data?.filter((project: any) => {
+        if (project?.user_id === user?.id) {
+          return project;
+        }
+      });
+
+      const _collaboratorStash = projects?.data?.filter((project: any) => {
         if (
-          project?.user_id === user?.id ||
           project?.collaborators?.some(
             (collaborator: any) => collaborator?.id === user?.id
           )
@@ -53,10 +59,12 @@ export const Projects: React.FC = () => {
       });
 
       setPersonalStash(_personalStash);
+      setCollaboratorStash(_collaboratorStash);
     }
   }, [projects, user?.id]);
 
-  const userHasProjects = personalStash?.length > 0;
+  const userHasProjects =
+    personalStash?.length > 0 || collaboratorStash?.length > 0;
 
   return (
     <>
@@ -90,6 +98,43 @@ export const Projects: React.FC = () => {
               />
             ))}
           </Flex>
+
+          {collaboratorStash?.length ? (
+            <>
+              <Flex
+                mt={16}
+                justifyContent="space-between"
+                alignItems="center"
+                mb={8}
+              >
+                <div>
+                  <Text fontSize="2xl" as="b">
+                    Collaboration Stash
+                  </Text>
+                  <Text fontSize="sm" color={COLORS.greyNeutral500}>
+                    View and manage all the projects you are collaborating on
+                  </Text>
+                </div>
+              </Flex>
+              <Flex gap={8} flexDirection={"column"}>
+                {collaboratorStash.map((proj) => (
+                  <ProjectCard
+                    title={proj.title}
+                    start_date={proj.start_date}
+                    end_date={proj.end_date}
+                    destination={proj.destination}
+                    description={proj.description}
+                    id={proj.id}
+                    status={proj.status}
+                    user_id={proj.user_id}
+                    is_private={proj.private}
+                    collaborators={proj.collaborators}
+                    {...proj}
+                  />
+                ))}
+              </Flex>
+            </>
+          ) : null}
         </div>
       ) : (
         <ProjectEmptyState />

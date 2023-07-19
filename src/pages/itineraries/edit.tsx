@@ -45,6 +45,7 @@ import {
 import dayjs from "dayjs";
 import { ACTIVITIES, ITINERARY_STATUS } from "../../utility/constants";
 import { IUser } from "../../utility/interface";
+import { COLORS } from "../../utility/colors";
 
 export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -196,7 +197,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
                 ) : (
                   <Button
                     variant={"outline"}
-                    colorScheme={"teal"}
+                    bg={COLORS.primaryColor}
                     leftIcon={<IconThumbUp />}
                     onClick={() => handleLikes(itinerariesData)}
                   >
@@ -207,7 +208,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
             ) : (
               <Button
                 variant={"outline"}
-                colorScheme={"teal"}
+                bg={COLORS.primaryColor}
                 leftIcon={<IconThumbUp />}
                 onClick={() => handleLikes(itinerariesData)}
               >
@@ -310,7 +311,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
         </FormControl>
 
         <Button
-          colorScheme="teal"
+          bg={COLORS.primaryColor}
           variant="ghost"
           isActive={true}
           leftIcon={<IconPlus size={20} />}

@@ -6,7 +6,7 @@ import {
   ThemedLayoutV2,
   ThemedTitleV2,
 } from "@refinedev/chakra-ui";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import routerBindings, {
   CatchAllNavigate,
   DocumentTitleHandler,
@@ -15,7 +15,6 @@ import { dataProvider, liveProvider } from "@refinedev/supabase";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
-import { AppIcon } from "./components/app-icon";
 import { ProjectCreate, ProjectEdit, Projects } from "./pages/projects";
 import { supabaseClient } from "./utility";
 import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
@@ -32,9 +31,22 @@ import { CustomSidebar } from "./components/custom-sidebar/custom-sidebar";
 import { ErrorPage } from "./pages/error-404/error";
 import { FinalPlan } from "./pages/final-plan/final-plan";
 import { Logo } from "./assets/logo";
+import { useEffect } from "react";
 
 function App() {
   const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    localStorage.setItem("chakra-ui-color-mode", "light");
+  }, []);
+
+  const customTheme = extendTheme({
+    ...RefineThemes.Magenta,
+    config: {
+      initialColorMode: "light",
+      useSystemColorMode: false,
+    },
+  });
 
   const i18nProvider = {
     translate: (key: string, params: object) => t(key, params),
@@ -45,7 +57,7 @@ function App() {
   return (
     <BrowserRouter>
       <RefineKbarProvider>
-        <ChakraProvider theme={RefineThemes.Blue}>
+        <ChakraProvider theme={customTheme}>
           <Refine
             dataProvider={dataProvider(supabaseClient)}
             liveProvider={liveProvider(supabaseClient)}

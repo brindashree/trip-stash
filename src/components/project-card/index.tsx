@@ -12,18 +12,11 @@ import {
   TagLabel,
   Button,
   Heading,
-  Box,
   IconButton,
 } from "@chakra-ui/react";
 import { DeleteButton, EditButton } from "@refinedev/chakra-ui";
 import dayjs from "dayjs";
-import {
-  IconMapPin,
-  IconClockHour3,
-  IconMessage2,
-  IconPaperclip,
-  IconPlus,
-} from "@tabler/icons";
+import { IconMapPin, IconClockHour3, IconPlus } from "@tabler/icons";
 import { useNavigate } from "react-router-dom";
 import { COLORS } from "../../utility/colors";
 import { getProjectStatusColor } from "../../utility";
@@ -65,11 +58,9 @@ export const ProjectCard: React.FC<IProject> = (props) => {
         objectFit="cover"
         src={image_link || PlaceHolder}
         alt="Caffe Latte"
-        pt={4}
-        pb={4}
-        pl={4}
+        padding={4}
         width={{ base: "100%", lg: "30%" }}
-        borderRadius="3xl"
+        borderRadius="2xl"
         border={`1px solid ${COLORS.greyNeutral100}`}
       />
       <CardBody>
@@ -94,7 +85,8 @@ export const ProjectCard: React.FC<IProject> = (props) => {
             <IconButton
               aria-label={""}
               icon={<IconPlus />}
-              colorScheme="teal"
+              bg={COLORS.primaryColor}
+              color={COLORS.white}
               mr={2}
               onClick={() => {
                 setInviteOpen(true);
@@ -103,7 +95,8 @@ export const ProjectCard: React.FC<IProject> = (props) => {
           ) : (
             <Button
               variant={"outline"}
-              colorScheme="teal"
+              bg={COLORS.primaryColor}
+              color={COLORS.white}
               leftIcon={<IconPlus />}
               onClick={() => {
                 setInviteOpen(true);
@@ -156,6 +149,8 @@ export const ProjectCard: React.FC<IProject> = (props) => {
               <DeleteButton mr={2} hideText recordItemId={id} />
               <Button
                 onClick={() => navigate(`/${id}/itinerary`)}
+                bg={COLORS.primaryColor}
+                color={COLORS.white}
               >
                 View project
               </Button>
