@@ -25,5 +25,6 @@ export interface IItinerary {
   type_of_activity: String;
   votes: string[];
   status: string;
+  added_by: {id: string,email:string}
   id: BaseKey | number | string | undefined;
 }
