@@ -179,7 +179,7 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
         padding={4}
       >
         <IconMessage2 />
-        <TagLabel ml={2}>Chat</TagLabel>
+        <TagLabel ml={2}>Chat {chats?.length ? chats?.length : null}</TagLabel>
       </Tag>
     </List>
   );
