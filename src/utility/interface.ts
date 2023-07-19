@@ -16,6 +16,7 @@ export interface IProject {
   user_id: String;
   is_private: Boolean;
   collaborators: String[];
+  image_link: string | null
 }
 export interface IItinerary {
   date: string | number | Date | null;
@@ -24,5 +25,6 @@ export interface IItinerary {
   type_of_activity: String;
   votes: string[];
   status: string;
+  added_by: {id: string,email:string}
   id: BaseKey | number | string | undefined;
 }

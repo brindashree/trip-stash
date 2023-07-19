@@ -16,7 +16,6 @@ import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import authProvider from "./authProvider";
 import { AppIcon } from "./components/app-icon";
-import { Header } from "./components/header";
 import { ProjectCreate, ProjectEdit, Projects } from "./pages/projects";
 import { supabaseClient } from "./utility";
 import { ForgotPassword, Login, Register, ResetPassword } from "./pages/auth";
@@ -24,10 +23,13 @@ import {
   ItineraryCreate,
   ItineraryEdit,
   ItineraryList,
+  ItineraryShow,
 } from "./pages/itineraries";
 import { Landing } from "./pages/landing";
 import { Invite } from "./pages/projects/invite";
 import { Home } from "./pages/home";
+import { CustomSidebar } from "./components/custom-sidebar/custom-sidebar";
+import { ErrorPage } from "./pages/error-404/error";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -81,7 +83,7 @@ function App() {
               <Route
                 element={
                   <ThemedLayoutV2
-                    Header={() => <Header sticky />}
+                    Header={() => <></>}
                     Title={({ collapsed }) => (
                       <ThemedTitleV2
                         collapsed={collapsed}
@@ -89,6 +91,7 @@ function App() {
                         icon={<AppIcon />}
                       />
                     )}
+                    Sider={()=><CustomSidebar/>}
                   >
                     <Outlet />
                   </ThemedLayoutV2>
@@ -168,7 +171,18 @@ function App() {
                       </Authenticated>
                     }
                   />
+                  <Route
+                    path="show/:id"
+                    element={
+                      <Authenticated
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <ItineraryShow />
+                      </Authenticated>
+                    }
+                  />
                 </Route>
+                <Route path="*" element={<ErrorPage />} />
               </Route>
             </Routes>
 

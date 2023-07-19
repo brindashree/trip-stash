@@ -41,16 +41,9 @@ export const Projects: React.FC = () => {
 
   useEffect(() => {
     if (projects) {
-      const _personalStash = projects?.data?.filter((project: any) => {
-        if (
-          project?.user_id === user?.id ||
-          project?.collaborators?.some(
-            (collaborator: any) => collaborator?.id === user?.id
-          )
-        ) {
-          return project;
-        }
-      });
+      const _personalStash = projects?.data?.filter(
+        (project: any) => project?.user_id === user?.id
+      );
 
       setPersonalStash(_personalStash);
     }
@@ -73,21 +66,23 @@ export const Projects: React.FC = () => {
             </div>
             <CreateButton />
           </Flex>
-          {personalStash.map((proj) => (
-            <ProjectCard
-              title={proj.title}
-              start_date={proj.start_date}
-              end_date={proj.end_date}
-              destination={proj.destination}
-              description={proj.description}
-              id={proj.id}
-              status={proj.status}
-              user_id={proj.user_id}
-              is_private={proj.private}
-              collaborators={proj.collaborators}
-              {...proj}
-            />
-          ))}
+          <Flex gap={8} flexDirection={"column"}>
+            {personalStash.map((proj) => (
+              <ProjectCard
+                title={proj.title}
+                start_date={proj.start_date}
+                end_date={proj.end_date}
+                destination={proj.destination}
+                description={proj.description}
+                id={proj.id}
+                status={proj.status}
+                user_id={proj.user_id}
+                is_private={proj.private}
+                collaborators={proj.collaborators}
+                {...proj}
+              />
+            ))}
+          </Flex>
         </div>
       ) : (
         <ProjectEmptyState />
