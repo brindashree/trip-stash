@@ -26,7 +26,7 @@ const ProjectEmptyState: React.FC = () => {
           TripStash!
         </Text>
       </Stack>
-      <CreateButton mt={4} />
+      <CreateButton bg={COLORS.primaryColor} mt={4} />
     </Container>
   );
 };
@@ -79,7 +79,7 @@ export const Projects: React.FC = () => {
                 View and manage all the projects created by you
               </Text>
             </div>
-            <CreateButton />
+            <CreateButton bg={COLORS.primaryColor} />
           </Flex>
           <Flex gap={8} flexDirection={"column"}>
             {personalStash.map((proj) => (

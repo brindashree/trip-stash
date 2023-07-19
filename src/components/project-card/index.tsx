@@ -85,8 +85,10 @@ export const ProjectCard: React.FC<IProject> = (props) => {
             <IconButton
               aria-label={""}
               icon={<IconPlus />}
-              bg={COLORS.primaryColor}
-              color={COLORS.white}
+              borderColor={COLORS.primaryColor}
+              color={COLORS.primaryColor}
+              variant={"outline"}
+              backgroundColor={COLORS.white}
               mr={2}
               onClick={() => {
                 setInviteOpen(true);
@@ -95,8 +97,8 @@ export const ProjectCard: React.FC<IProject> = (props) => {
           ) : (
             <Button
               variant={"outline"}
-              bg={COLORS.primaryColor}
-              color={COLORS.white}
+              borderColor={COLORS.primaryColor}
+              color={COLORS.primaryColor}
               leftIcon={<IconPlus />}
               onClick={() => {
                 setInviteOpen(true);

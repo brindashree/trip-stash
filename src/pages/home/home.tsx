@@ -29,7 +29,7 @@ export function Home() {
   const [publicStash, setPublicStash] = useState<any[]>([]);
   const [projectViewId, setProjectViewId] = useState<string>("");
 
-  const { data: projects } = useList<HttpError>({
+  const { data: projects, error: projectError } = useList<HttpError>({
     resource: "projects",
   });
 
@@ -133,11 +133,13 @@ export function Home() {
           ))}
         </Flex>
       </div>
-      <PublicProjectModal
-        isOpen={Boolean(projectViewId)}
-        onClose={() => setProjectViewId("")}
-        projectId={projectViewId}
-      />
+      {projectViewId ? (
+        <PublicProjectModal
+          isOpen={Boolean(projectViewId)}
+          onClose={() => setProjectViewId("")}
+          projectId={projectViewId}
+        />
+      ) : null}
     </div>
   );
 }
