@@ -1,5 +1,11 @@
 import { Container, Box, Flex, Text, Button } from "@chakra-ui/react";
-import { IconBriefcase, IconHome, IconLogout } from "@tabler/icons";
+import {
+  IconBriefcase,
+  IconHome,
+  IconHome2,
+  IconSmartHome,
+  IconLogout,
+} from "@tabler/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabaseClient } from "../../utility";
 import { Logo } from "../../assets/logo";
@@ -31,7 +37,7 @@ export const CustomSidebar: React.FC = () => {
       </Box>
       <Button
         variant={"ghost"}
-        leftIcon={<IconHome />}
+        leftIcon={<IconSmartHome />}
         width={"full"}
         iconSpacing={"3"}
         size={"lg"}
@@ -41,8 +47,9 @@ export const CustomSidebar: React.FC = () => {
         fontSize={"sm"}
         isActive={location.pathname === "/home"}
       >
-        Home
+        <Text width={"90%"}>Home</Text>
       </Button>
+
       <Button
         variant={"ghost"}
         leftIcon={<IconBriefcase />}
@@ -55,7 +62,7 @@ export const CustomSidebar: React.FC = () => {
         }}
         isActive={location.pathname === "/projects"}
       >
-        Projects
+        <Text width={"90%"}>Project</Text>
       </Button>
       <Button
         variant={"ghost"}
@@ -66,7 +73,7 @@ export const CustomSidebar: React.FC = () => {
         fontSize={"sm"}
         onClick={onLogout}
       >
-        Logout
+        <Text width={"90%"}>Logout</Text>
       </Button>
     </Container>
   );
