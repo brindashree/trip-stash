@@ -41,9 +41,16 @@ export const Projects: React.FC = () => {
 
   useEffect(() => {
     if (projects) {
-      const _personalStash = projects?.data?.filter(
-        (project: any) => project?.user_id === user?.id
-      );
+      const _personalStash = projects?.data?.filter((project: any) => {
+        if (
+          project?.user_id === user?.id ||
+          project?.collaborators?.some(
+            (collaborator: any) => collaborator?.id === user?.id
+          )
+        ) {
+          return project;
+        }
+      });
 
       setPersonalStash(_personalStash);
     }
