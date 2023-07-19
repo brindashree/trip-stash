@@ -14,6 +14,8 @@ export interface IProject {
   id: BaseKey | number | string | undefined;
   status: String;
   user_id: String;
+  is_private: Boolean;
+  collaborators: String[];
 }
 export interface IItinerary {
   date: string | number | Date | null;

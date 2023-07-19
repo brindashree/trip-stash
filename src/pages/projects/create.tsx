@@ -12,6 +12,7 @@ import {
   Textarea,
   Flex,
   Heading,
+  Switch,
 } from "@chakra-ui/react";
 import { useForm } from "@refinedev/react-hook-form";
 import { IUser } from "../../utility/interface";
@@ -58,6 +59,12 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         <FormErrorMessage>
           {(errors as any)?.title?.message as string}
         </FormErrorMessage>
+      </FormControl>
+
+      <FormControl marginBottom={4} isInvalid={!!errors?.private}>
+        <FormLabel>Private</FormLabel>
+        <Switch id="private" {...register("private", {})} />
+        <FormErrorMessage>{`${errors.private?.message}`}</FormErrorMessage>
       </FormControl>
 
       <FormControl marginBottom={4} isInvalid={!!errors?.destination}>

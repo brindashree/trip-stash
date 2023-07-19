@@ -9,6 +9,7 @@ import {
   Select,
   Textarea,
   Flex,
+  Switch,
 } from "@chakra-ui/react";
 import { useForm } from "@refinedev/react-hook-form";
 import { PROJECT_STATUS } from "../../utility/constants";
@@ -18,7 +19,6 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     refineCore: { formLoading, queryResult },
     saveButtonProps,
     register,
-    setValue,
     formState: { errors },
   } = useForm();
 
@@ -54,6 +54,15 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           {(errors as any)?.title?.message as string}
         </FormErrorMessage>
       </FormControl>
+
+      <FormControl mb="3" isInvalid={!!(errors as any)?.private}>
+        <FormLabel>Private</FormLabel>
+        <Switch id="private" {...register("private", {})} />
+        <FormErrorMessage>
+          {(errors as any)?.private?.message as string}
+        </FormErrorMessage>
+      </FormControl>
+
       <FormControl mb="3" isInvalid={!!(errors as any)?.destination}>
         <FormLabel>Destination</FormLabel>
         <Input
@@ -66,6 +75,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           {(errors as any)?.destination?.message as string}
         </FormErrorMessage>
       </FormControl>
+
       <FormControl mb="3" isInvalid={!!(errors as any)?.description}>
         <FormLabel>Description</FormLabel>
         <Textarea
@@ -78,6 +88,7 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           {(errors as any)?.description?.message as string}
         </FormErrorMessage>
       </FormControl>
+
       <FormControl mb="3" isInvalid={!!(errors as any)?.status}>
         <FormLabel>Status</FormLabel>
         <Select

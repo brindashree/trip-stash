@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Text, Container, Circle, Stack, Flex } from "@chakra-ui/react";
 import { CreateButton } from "@refinedev/chakra-ui";
 import { useList, HttpError, useGetIdentity } from "@refinedev/core";
@@ -32,18 +33,30 @@ const ProjectEmptyState: React.FC = () => {
 
 export const Projects: React.FC = () => {
   const { data: user } = useGetIdentity<IUser>();
+  const [personalStash, setPersonalStash] = useState<any[]>([]);
 
   const { data: projects } = useList<HttpError>({
     resource: "projects",
-    filters: [
-      {
-        field: "user_id",
-        operator: "eq",
-        value: user?.id,
-      },
-    ],
   });
-  const userHasProjects = projects?.total && projects.total > 0;
+
+  useEffect(() => {
+    if (projects) {
+      const _personalStash = projects?.data?.filter((project: any) => {
+        if (
+          project?.user_id === user?.id ||
+          project?.collaborators?.some(
+            (collaborator: any) => collaborator?.id === user?.id
+          )
+        ) {
+          return project;
+        }
+      });
+
+      setPersonalStash(_personalStash);
+    }
+  }, [projects, user?.id]);
+
+  const userHasProjects = personalStash?.length > 0;
 
   return (
     <>
@@ -60,7 +73,7 @@ export const Projects: React.FC = () => {
             </div>
             <CreateButton />
           </Flex>
-          {projects.data.map((proj) => (
+          {personalStash.map((proj) => (
             <ProjectCard
               title={proj.title}
               start_date={proj.start_date}
@@ -70,6 +83,8 @@ export const Projects: React.FC = () => {
               id={proj.id}
               status={proj.status}
               user_id={proj.user_id}
+              is_private={proj.private}
+              collaborators={proj.collaborators}
               {...proj}
             />
           ))}

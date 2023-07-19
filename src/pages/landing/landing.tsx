@@ -6,7 +6,7 @@ import { Image, Text, Flex, Spacer, Heading, Button } from "@chakra-ui/react";
 import { useNavigation } from "@refinedev/core";
 import { useIsAuthenticated } from "@refinedev/core";
 
-export function LandingScreen() {
+export function Landing() {
   const { push } = useNavigation();
   const { data } = useIsAuthenticated();
 

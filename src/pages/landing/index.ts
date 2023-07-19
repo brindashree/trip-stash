@@ -1,1 +1,1 @@
-export { LandingScreen } from "./landing";
+export { Landing } from "./landing";
