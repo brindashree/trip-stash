@@ -19,7 +19,7 @@ function AuthTemplate({ children }: { children: React.ReactNode }) {
       }}
     >
       <Flex
-        margin={{ base: 0, lg: 12 }}
+        margin={{ base: 0, lg: 16 }}
         direction={{ base: "row", lg: "row-reverse" }}
       >
         {children}
