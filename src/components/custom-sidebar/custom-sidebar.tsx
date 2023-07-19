@@ -9,6 +9,11 @@ export const CustomSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const onLogout = async () => {
+    await supabaseClient.auth.signOut();
+    navigate("/");
+  };
+
   return (
     <Container width={"25vh"} py={8} bg={COLORS.white}>
       <Box mb={4}>
@@ -34,7 +39,7 @@ export const CustomSidebar: React.FC = () => {
           navigate("/home");
         }}
         fontSize={"sm"}
-        isActive={location.pathname === '/home'}
+        isActive={location.pathname === "/home"}
       >
         Home
       </Button>
@@ -48,7 +53,7 @@ export const CustomSidebar: React.FC = () => {
         onClick={() => {
           navigate("/projects");
         }}
-        isActive={location.pathname === '/projects'}
+        isActive={location.pathname === "/projects"}
       >
         Projects
       </Button>
@@ -59,7 +64,7 @@ export const CustomSidebar: React.FC = () => {
         iconSpacing={"3"}
         size={"lg"}
         fontSize={"sm"}
-        onClick={async () => await supabaseClient.auth.signOut()}
+        onClick={onLogout}
       >
         Logout
       </Button>
