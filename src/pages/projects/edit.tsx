@@ -26,24 +26,8 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
-      <Flex>
-        <FormControl mb="3" isInvalid={!!(errors as any)?.start_date}>
-          <FormLabel>Start Date</FormLabel>
-          <DateField value={projectsData?.start_date} format="DD-MMM-YYYY" />
-          <FormErrorMessage>
-            {(errors as any)?.start_date?.message as string}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl mb="3" isInvalid={!!(errors as any)?.end_date}>
-          <FormLabel>End Date</FormLabel>
-          <DateField value={projectsData?.end_date} format="DD-MMM-YYYY" />
-          <FormErrorMessage>
-            {(errors as any)?.end_date?.message as string}
-          </FormErrorMessage>
-        </FormControl>
-      </Flex>
       <FormControl mb="3" isInvalid={!!(errors as any)?.title}>
-        <FormLabel>Title</FormLabel>
+        <FormLabel>Name</FormLabel>
         <Input
           type="text"
           {...register("title", {
@@ -54,15 +38,13 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           {(errors as any)?.title?.message as string}
         </FormErrorMessage>
       </FormControl>
-
-      <FormControl mb="3" isInvalid={!!(errors as any)?.private}>
-        <FormLabel>Private</FormLabel>
-        <Switch id="private" {...register("private", {})} />
+      <FormControl mb="3" isInvalid={!!(errors as any)?.image_link}>
+        <FormLabel>Project Image link</FormLabel>
+        <Input type="text" {...register("image_link", {})} />
         <FormErrorMessage>
-          {(errors as any)?.private?.message as string}
+          {(errors as any)?.image_link?.message as string}
         </FormErrorMessage>
       </FormControl>
-
       <FormControl mb="3" isInvalid={!!(errors as any)?.destination}>
         <FormLabel>Destination</FormLabel>
         <Input
@@ -88,30 +70,62 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           {(errors as any)?.description?.message as string}
         </FormErrorMessage>
       </FormControl>
-
-      <FormControl mb="3" isInvalid={!!(errors as any)?.status}>
-        <FormLabel>Status</FormLabel>
-        <Select
-          id="status"
-          defaultValue={projectsData?.status}
-          {...register("status", {
-            required: "This field is required",
-          })}
-        >
-          <option value={PROJECT_STATUS.PLANNING} key={PROJECT_STATUS.PLANNING}>
-            {PROJECT_STATUS.PLANNING}
-          </option>
-          <option
-            value={PROJECT_STATUS.COMPLETED}
-            key={PROJECT_STATUS.COMPLETED}
+      <Flex gap={4}>
+        <FormControl mb="3" isInvalid={!!(errors as any)?.status}>
+          <FormLabel>Status</FormLabel>
+          <Select
+            id="status"
+            defaultValue={projectsData?.status}
+            {...register("status", {
+              required: "This field is required",
+            })}
           >
-            {PROJECT_STATUS.COMPLETED}
-          </option>
-        </Select>
-        <FormErrorMessage>
-          {(errors as any)?.status?.message as string}
-        </FormErrorMessage>
-      </FormControl>
+            <option
+              value={PROJECT_STATUS.PLANNING}
+              key={PROJECT_STATUS.PLANNING}
+            >
+              {PROJECT_STATUS.PLANNING}
+            </option>
+            <option
+              value={PROJECT_STATUS.COMPLETED}
+              key={PROJECT_STATUS.COMPLETED}
+            >
+              {PROJECT_STATUS.COMPLETED}
+            </option>
+          </Select>
+          <FormErrorMessage>
+            {(errors as any)?.status?.message as string}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl mb="3" isInvalid={!!(errors as any)?.private}>
+          <FormLabel>Private</FormLabel>
+          <Switch
+            id="private"
+            {...register("private", {})}
+            defaultValue={projectsData?.private}
+          />
+          <FormErrorMessage>
+            {(errors as any)?.private?.message as string}
+          </FormErrorMessage>
+        </FormControl>
+      </Flex>
+      <Flex gap={4}>
+        <FormControl mb="3" isInvalid={!!(errors as any)?.start_date}>
+          <FormLabel>Start Date</FormLabel>
+          <DateField value={projectsData?.start_date} format="DD-MMM-YYYY" />
+          <FormErrorMessage>
+            {(errors as any)?.start_date?.message as string}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl mb="3" isInvalid={!!(errors as any)?.end_date}>
+          <FormLabel>End Date</FormLabel>
+          <DateField value={projectsData?.end_date} format="DD-MMM-YYYY" />
+          <FormErrorMessage>
+            {(errors as any)?.end_date?.message as string}
+          </FormErrorMessage>
+        </FormControl>
+      </Flex>
+     
     </Edit>
   );
 };

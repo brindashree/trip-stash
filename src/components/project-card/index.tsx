@@ -15,7 +15,7 @@ import {
   Box,
   IconButton,
 } from "@chakra-ui/react";
-import { DeleteButton, ShowButton, EditButton } from "@refinedev/chakra-ui";
+import { DeleteButton, EditButton } from "@refinedev/chakra-ui";
 import dayjs from "dayjs";
 import {
   IconMapPin,
@@ -48,6 +48,7 @@ export const ProjectCard: React.FC<IProject> = (props) => {
     user_id,
     is_private,
     collaborators,
+    image_link
   } = props;
   const getInviteUrl = () => {
     return document.URL + "/invite/" + user_id + "/" + id;
@@ -63,7 +64,7 @@ export const ProjectCard: React.FC<IProject> = (props) => {
     >
       <Image
         objectFit="cover"
-        src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+        src={image_link || "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fG5hdHVyZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"}
         alt="Caffe Latte"
         pt={4}
         pb={4}
@@ -170,7 +171,7 @@ export const ProjectCard: React.FC<IProject> = (props) => {
                 mr={2}
                 hideText
               />
-              <DeleteButton mr={2} recordItemId={id} />
+              <DeleteButton mr={2} hideText recordItemId={id} />
               <Button onClick={() => navigate(`/${id}/itinerary`)} colorScheme="teal" >
                 View project
                 </Button>

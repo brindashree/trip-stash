@@ -16,6 +16,7 @@ export interface IProject {
   user_id: String;
   is_private: Boolean;
   collaborators: String[];
+  image_link: string | null
 }
 export interface IItinerary {
   date: string | number | Date | null;
