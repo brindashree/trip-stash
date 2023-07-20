@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, Container, Circle, Stack, Flex, Box } from "@chakra-ui/react";
+import { Text, Container, Circle, Stack, Flex, Box, Button } from "@chakra-ui/react";
 import { CreateButton } from "@refinedev/chakra-ui";
 import { useList, HttpError, useGetIdentity } from "@refinedev/core";
 
@@ -7,6 +7,8 @@ import { COLORS } from "../../utility/colors";
 import { ExploreIcon } from "../../assets/explore-icon";
 import { ProjectCard } from "../../components/project-card";
 import { IUser } from "../../utility/interface";
+import { useNavigate } from "react-router-dom";
+import { IconPlus } from "@tabler/icons";
 
 const ProjectEmptyState: React.FC = () => {
   return (
@@ -35,7 +37,7 @@ export const Projects: React.FC = () => {
   const { data: user } = useGetIdentity<IUser>();
   const [personalStash, setPersonalStash] = useState<any[]>([]);
   const [collaboratorStash, setCollaboratorStash] = useState<any[]>([]);
-
+  const navigate = useNavigate();
   const { data: projects } = useList<HttpError>({
     resource: "projects",
   });
@@ -79,7 +81,7 @@ export const Projects: React.FC = () => {
                 View and manage all the projects created by you
               </Text>
             </div>
-            <CreateButton bg={COLORS.primaryColor} />
+            <Button onClick={()=>navigate(`/projects/create`)} bg={COLORS.primaryColor} leftIcon={<IconPlus/>}>Create new project</Button>
           </Flex>
           <Flex gap={8} flexDirection={"column"}>
             {personalStash.map((proj) => (
