@@ -13,6 +13,7 @@ import {
   Flex,
   Heading,
   Switch,
+  Box,
 } from "@chakra-ui/react";
 import { useForm } from "@refinedev/react-hook-form";
 import { IUser } from "../../utility/interface";
@@ -51,88 +52,90 @@ export const ProjectCreate: React.FC<IResourceComponentsProps> = () => {
         </Heading>
       }
     >
-      <FormControl mb="3" mt={"4"} isInvalid={!!(errors as any)?.title}>
-        <FormLabel>Name</FormLabel>
-        <Input
-          type="text"
-          placeholder="Name your project ex. 'John's Europe Adventure'"
-          {...register("title", {
-            required: "This field is required",
-          })}
-        />
-        <FormErrorMessage>
-          {(errors as any)?.title?.message as string}
-        </FormErrorMessage>
-      </FormControl>
-
-      <FormControl marginBottom={4} isInvalid={!!errors?.image_link}>
-        <FormLabel>Project Image Link</FormLabel>
-        <Input
-          id="image_link"
-          type="text"
-          {...register("image_link", {})}
-          placeholder="Paste the image link here"
-        />
-        <FormErrorMessage>{`${errors.image_link?.message}`}</FormErrorMessage>
-      </FormControl>
-      <FormControl marginBottom={4} isInvalid={!!errors?.destination}>
-        <FormLabel>Destination</FormLabel>
-        <Input
-          id="destination"
-          type="text"
-          {...register("destination", {
-            required: "This field is required",
-          })}
-          placeholder="Ex: Italy"
-        />
-        <FormErrorMessage>{`${errors.destination?.message}`}</FormErrorMessage>
-      </FormControl>
-      <FormControl marginBottom={4}>
-        <FormLabel>Description</FormLabel>
-        <Textarea
-          id="description"
-          size="sm"
-          {...register("description", {
-            required: "This field is required",
-          })}
-          placeholder="Unveil your exciting adventure in vibrant words!"
-        />
-        <FormErrorMessage>{`${errors.description?.message}`}</FormErrorMessage>
-      </FormControl>
-
-      <Flex gap={4} marginBottom={4}>
-        <FormControl>
-          <FormLabel>Start Date</FormLabel>
+      <Box py={4} px={8}>
+        <FormControl mb="3" mt={"4"} isInvalid={!!(errors as any)?.title}>
+          <FormLabel>Name</FormLabel>
           <Input
-            id="start_date"
-            type="date"
-            {...register("start_date", {
+            type="text"
+            placeholder="Name your project ex. 'John's Europe Adventure'"
+            {...register("title", {
               required: "This field is required",
             })}
-            min={todaysDate}
           />
-          <FormErrorMessage>{`${errors.start_date?.message}`}</FormErrorMessage>
+          <FormErrorMessage>
+            {(errors as any)?.title?.message as string}
+          </FormErrorMessage>
         </FormControl>
 
-        <FormControl>
-          <FormLabel>Return Date</FormLabel>
+        <FormControl marginBottom={4} isInvalid={!!errors?.image_link}>
+          <FormLabel>Project Image Link</FormLabel>
           <Input
-            id="end_date"
-            type="date"
-            {...register("end_date", {
+            id="image_link"
+            type="text"
+            {...register("image_link", {})}
+            placeholder="Paste the image link here"
+          />
+          <FormErrorMessage>{`${errors.image_link?.message}`}</FormErrorMessage>
+        </FormControl>
+        <FormControl marginBottom={4} isInvalid={!!errors?.destination}>
+          <FormLabel>Destination</FormLabel>
+          <Input
+            id="destination"
+            type="text"
+            {...register("destination", {
               required: "This field is required",
             })}
-            min={todaysDate}
+            placeholder="Ex: Italy"
           />
-          <FormErrorMessage>{`${errors.end_date?.message}`}</FormErrorMessage>
+          <FormErrorMessage>{`${errors.destination?.message}`}</FormErrorMessage>
         </FormControl>
-      </Flex>
+        <FormControl marginBottom={4}>
+          <FormLabel>Description</FormLabel>
+          <Textarea
+            id="description"
+            size="sm"
+            {...register("description", {
+              required: "This field is required",
+            })}
+            placeholder="Unveil your exciting adventure in vibrant words!"
+          />
+          <FormErrorMessage>{`${errors.description?.message}`}</FormErrorMessage>
+        </FormControl>
 
-      <FormControl marginBottom={4} isInvalid={!!errors?.private}>
-        <FormLabel>Private</FormLabel>
-        <Switch id="private" {...register("private", {})} />
-        <FormErrorMessage>{`${errors.private?.message}`}</FormErrorMessage>
-      </FormControl>
+        <Flex gap={4} marginBottom={4}>
+          <FormControl>
+            <FormLabel>Start Date</FormLabel>
+            <Input
+              id="start_date"
+              type="date"
+              {...register("start_date", {
+                required: "This field is required",
+              })}
+              min={todaysDate}
+            />
+            <FormErrorMessage>{`${errors.start_date?.message}`}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl>
+            <FormLabel>Return Date</FormLabel>
+            <Input
+              id="end_date"
+              type="date"
+              {...register("end_date", {
+                required: "This field is required",
+              })}
+              min={todaysDate}
+            />
+            <FormErrorMessage>{`${errors.end_date?.message}`}</FormErrorMessage>
+          </FormControl>
+        </Flex>
+
+        <FormControl marginBottom={4} isInvalid={!!errors?.private}>
+          <FormLabel>Private</FormLabel>
+          <Switch id="private" {...register("private", {})} />
+          <FormErrorMessage>{`${errors.private?.message}`}</FormErrorMessage>
+        </FormControl>
+      </Box>
     </Create>
   );
 };

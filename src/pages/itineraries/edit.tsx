@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IResourceComponentsProps,
-  useTranslate,
   useSelect,
   useUpdate,
   useGetIdentity,
   HttpError,
 } from "@refinedev/core";
-import { Edit, TagField } from "@refinedev/chakra-ui";
+import { Edit } from "@refinedev/chakra-ui";
 import {
   FormControl,
   FormLabel,
@@ -37,8 +36,6 @@ import {
   IconMapPin,
   IconPaperclip,
   IconPlus,
-  IconTags,
-  IconThumbDown,
   IconThumbUp,
   IconTrendingUp,
   IconUser,
@@ -61,20 +58,28 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
 
   const { data: user } = useGetIdentity<IUser>();
   const itinerariesData = queryResult?.data?.data;
+  const [date, setDate] = useState(
+    dayjs(itinerariesData?.date).format("YYYY-MM-DD")
+  );
 
   const { options: projectOptions } = useSelect({
     resource: "projects",
     defaultValue: itinerariesData?.project_id,
   });
 
+  useEffect(() => {
+    if (itinerariesData?.date)
+      setDate(dayjs(itinerariesData?.date).format("YYYY-MM-DD"));
+  }, [itinerariesData]);
+
   React.useEffect(() => {
     setValue("project_id", itinerariesData?.project_id?.id);
   }, [projectOptions]);
 
   const handleLikes = (data: any) => {
-    let votes = data.votes || [];
+    const votes = data.votes || [];
     const userVoteFound = votes?.some(
-      (vote: { id: String | undefined }) => vote.id === user?.id
+      (vote: { id: string | undefined }) => vote.id === user?.id
     );
     if (!userVoteFound) {
       votes.push({
@@ -92,7 +97,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
   };
   const handleAddLinks = (data: any, url: string) => {
     if (url !== "") {
-      let mediaUrls = data.media_url || [];
+      const mediaUrls = data.media_url || [];
 
       mediaUrls.push(url);
 
@@ -136,7 +141,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
         <GridItem>
           <Flex gap={2}>
-            <IconMapPin color={COLORS.greyNeutral500}/>
+            <IconMapPin color={COLORS.greyNeutral500} />
             <Text color={COLORS.greyNeutral500}>Location</Text>
           </Flex>
         </GridItem>
@@ -155,7 +160,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
         <GridItem>
           <Flex gap={2}>
-            <IconAccessible color={COLORS.greyNeutral500}/>
+            <IconAccessible color={COLORS.greyNeutral500} />
             <Text color={COLORS.greyNeutral500}>Activity Type</Text>
           </Flex>
         </GridItem>
@@ -182,7 +187,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
 
         <GridItem>
           <Flex gap={2}>
-            <IconTrendingUp color={COLORS.greyNeutral500}/>
+            <IconTrendingUp color={COLORS.greyNeutral500} />
             <Text color={COLORS.greyNeutral500}>Votes</Text>
           </Flex>
         </GridItem>
@@ -220,7 +225,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
         <GridItem>
           <Flex gap={2}>
-            <IconUser color={COLORS.greyNeutral500}/>
+            <IconUser color={COLORS.greyNeutral500} />
             <Text color={COLORS.greyNeutral500}>Added by</Text>
           </Flex>
         </GridItem>
@@ -237,7 +242,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
         <GridItem>
           <Flex gap={2}>
-            <IconBulb color={COLORS.greyNeutral500}/>
+            <IconBulb color={COLORS.greyNeutral500} />
             <Text color={COLORS.greyNeutral500}>Status</Text>
           </Flex>
         </GridItem>
@@ -267,12 +272,19 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
         <GridItem>
           <Flex gap={2}>
-            <IconCalendarEvent color={COLORS.greyNeutral500}/>
+            <IconCalendarEvent color={COLORS.greyNeutral500} />
             <Text color={COLORS.greyNeutral500}>Date</Text>
           </Flex>
         </GridItem>
         <GridItem>
-          <Text>{dayjs(itinerariesData?.date).format("MMMM DD, YYYY")}</Text>
+          <Input
+            type="date"
+            {...register("date", {
+              required: "This field is required",
+            })}
+            onChange={(e) => setDate(e.target.value)}
+            value={date}
+          />
         </GridItem>
       </Grid>
       <Divider my={4} />
@@ -284,7 +296,7 @@ export const ItineraryEdit: React.FC<IResourceComponentsProps> = () => {
               <Flex alignItems={"center"}>
                 <IconPaperclip size={16} color={COLORS.greyNeutral500} />
                 <Link color="teal.500" href={url} target="_blank" mx={2}>
-                  {url.substring(0,30) + "..."}
+                  {url.substring(0, 30) + "..."}
                 </Link>
               </Flex>
             ))}

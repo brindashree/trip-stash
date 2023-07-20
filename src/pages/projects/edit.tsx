@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IResourceComponentsProps, useNavigation } from "@refinedev/core";
 import { DateField, Edit } from "@refinedev/chakra-ui";
 import {
@@ -14,15 +14,30 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "@refinedev/react-hook-form";
 import { PROJECT_STATUS } from "../../utility/constants";
+import dayjs from "dayjs";
 
 export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
   const {
     refineCore: { formLoading, queryResult },
-    saveButtonProps,
     register,
+    saveButtonProps,
     formState: { errors },
   } = useForm();
   const projectsData = queryResult?.data?.data;
+  const todaysDate = dayjs(new Date()).format("YYYY-MM-DD");
+  const [startDate, setStartDate] = useState(
+    dayjs(projectsData?.start_date).format("YYYY-MM-DD")
+  );
+  const [endDate, setEndDate] = useState(
+    dayjs(projectsData?.end_date).format("YYYY-MM-DD")
+  );
+
+  useEffect(() => {
+    if (projectsData?.start_date)
+      setStartDate(dayjs(projectsData?.start_date).format("YYYY-MM-DD"));
+    if (projectsData?.end_date)
+      setEndDate(dayjs(projectsData?.end_date).format("YYYY-MM-DD"));
+  }, [projectsData]);
 
   return (
     <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
@@ -107,16 +122,29 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
           </FormControl>
         </Flex>
         <Flex gap={4}>
-          <FormControl mb="3" isInvalid={!!(errors as any)?.start_date}>
+          <FormControl mb="3">
             <FormLabel>Start Date</FormLabel>
-            <DateField value={projectsData?.start_date} format="DD-MMM-YYYY" />
+            <Input
+              type="date"
+              {...register("start_date", {})}
+              onChange={(e) => setStartDate(e.target.value)}
+              min={todaysDate}
+              value={startDate}
+            />
             <FormErrorMessage>
               {(errors as any)?.start_date?.message as string}
             </FormErrorMessage>
           </FormControl>
-          <FormControl mb="3" isInvalid={!!(errors as any)?.end_date}>
+          <FormControl mb="3">
             <FormLabel>End Date</FormLabel>
-            <DateField value={projectsData?.end_date} format="DD-MMM-YYYY" />
+            <Input
+              type="date"
+              {...register("end_date", {})}
+              onChange={(e) => setEndDate(e.target.value)}
+              value={endDate}
+              min={todaysDate}
+            />
+
             <FormErrorMessage>
               {(errors as any)?.end_date?.message as string}
             </FormErrorMessage>
