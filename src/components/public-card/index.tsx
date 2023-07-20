@@ -1,15 +1,17 @@
 import { Flex, Image, Heading, Tag, TagLabel } from "@chakra-ui/react";
 import React from "react";
 import { COLORS } from "../../utility/colors";
-
+import PlaceHolder from "../../assets/placeholder.png";
 function PublicCard({
   title,
   status,
   onClick,
+  image,
 }: {
   title: string;
   status: string;
   onClick: () => void;
+  image: string;
 }) {
   return (
     <Flex
@@ -21,12 +23,13 @@ function PublicCard({
       width={{ base: "100%", lg: "24%" }}
     >
       <Image
-        src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
-        alt="Caffe Latte"
         objectFit="cover"
-        width={{ base: "100%" }}
+        src={image || PlaceHolder}
+        alt="Caffe Latte"
+        width={{ base: "100%"}}
         height={{ base: "300px" }}
         borderRadius={"md"}
+        border={!image ? `1px solid ${COLORS.greyNeutral100}` : "unset"}
       />
       <Heading mt={2} as="h4" size="md" textTransform={"capitalize"}>
         {title}

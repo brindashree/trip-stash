@@ -129,6 +129,7 @@ export function Home() {
               key={proj.id}
               title={proj.title}
               status={proj?.status}
+              image={proj?.image_link}
               onClick={() => navigate(`/final-plan/${proj.id}`)}
             />
           ))}
