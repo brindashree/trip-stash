@@ -140,21 +140,21 @@
     }
   },
   "documentTitle": {
-    "default": "refine",
-    "suffix": " | refine",
+    "default": "TripStash",
+    "suffix": " | TripStash",
     "blog_posts": {
-      "list": "Blog Posts | refine",
-      "show": "#{{id}} Show Blog Post | refine",
-      "edit": "#{{id}} Edit Blog Post | refine",
-      "create": "Create new Blog Post | refine",
-      "clone": "#{{id}} Clone Blog Post | refine"
+      "list": "Blog Posts | TripStash",
+      "show": "#{{id}} Show Blog Post | TripStash",
+      "edit": "#{{id}} Edit Blog Post | TripStash",
+      "create": "Create new Blog Post | TripStash",
+      "clone": "#{{id}} Clone Blog Post | TripStash"
     },
     "categories": {
-      "list": "Categories | refine",
-      "show": "#{{id}} Show Category | refine",
-      "edit": "#{{id}} Edit Category | refine",
-      "create": "Create new Category | refine",
-      "clone": "#{{id}} Clone Category | refine"
+      "list": "Categories | TripStash",
+      "show": "#{{id}} Show Category | TripStash",
+      "edit": "#{{id}} Edit Category | TripStash",
+      "create": "Create new Category | TripStash",
+      "clone": "#{{id}} Clone Category | TripStash"
     }
   },
   "table": {
