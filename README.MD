@@ -1,50 +1,59 @@
-# refine-project
+## Trip Stash
 
-<div align="center" style="margin: 30px;">
-    <a href="https://refine.dev">
-    <img src="https://refine.ams3.cdn.digitaloceanspaces.com/refine_logo.png"  align="center" />
-    </a>
-</div>
-<br/>
+Welcome to the Trip Stash! This project is designed to help users plan their trips efficiently and easily. It utilizes **Refine**, **Vite**, **Supabase**, and **Chakra UI** to provide a seamless and delightful user experience.
 
-This [refine](https://github.com/refinedev/refine) project was generated with [superplate](https://github.com/pankod/superplate).
+### Features
 
-## Getting Started
+- **User Authentication:** Users can sign up and log in to access their personalized trip planning experience.
+- **Create Trips:** Users can create new trips by providing details such as destination, dates, and trip objectives.
+- **Add Activities:** Users can add activities to their trips, including attractions, restaurants, and other points of interest.
+- **Trip Itinerary:** Users can view and organize their trip itinerary with detailed information about each activity.
+- **Collaborate:** Users can invite friends to collaborate on a trip, making it easy to plan a group journey.
 
-**refine** is a React-based framework for building data-intensive applications in no time ✨
+### Prerequisites
 
-Refine offers lots of out-of-the box functionality for rapid development, without compromising extreme customizability. Use-cases include, but are not limited to admin panels, B2B applications and dashboards.
+Before getting started, make sure you have the following installed on your system:
 
-## Available Scripts
+- **Node.js** (v14.0.0 or higher)
+- **Git**
+- **Yarn** (optional but recommended)
 
-### Running the development server.
+### Installation
 
-```bash
-    npm run dev
-```
-
-### Building for production.
+1. Clone the repository to your local machine:
 
 ```bash
-    npm run build
+git clone https://github.com/brindashree/trip-stash.git
+cd trip-stash
 ```
-
-### Running the production server.
+2. Install dependencies using Yarn or npm:
 
 ```bash
-    npm run start
+yarn install
+# or
+npm install
 ```
+### Usage
 
-## Learn More
+1. Start the development server
 
-To learn more about **refine**, please check out the [Documentation](https://refine.dev/docs)
+```bash
+yarn dev
+# or
+npm run dev
+```
+Open your web browser and navigate to http://localhost:5173/ to access the Trip Stash.
 
-- **Supabase Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
-- **Chakra UI** [Docs](https://refine.dev/docs/)
-- **Inferencer** [Docs](https://refine.dev/docs/packages/documentation/inferencer)
-- **i18n** [Docs](https://refine.dev/docs/core/providers/i18n-provider/)
-- **React Router** [Docs](https://refine.dev/docs/core/providers/router-provider/)
+### License
+The Trip Stash is open-source software licensed under the [MIT License](https://github.com/brindashree/trip-stash/blob/master/LICENSE)
 
-## License
+### Project Team
 
-MIT
+Dev team
+- [Brinda](https://github.com/brindashree)
+- [Akshay](https://github.com/aKshayKadam03)
+
+Product & Design team
+- [Rahul](https://github.com/rahulnadendla)
+
+*We hope you find the Trip Stash helpful for planning your adventures! If you encounter any issues or have suggestions, please feel free to create an issue on the GitHub repository. Happy trip planning! 🚀*
