@@ -298,7 +298,7 @@ const ItineraryTabPanel = ({
                   <Text color={COLORS.greyNeutral500}>{row.location}</Text>
                 </Td>
                 <Td>
-                  <Tag colorScheme={getRandomTagColor()} borderRadius={"full"}>
+                  <Tag colorScheme={getRandomTagColor()} borderRadius={"full"} whiteSpace={"nowrap"}>
                     {row.type_of_activity}
                   </Tag>
                 </Td>
