@@ -32,6 +32,8 @@ import { ErrorPage } from "./pages/error-404/error";
 import { FinalPlan } from "./pages/final-plan/final-plan";
 import { Logo } from "./assets/logo";
 import { useEffect } from "react";
+import "@fontsource/catamaran/400.css";
+import "@fontsource/catamaran/700.css";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -45,6 +47,10 @@ function App() {
     config: {
       initialColorMode: "light",
       useSystemColorMode: false,
+    },
+    fonts: {
+      heading: `'Catamaran', sans-serif`,
+      body: `'Catamaran', sans-serif`,
     },
   });
 

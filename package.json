@@ -7,6 +7,7 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.5.1",
+    "@fontsource/catamaran": "^5.0.5",
     "@refinedev/chakra-ui": "2.20.0",
     "@refinedev/cli": "2.7.2",
     "@refinedev/core": "4.26.2",
