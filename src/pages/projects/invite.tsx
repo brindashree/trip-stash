@@ -49,6 +49,9 @@ export function Invite() {
         value: params?.projectId,
       },
     ],
+    pagination: {
+      mode: "off",
+    },
   });
 
   const checkIfUserIsCollaboratorOrOwner = () => {

@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Text, Container, Circle, Stack, Flex, Box, Button } from "@chakra-ui/react";
+import {
+  Text,
+  Container,
+  Circle,
+  Stack,
+  Flex,
+  Box,
+  Button,
+} from "@chakra-ui/react";
 import { CreateButton } from "@refinedev/chakra-ui";
 import { useList, HttpError, useGetIdentity } from "@refinedev/core";
 
@@ -40,6 +48,9 @@ export const Projects: React.FC = () => {
   const navigate = useNavigate();
   const { data: projects } = useList<HttpError>({
     resource: "projects",
+    pagination: {
+      mode: "off",
+    },
   });
 
   useEffect(() => {
@@ -81,7 +92,14 @@ export const Projects: React.FC = () => {
                 View and manage all the projects created by you
               </Text>
             </div>
-            <Button onClick={()=>navigate(`/projects/create`)} bg={COLORS.primaryColor} leftIcon={<IconPlus/>}>Create new project</Button>
+            <Button
+              color={COLORS.white}
+              onClick={() => navigate(`/projects/create`)}
+              bg={COLORS.primaryColor}
+              leftIcon={<IconPlus />}
+            >
+              Create new project
+            </Button>
           </Flex>
           <Flex gap={8} flexDirection={"column"}>
             {personalStash.map((proj) => (

@@ -22,7 +22,6 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     register,
     formState: { errors },
   } = useForm();
-
   const projectsData = queryResult?.data?.data;
 
   return (
@@ -100,12 +99,8 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
             </FormErrorMessage>
           </FormControl>
           <FormControl mb="3" isInvalid={!!(errors as any)?.private}>
-            <FormLabel>Make it public</FormLabel>
-            <Switch
-              id="private"
-              {...register("private", {})}
-              defaultValue={projectsData?.private}
-            />
+            <FormLabel>Private</FormLabel>
+            <Switch id="private" {...register("private", {})} />
             <FormErrorMessage>
               {(errors as any)?.private?.message as string}
             </FormErrorMessage>
@@ -131,4 +126,3 @@ export const ProjectEdit: React.FC<IResourceComponentsProps> = () => {
     </Edit>
   );
 };
-
