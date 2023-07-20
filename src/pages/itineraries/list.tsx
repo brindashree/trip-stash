@@ -148,6 +148,7 @@ export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
             bg={COLORS.primaryColor}
             leftIcon={<IconPlus />}
             onClick={() => navigate(`/${params?.projectId}/itinerary/create`)}
+            color={COLORS.white}
           >
             Add itinerary item
           </Button>
@@ -270,7 +271,6 @@ const ItineraryTabPanel = ({
   handleStatusChange: (data: any, status: string) => void;
   userId?: any;
 }) => {
-
   return (
     <TabPanel padding={"unset"} pt={4}>
       <TableContainer whiteSpace="pre-line">
@@ -290,7 +290,9 @@ const ItineraryTabPanel = ({
             {list.map((row: IItinerary) => (
               <Tr key={row.id}>
                 <Td>
-                  <Text fontSize={"sm"}>{dayjs(row.date).format("DD-MMM-YYYY")} </Text>
+                  <Text fontSize={"sm"}>
+                    {dayjs(row.date).format("DD-MMM-YYYY")}{" "}
+                  </Text>
                 </Td>
                 <Td>
                   <Text as="b">{row.title}</Text>
@@ -299,7 +301,11 @@ const ItineraryTabPanel = ({
                   <Text color={COLORS.greyNeutral500}>{row.location}</Text>
                 </Td>
                 <Td>
-                  <Tag colorScheme={getActivityColor(row.type_of_activity)} borderRadius={"full"} whiteSpace={"nowrap"}>
+                  <Tag
+                    colorScheme={getActivityColor(row.type_of_activity)}
+                    borderRadius={"full"}
+                    whiteSpace={"nowrap"}
+                  >
                     {row.type_of_activity}
                   </Tag>
                 </Td>
