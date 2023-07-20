@@ -63,7 +63,6 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
         id: data.id,
       });
     }
-   
   };
   return (
     <Show
@@ -85,8 +84,8 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
       >
         <GridItem>
           <Flex gap={2}>
-            <IconBrandAmigo />
-            <Text>Title</Text>
+            <IconBrandAmigo color={COLORS.greyNeutral500} />
+            <Text color={COLORS.greyNeutral500}>Title</Text>
           </Flex>
         </GridItem>
         <GridItem>
@@ -94,8 +93,8 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
         <GridItem>
           <Flex gap={2}>
-            <IconMapPin />
-            <Text>Location</Text>
+            <IconMapPin color={COLORS.greyNeutral500} />
+            <Text color={COLORS.greyNeutral500}>Location</Text>
           </Flex>
         </GridItem>
         <GridItem>
@@ -103,8 +102,8 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
         <GridItem>
           <Flex gap={2}>
-            <IconAccessible />
-            <Text>Activity Type</Text>
+            <IconAccessible color={COLORS.greyNeutral500} />
+            <Text color={COLORS.greyNeutral500}>Activity Type</Text>
           </Flex>
         </GridItem>
         <GridItem>
@@ -113,8 +112,8 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
 
         <GridItem>
           <Flex gap={2}>
-            <IconTrendingUp />
-            <Text>Votes</Text>
+            <IconTrendingUp color={COLORS.greyNeutral500} />
+            <Text color={COLORS.greyNeutral500}>Votes</Text>
           </Flex>
         </GridItem>
         <GridItem>
@@ -128,6 +127,17 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
                 </AvatarGroup>
 
                 <Button
+                  cursor={"pointer"}
+                  variant={"outline"}
+                  color={COLORS.primaryColor}
+                  leftIcon={<IconThumbUp />}
+                  onClick={() => handleLikes(record)}
+                >
+                  Vote
+                </Button>
+              </Flex>
+            ) : (
+              <Button
                 cursor={"pointer"}
                 variant={"outline"}
                 color={COLORS.primaryColor}
@@ -136,24 +146,13 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
               >
                 Vote
               </Button>
-              </Flex>
-            ) : (
-              <Button
-              cursor={"pointer"}
-              variant={"outline"}
-              color={COLORS.primaryColor}
-              leftIcon={<IconThumbUp />}
-              onClick={() => handleLikes(record)}
-            >
-              Vote
-            </Button>
             )}
           </>
         </GridItem>
         <GridItem>
           <Flex gap={2}>
-            <IconUser />
-            <Text>Added by</Text>
+            <IconUser color={COLORS.greyNeutral500} />
+            <Text color={COLORS.greyNeutral500}>Added by</Text>
           </Flex>
         </GridItem>
         <GridItem>
@@ -164,8 +163,8 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
         <GridItem>
           <Flex gap={2}>
-            <IconBulb />
-            <Text>Status</Text>
+            <IconBulb color={COLORS.greyNeutral500} />
+            <Text color={COLORS.greyNeutral500}>Status</Text>
           </Flex>
         </GridItem>
         <GridItem>
@@ -173,8 +172,8 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
         </GridItem>
         <GridItem>
           <Flex gap={2}>
-            <IconCalendarEvent />
-            <Text>Date</Text>
+            <IconCalendarEvent color={COLORS.greyNeutral500} />
+            <Text color={COLORS.greyNeutral500}>Date</Text>
           </Flex>
         </GridItem>
         <GridItem>
@@ -183,22 +182,22 @@ export const ItineraryShow: React.FC<IResourceComponentsProps> = () => {
       </Grid>
       <Divider my={4} />
       <Box px={8}>
-      <Text as="b">Media Links</Text>
-      <Flex alignItems={"center"} gap={5} my={4}>
-        {record?.media_url?.length > 0 &&
-          record?.media_url.map((url: string, i: any) => (
-            <Flex alignItems={"center"} key={i}>
-              <IconPaperclip size={16} />
-              <Link color="teal.500" href={url} target="_blank" mx={2}>
-                {url}
-              </Link>
-            </Flex>
-          ))}
-      </Flex>
+        <Text as="b">Media Links</Text>
+        <Flex alignItems={"center"} gap={5} my={4}>
+          {record?.media_url?.length > 0 &&
+            record?.media_url.map((url: string, i: any) => (
+              <Flex alignItems={"center"} key={i}>
+                <IconPaperclip size={16} color={COLORS.greyNeutral500} />
+                <Link color="teal.500" href={url} target="_blank" mx={2}>
+                {url.substring(0,30) + "..."}
+                </Link>
+              </Flex>
+            ))}
+        </Flex>
 
-      <Divider my={4} />
-      <Text as="b">Description</Text>
-      <Text my={4}>{record?.notes}</Text>
+        <Divider my={4} />
+        <Text as="b">Description</Text>
+        <Text my={4}>{record?.notes}</Text>
       </Box>
       <Divider my={4} />
     </Show>
