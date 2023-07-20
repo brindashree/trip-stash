@@ -35,7 +35,7 @@ export interface IItinerary {
   date: string;
   title: string;
   location: string;
-  type_of_activity: String;
+  type_of_activity: string;
   votes: string[];
   status: string;
   added_by: {id: string,email:string}

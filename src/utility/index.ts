@@ -12,28 +12,38 @@ export const getProjectStatusColor = (status: any) => {
       return "green";
   }
 };
-const colorsArray = [
-  "blackAlpha",
-  "gray",
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "teal",
-  "blue",
-  "cyan",
-  "purple",
-  "pink",
-  "linkedin",
-  "facebook",
-  "messenger",
-  "whatsapp",
-  "twitter",
-  "telegram",
-];
-export const getRandomTagColor = () => {
-  return colorsArray[Math.floor(Math.random() * colorsArray.length)];
-};
+
+export const getActivityColor = (activity: string): string => {
+  const colors: Record<string, string> = {
+    TRANSPORT: "blackAlpha",
+    STAY: "gray",
+    FLIGHT: "red",
+    ADVENTURE: "orange",
+    WELLNESS: "yellow",
+    "SCENIC DRIVE": "green",
+    "HISTORICAL SITE": "teal",
+    SIGHTSEEING: "blue",
+    TREKKING: "cyan",
+    DINING: "purple",
+    SHOPPING: "pink",
+    NIGHTLIFE: "linkedin",
+    BEACH: "facebook",
+    ASTRONOMY: "messenger",
+    CASINO: "whatsapp",
+    MUSEUM: "twitter",
+    SAFARI: "telegram",
+    "THEME PARK": "blackAlpha",
+    CONCERT: "gray",
+    SCUBA: "red",
+    SPORTS: "orange",
+    BOATING: "yellow",
+    "RELIGIOUS SITE": "green",
+    "WINE TASTING": "teal",
+    "LOCAL MARKET": "blue",
+  };
+
+  return colors[activity.toUpperCase()] || "gray";
+}
 
 function formatDateWithoutTime(dateStr: string): string {
   return dateStr.split("T")[0];

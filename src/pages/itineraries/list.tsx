@@ -40,11 +40,11 @@ import {
 import { COLORS } from "../../utility/colors";
 import { IItinerary, IProject, IUser } from "../../utility/interface";
 import { IconHeart, IconLocation, IconMessage2, IconPlus } from "@tabler/icons";
-import { getRandomTagColor } from "../../utility";
 import InviteModal from "../../components/invite-modal";
 import { ITINERARY_STATUS } from "../../utility/constants";
 import Chat from "../../components/chat/chat";
 import dayjs from "dayjs";
+import { getActivityColor } from "../../utility";
 
 export const ItineraryList: React.FC<IResourceComponentsProps> = () => {
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -270,6 +270,7 @@ const ItineraryTabPanel = ({
   handleStatusChange: (data: any, status: string) => void;
   userId?: any;
 }) => {
+
   return (
     <TabPanel padding={"unset"} pt={4}>
       <TableContainer whiteSpace="pre-line">
@@ -298,7 +299,7 @@ const ItineraryTabPanel = ({
                   <Text color={COLORS.greyNeutral500}>{row.location}</Text>
                 </Td>
                 <Td>
-                  <Tag colorScheme={getRandomTagColor()} borderRadius={"full"} whiteSpace={"nowrap"}>
+                  <Tag colorScheme={getActivityColor(row.type_of_activity)} borderRadius={"full"} whiteSpace={"nowrap"}>
                     {row.type_of_activity}
                   </Tag>
                 </Td>
