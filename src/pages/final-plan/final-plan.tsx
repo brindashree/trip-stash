@@ -148,11 +148,11 @@ console.log({projectData})
           </Flex>}
         </Flex>
       </Flex>
-      {groupedData?.map((dayItinerary) => (
+      {groupedData?.map((dayItinerary, i) => (
         <Box px={4} mt={4}>
           <Flex gap={3}>
             <Text fontSize={"2xl"} as="b">
-              Day 1 ({dayItinerary.length})
+              Day {i + 1} ({dayItinerary.length})
             </Text>
             <Text fontSize={"2xl"} as="b" color={COLORS.primary500}>
               Total: {sortedData?.length}
