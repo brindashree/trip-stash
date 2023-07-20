@@ -49,6 +49,9 @@ function PublicProjectModal({
         value: projectId,
       },
     ],
+    pagination: {
+      mode: "off",
+    },
   });
 
   return (

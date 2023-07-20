@@ -48,6 +48,9 @@ export const Projects: React.FC = () => {
   const navigate = useNavigate();
   const { data: projects } = useList<HttpError>({
     resource: "projects",
+    pagination: {
+      mode: "off",
+    },
   });
 
   useEffect(() => {

@@ -32,6 +32,9 @@ export function Home() {
 
   const { data: projects, error: projectError } = useList<HttpError>({
     resource: "projects",
+    pagination: {
+      mode: "off",
+    },
   });
 
   useEffect(() => {
