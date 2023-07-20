@@ -6,7 +6,7 @@ import {
   ThemedLayoutV2,
   ThemedTitleV2,
 } from "@refinedev/chakra-ui";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { Box, ChakraProvider, extendTheme } from "@chakra-ui/react";
 import routerBindings, {
   CatchAllNavigate,
   DocumentTitleHandler,
@@ -113,7 +113,9 @@ function App() {
                     )}
                     Sider={() => <CustomSidebar />}
                   >
-                    <Outlet />
+                    <Box ml={"28vh"}>
+                      <Outlet />
+                    </Box>
                   </ThemedLayoutV2>
                 }
               >
