@@ -67,6 +67,7 @@ export const ProjectCard: React.FC<IProjectCard> = (props) => {
         alt="Caffe Latte"
         padding={!image_link ? 4 : "unset"}
         width={{ base: "100%", lg: "30%" }}
+        maxWidth={"300px"}
         borderRadius="2xl"
         border={!image_link ? `1px solid ${COLORS.greyNeutral100}` : "unset"}
       />
