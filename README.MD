@@ -1,4 +1,4 @@
-## Trip Stash
+## Trip Stash - Best visually pleasing project - Refine hackathon 🏆 🥇 - [Link](https://dev.to/devteam/refine-dev-hackathon-winners-announced-237g)
 
 Welcome to the Trip Stash! This project is designed to help users plan their trips efficiently and easily. It utilizes **Refine**, **Vite**, **Supabase**, and **Chakra UI** to provide a seamless and delightful user experience.
 
